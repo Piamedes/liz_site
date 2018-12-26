@@ -2,34 +2,39 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-
-
+const boardKey = [
+  'no room',      //0
+  'dark',         //1
+  'dim',          //2
+  'well-lit',     //3
+  'brightly lit'  //4
+];
 
 const board = [
   //One character + space
-  [ 1, 1, 1, 1, 1 ],
-  [ 0, 0, 1, 0, 0 ],
-  [ 1, 1, 1, 1, 1 ],
+  [ 3, 2, 4, 2, 3 ],
+  [ 0, 0, 3, 0, 1 ],
+  [ 3, 4, 2, 3, 2 ],
   [ 1, 0, 0, 0, 1 ],
   //One character + space
-  [ 1, 1, 1, 1, 1 ],
-  [ 1, 0, 1, 0, 1 ],
-  [ 1, 0, 1, 0, 1 ],
-  [ 1, 0, 0, 0, 1 ],
-  //One character + space
-  [ 1, 1, 1, 1, 1 ],
-  [ 1, 0, 0, 0, 0 ],
-  [ 1, 0, 0, 0, 0 ],
+  [ 2, 4, 3, 2, 4 ],
+  [ 4, 0, 2, 0, 2 ],
+  [ 3, 0, 2, 1, 2 ],
   [ 1, 0, 0, 0, 0 ],
   //One character + space
-  [ 1, 1, 1, 1, 1 ],
-  [ 1, 0, 0, 0, 0 ],
-  [ 1, 0, 0, 0, 0 ],
+  [ 4, 2, 3, 2, 4 ],
+  [ 3, 0, 0, 0, 1 ],
+  [ 4, 0, 1, 1, 1 ],
   [ 1, 0, 0, 0, 0 ],
   //One character + space
-  [ 1, 1, 1, 1, 1 ],
-  [ 1, 0, 0, 0, 1 ],
-  [ 1, 1, 1, 1, 1 ],
+  [ 4, 3, 2, 2, 2 ],
+  [ 3, 0, 0, 1, 0 ],
+  [ 4, 0, 1, 1, 1 ],
+  [ 0, 0, 0, 1, 0 ],
+  //One character + space
+  [ 0, 4, 3, 2, 0 ],
+  [ 4, 0, 0, 1, 3 ],
+  [ 1, 2, 3, 4, 0 ],
 ];  
 
 class App extends React.Component {
@@ -43,9 +48,9 @@ class App extends React.Component {
       xloc: 0,
       yloc: 0,
       xmin: 0,
-      xmax: board.length,
+      xmax: board.length - 1,
       ymin: 0,
-      ymax: board[ 0 ].length,
+      ymax: board[ 0 ].length - 1,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -56,7 +61,7 @@ class App extends React.Component {
     return (
       <div>
         <h3>Escape the Castle</h3>
-        <p> You wake up in a dimly lit room, unsure of how you arrived.</p>
+        <p> You wake up in a dimly lit room, unsure of how you arrived.  An exit is to the north.</p>
         <ActionList actions={this.state.actions} />
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="new-action">
@@ -98,7 +103,22 @@ class App extends React.Component {
     return result
   }
 
+  canGo(action, xloc, yloc ){
+
+    if(      action === 'north' && yloc !== this.state.ymax && board[ xloc ][ yloc + 1 ] !== 0 )
+      return( true )
+    else if( action === 'south' && yloc !== this.state.ymin && board[ xloc ][ yloc - 1 ] !== 0 )
+      return( true )
+    else if( action === 'west'  && xloc !== this.state.xmin && board[ xloc - 1 ][ yloc ] !== 0 )
+      return( true )
+    else if( action === 'east'  && xloc !== this.state.xmax && board[ xloc + 1 ][ yloc ] !== 0 )
+      return( true )
+    else
+      return( false );  
+  }
+
   validateAction(action){
+
     if( action === 'north' && this.state.yloc === this.state.ymax )
       return( false )
     else if( action ==='south' && this.state.yloc === this.state.ymin )
@@ -111,18 +131,47 @@ class App extends React.Component {
       return( true );  
   }
 
+  describeAction( xloc, yloc ){   
+    var message = 'You walk into a ' + boardKey[ board[ xloc ][ yloc ] ] + ' room.  You see ';
+
+    //TO-DO: implement overrides
+    var availableRooms = []; 
+    const directions   = ['north','south','east','west'];
+
+    directions.forEach((direction)=>{
+      if(this.canGo( direction, xloc, yloc ) )
+        availableRooms.push( direction )
+    }, this )
+
+    if( availableRooms.length === 1 )
+      message += ( 'an exit to the ' + availableRooms[ 0 ] )
+    else if( availableRooms.length === 2 )
+      message += ( 'exits to the ' + availableRooms[ 0 ] + ' and ' + availableRooms[ 1 ] )
+    else if( availableRooms.length === 3 )
+      message += ( 'exits to the ' + availableRooms[ 0 ] + ', ' + availableRooms[ 1 ] + ', and ' + availableRooms[ 2 ] )
+    else if( availableRooms.length === 4 )
+      message += ( 'exits in all directions' );
+
+    message += ".";
+
+    return( message );
+  }
+
   performAction(action){
     const xloc = this.state.xloc;
     const yloc = this.state.yloc;
 
+    const xloc_new = xloc + ( action === 'west'  ? -1 : action === 'east'  ? 1 : 0 );
+    const yloc_new = yloc + ( action === 'south' ? -1 : action === 'north' ? 1 : 0 );
+
     const newState = {
-      xloc: xloc + ( action === 'west'  ? -1 : action === 'east'  ? 1 : 0 ), 
-      yloc: yloc + ( action === 'south' ? -1 : action === 'north' ? 1 : 0 )
+      xloc: xloc_new, 
+      yloc: yloc_new
     }
 
     this.setState( newState )
 
-    return 'You walked ' + action
+    return this.describeAction( xloc_new, yloc_new )
   }
 
   publishResult(message){
@@ -149,7 +198,7 @@ class App extends React.Component {
 
     if(!input.valid)
       message = 'Input invalid'
-    else if(!this.validateAction(input.action))
+    else if(!this.canGo( input.action, this.state.xloc, this.state.yloc ) )
       message = 'Cannot go that way'
     else
       message = this.performAction(input.action)
