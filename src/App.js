@@ -3,9 +3,8 @@ import PuzzleCastle from './PuzzleCastle.js';
 import logo from './logo.svg';
 import './App.css';
 
-
-class App extends React.Component {
-  constructor(props) {
+class Temp extends React.Component{
+   constructor(props) {
     super(props);
 
   }
@@ -13,6 +12,49 @@ class App extends React.Component {
   render() {
     return (
       <div> 
+        <h3>test</h3>
+        <h3>test</h3>
+        <h3>test</h3>
+        <h3>test</h3>
+      </div>
+    );
+  } 
+}
+
+class ContentRenderer extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.puzzles = {
+        castle: PuzzleCastle,
+        temp:   Temp
+    }
+  }
+
+  render() {
+    const TagName = this.puzzles[this.props.activePuzzle];
+    return( <TagName />);
+  }  
+}
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activePuzzle: 'temp',
+    }
+
+    this.makeActiveCallback = this.makeActiveCallback.bind(this);
+  }
+
+  makeActiveCallback(inputPuzzle){
+    return( ()=>{ this.setState( { activePuzzle: inputPuzzle} ) } );
+  }
+
+  render() {
+    return( 
+      <div>
         <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
@@ -26,18 +68,16 @@ class App extends React.Component {
             </div>
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">The Castle</a></li>
-                <li><a href="#about">#####</a></li>
-                <li><a href="#contact">#####</a></li>
+                <li class={this.state.activePuzzle === 'castle' ? "active" : ''}><a href="#" onClick={this.makeActiveCallback('castle')}>The Castle</a></li>
+                <li class={this.state.activePuzzle === 'temp' ?   "active" : ''}><a href="#" onClick={this.makeActiveCallback('temp')}>Temp</a></li>
               </ul>
             </div>
           </div>
         </nav>
-        <PuzzleCastle/>
+        <ContentRenderer activePuzzle={this.state.activePuzzle}/>
       </div>
     );
   }
 }
-
 
 export default App;
