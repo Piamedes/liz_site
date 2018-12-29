@@ -1,6 +1,7 @@
 import React from 'react';
 import PuzzleCastle from './PuzzleCastle.js';
 import './App.css';
+import { Nav, NavItem, NavDropdown, Navbar, MenuItem } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
 class Temp extends React.Component{
   render() {
@@ -22,19 +23,40 @@ class ContentRenderer extends React.Component {
   }  
 }
 
-class DropdownMenu extends React.Component {
-  render() {
-    const activePuzzle = this.props.puzzles[ this.props.activePuzzle ];
+class NavbarRenderer extends React.Component {
+  render(){
 
+    const activePuzzle = this.props.puzzles[ this.props.activePuzzle ];
     return( 
-      <li className="dropdown">
-        <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{activePuzzle.display}<span className="caret"></span></a>
-        <ul className="dropdown-menu">
-          {this.props.puzzles.map((puzzle) => (
-            <li key={puzzle.id} className={activePuzzle.name === puzzle.name ? "active" : ''}><a href="#" onClick={this.props.makeActiveCallback(puzzle.id)}>{puzzle.display}</a></li>
-          ))}
-        </ul>
-      </li>
+      <Navbar inverse collapseOnSelect>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="#brand">{'The Trials:  ' + activePuzzle.display}</a>
+          </Navbar.Brand>
+          <Navbar.Toggle/>
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav>
+            <NavDropdown eventKey={0} title="Puzzles" id="basic-nav-dropdown">
+              {this.props.puzzles.map((puzzle) => (
+                <MenuItem key={puzzle.id} 
+                          className={activePuzzle.name === puzzle.name ? "active" : ''} 
+                          onClick={this.props.makeActiveCallback(puzzle.id)}>
+                          {puzzle.display}
+                </MenuItem>
+              ))}
+            </NavDropdown>
+          </Nav>
+          <Nav pullRight>
+            <NavItem eventKey={1} href="#">
+              FAQ
+            </NavItem>
+            <NavItem eventKey={2} href="#">
+              Help
+            </NavItem>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     )
   }
 }
@@ -73,18 +95,7 @@ class App extends React.Component {
   render() {
     return( 
       <div>
-        <nav className="navbar navbar-inverse navbar-fixed-top">
-          <div className="container">
-            <div className="navbar-header">
-              <a className="navbar-brand" href="">The Trials:</a>
-            </div>
-            <div id="navbar" className="collapse navbar-collapse">
-              <ul className="nav navbar-nav">
-                <DropdownMenu activePuzzle={this.state.activePuzzle} makeActiveCallback={this.makeActiveCallback} puzzles={this.state.puzzles} />
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <NavbarRenderer activePuzzle={this.state.activePuzzle} makeActiveCallback={this.makeActiveCallback} puzzles={this.state.puzzles} />
         <ContentRenderer activePuzzle={this.state.activePuzzle} puzzles={this.state.puzzles}/>
       </div>
     );
