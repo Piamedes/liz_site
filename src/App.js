@@ -19,8 +19,16 @@ class Temp extends React.Component{
 
 class ContentRenderer extends React.Component {
   render() {
-    const TagName = this.props.puzzles[this.props.activePuzzle].className;
-    return( <TagName />);
+    const puzzle  = this.props.puzzles[this.props.activePuzzle];
+    const TagName = puzzle.className;
+    return( 
+      <TagName 
+        handleModalShowCallback={this.props.handleModalShowCallback} 
+        puzzle={puzzle} 
+        unlockPuzzle={this.props.unlockPuzzle}
+        validatePassword={this.props.validatePassword}
+      />
+    );
   }  
 }
 
@@ -88,7 +96,7 @@ class PasswordForm extends React.Component{
       return
 
     if( this.props.validatePassword(this.props.inputPuzzle, this.state.value)){
-      this.props.unlockPuzzle(this.props.inputPuzzle);
+      this.props.unlockPuzzle(this.props.inputPuzzle,true);
     } else {
       this.setState({
           value:   '', 
@@ -182,17 +190,20 @@ class App extends React.Component {
     this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
   }
 
-  validatePassword(inputPuzzle, password){
-    return password.toLowerCase() === this.state.puzzles[inputPuzzle - 1].answer;
+  validatePassword(inputPuzzle, password, fromPuzzle){
+    var passString = password + '';
+    return passString.toLowerCase() === this.state.puzzles[inputPuzzle + fromPuzzle ? 0 : -1 ].answer;
   }
 
-  unlockPuzzle(inputPuzzle){
+  unlockPuzzle(inputPuzzle,changeActive){
       var puzzles = this.state.puzzles;
       puzzles[inputPuzzle].unlocked = true;
 
       this.setState({ puzzles: puzzles });
       this.handleModalClose();
-      this.setState( { activePuzzle: inputPuzzle} );
+
+      if(changeActive)
+        this.setState( { activePuzzle: inputPuzzle } );
   }
 
   handleModalClose(){ 
@@ -242,6 +253,8 @@ class App extends React.Component {
           activePuzzle={this.state.activePuzzle} 
           puzzles={this.state.puzzles}
           handleModalShowCallback={this.handleModalShowCallback} 
+          unlockPuzzle={this.unlockPuzzle}
+          validatePassword={this.validatePassword}
         />
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>

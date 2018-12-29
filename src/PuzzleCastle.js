@@ -1,43 +1,60 @@
 import React from 'react';
+import { Image } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
 class PuzzleCastle extends React.Component {
   constructor(props) {
     super(props);
 
-	this.boardKey = [
-	  'no room',      //0
-	  'dark',         //1
-	  'dim',          //2
-	  'well-lit',     //3
-	  'brightly lit'  //4
-	];
+  	this.boardKey = [
+  	  'no room',      //0
+  	  'dark',         //1
+  	  'dimly lit',    //2
+  	  'well-lit',     //3
+  	  'brightly lit'  //4
+  	];
 
-	this.board = [
-	  //One character + space
-	  [ 3, 2, 4, 2, 3 ],
-	  [ 0, 0, 3, 0, 1 ],
-	  [ 3, 4, 2, 3, 2 ],
-	  [ 1, 0, 0, 0, 1 ],
-	  //One character + space
-	  [ 2, 4, 3, 2, 4 ],
-	  [ 4, 0, 2, 0, 2 ],
-	  [ 3, 0, 2, 1, 2 ],
-	  [ 1, 0, 0, 0, 0 ],
-	  //One character + space
-	  [ 4, 2, 3, 2, 4 ],
-	  [ 3, 0, 0, 0, 1 ],
-	  [ 4, 0, 1, 1, 1 ],
-	  [ 1, 0, 0, 0, 0 ],
-	  //One character + space
-	  [ 4, 3, 2, 2, 2 ],
-	  [ 3, 0, 0, 1, 0 ],
-	  [ 4, 0, 1, 1, 1 ],
-	  [ 0, 0, 0, 1, 0 ],
-	  //One character + space
-	  [ 0, 4, 3, 2, 0 ],
-	  [ 4, 0, 0, 1, 3 ],
-	  [ 1, 2, 3, 4, 0 ],
-	]; 
+  	this.board = [
+  	  //One character + space
+  	  [ 3, 2, 4, 2, 3 ],
+  	  [ 0, 0, 3, 0, 4 ],
+  	  [ 0, 4, 2, 3, 2 ],
+  	  [ 0, 1, 0, 0, 1 ],
+  	  //One character + space
+  	  [ 2, 4, 3, 2, 4 ],
+  	  [ 4, 0, 2, 0, 2 ],
+  	  [ 3, 0, 2, 1, 2 ],
+  	  [ 1, 0, 0, 0, 0 ],
+  	  //One character + space
+  	  [ 4, 2, 3, 2, 4 ],
+  	  [ 1, 0, 2, 0, 2 ],
+  	  [ 4, 2, 3, 3, 4 ],
+  	  [ 1, 0, 0, 0, 0 ],
+  	  //One character + space
+  	  [ 4, 3, 2, 2, 2 ],
+  	  [ 3, 0, 0, 1, 3 ],
+  	  [ 4, 0, 1, 1, 4 ],
+  	  [ 0, 0, 0, 1, 0 ],
+  	  //One character + space
+  	  [ 2, 4, 3, 2, 4 ],
+  	  [ 0, 0, 2, 0, 1 ],
+  	  [ 4, 2, 3, 4, 2 ],
+      //One character + space
+      [ 0, 0, 1, 0, 0 ],
+      [ 0, 0, 1, 0, 0 ],
+      [ 0, 0, 1, 0, 0 ],//21
+  	]; 
+
+    this.xfin = 21;
+    this.yfin = 2;
+
+    this.boardOverrides = [];
+
+    for( var index = 0; index < this.board.length; index++){
+      this.boardOverrides.push( Array(this.board[ 0 ].length ).fill( null ) );
+    }
+
+    this.boardOverrides[ 0         ][ 2         ] = 'You walk into a brightly lit room with exits to the north, south, and east.  A sign hanging on the wall reads "The light will show you the answer".'
+    this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An older looking man wearing a large spotted hat looks at you strangely.  He asks you who you seek.'
     
     this.state = { 
       actions:   [], 
@@ -96,7 +113,7 @@ class PuzzleCastle extends React.Component {
 
     if( matches.hasOwnProperty( input ) )
       result.action = matches[ input ]
-    else 
+    else
       result.valid = false;
 
     return result
@@ -131,29 +148,33 @@ class PuzzleCastle extends React.Component {
   }
 
   describeAction( xloc, yloc ){   
-    var message = 'You walk into a ' + this.boardKey[ this.board[ xloc ][ yloc ] ] + ' room.  You see ';
 
-    //TO-DO: implement overrides
-    var availableRooms = []; 
-    const directions   = ['north','south','east','west'];
+    if( this.boardOverrides[ xloc ][ yloc ] !== null ){
+      return( this.boardOverrides[ xloc ][ yloc ] );
+    }else{
+      var message = 'You walk into a ' + this.boardKey[ this.board[ xloc ][ yloc ] ] + ' room.  You see ';
 
-    directions.forEach((direction)=>{
-      if(this.canGo( direction, xloc, yloc ) )
-        availableRooms.push( direction )
-    }, this )
+      var availableRooms = []; 
+      const directions   = ['north','south','east','west'];
 
-    if( availableRooms.length === 1 )
-      message += ( 'an exit to the ' + availableRooms[ 0 ] )
-    else if( availableRooms.length === 2 )
-      message += ( 'exits to the ' + availableRooms[ 0 ] + ' and ' + availableRooms[ 1 ] )
-    else if( availableRooms.length === 3 )
-      message += ( 'exits to the ' + availableRooms[ 0 ] + ', ' + availableRooms[ 1 ] + ', and ' + availableRooms[ 2 ] )
-    else if( availableRooms.length === 4 )
-      message += ( 'exits in all directions' );
+      directions.forEach((direction)=>{
+        if(this.canGo( direction, xloc, yloc ) )
+          availableRooms.push( direction )
+      }, this )
 
-    message += ".";
+      if( availableRooms.length === 1 )
+        message += ( 'an exit to the ' + availableRooms[ 0 ] )
+      else if( availableRooms.length === 2 )
+        message += ( 'exits to the ' + availableRooms[ 0 ] + ' and ' + availableRooms[ 1 ] )
+      else if( availableRooms.length === 3 )
+        message += ( 'exits to the ' + availableRooms[ 0 ] + ', ' + availableRooms[ 1 ] + ', and ' + availableRooms[ 2 ] )
+      else if( availableRooms.length === 4 )
+        message += ( 'exits in all directions' );
 
-    return( message );
+      message += ".";
+
+      return( message );
+    }
   }
 
   performAction(action){
@@ -186,23 +207,54 @@ class PuzzleCastle extends React.Component {
     }));
   }
 
-  handleSubmit(e) {
+  puzzleComplete(){
+
+    var completeInfo = {
+        puzzleComplete: false,
+        invalidAnswer:  false,
+        message:        '', 
+    }
+
+    if(this.state.xloc === this.xfin && this.state.yloc === this.yfin){
+
+      if(this.props.validatePassword( this.props.puzzle.id, this.state.inputText, true ) )
+        completeInfo.puzzleComplete = true;
+      else{
+        completeInfo.invalidAnswer = true;
+        completeInfo.message       = "The old sage looks at you with a confused expression."       
+      }
+    }
+
+    return( completeInfo );
+  }
+
+  handleSubmit(e){
     e.preventDefault()
 
     if (!this.state.inputText.length)
       return
-    
-    let input   = this.parseInput( this.state.inputText );
-    let message = ''
 
-    if(!input.valid)
-      message = 'Input invalid'
-    else if(!this.canGo( input.action, this.state.xloc, this.state.yloc ) )
-      message = 'Cannot go that way'
-    else
-      message = this.performAction(input.action)
+    var completeInfo = this.puzzleComplete();
 
-    this.publishResult(message)
+    if(completeInfo.puzzleComplete){
+      this.props.unlockPuzzle(this.props.puzzle.id + 1, false);
+      var callback = this.props.handleModalShowCallback('Puzzle Complete!',<Image src={require('./castle.png')} responsive/>);
+      callback();
+    }else if(completeInfo.invalidAnswer){
+      this.publishResult(completeInfo.message);
+    }else{
+      let input   = this.parseInput( this.state.inputText );
+      let message = ''
+
+      if(!input.valid)
+        message = 'Input invalid'
+      else if(!this.canGo( input.action, this.state.xloc, this.state.yloc ) )
+        message = 'Cannot go that way'
+      else
+        message = this.performAction(input.action)
+
+      this.publishResult(message)      
+    }
   }
 
   handleChange(e) {
