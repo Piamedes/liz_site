@@ -71,7 +71,8 @@ class PasswordForm extends React.Component{
 
     this.state = {
       value:   '',
-      isValid: true,
+      valid:   null,
+      message: 'Please enter the password.'
     };
   }
 
@@ -89,21 +90,24 @@ class PasswordForm extends React.Component{
     if( this.props.validatePassword(this.props.inputPuzzle, this.state.value)){
       this.props.unlockPuzzle(this.props.inputPuzzle);
     } else {
-      this.setState({isValid: false});
+      this.setState({
+          value:   '', 
+          valid:   'error',
+          message: 'Invalid password.  Please try again.'
+        });
     }
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <FormGroup controlId="formBasicText" validationState={this.state.isValid}>
-          <ControlLabel>{'Please enter the password for puzzle ' + this.props.inputPuzzle}</ControlLabel>
+        <FormGroup controlId="formBasicText" validationState={this.state.valid}>
+          <ControlLabel>{this.state.message}</ControlLabel>
           <FormControl
             type="text"
             value={this.state.value}
             placeholder="Enter password"
             onChange={this.handleChange}
-
           />
           <FormControl.Feedback />
         </FormGroup>
@@ -149,13 +153,15 @@ class App extends React.Component {
           display:   'The Castle',
           className: PuzzleCastle,
           unlocked:  true,
+          password:  '',
         },
         {
           id:        1,
           name:      'temp',
           display:   'The Temp', 
           className: Temp,
-          unlocked:  true,
+          unlocked:  false,
+          password:  'peach',
         },
         {
           id:        2,
@@ -163,19 +169,21 @@ class App extends React.Component {
           display:   'The Temp2', 
           className: Temp,
           unlocked:  false,
+          password:  'temp',
         },
       ],
     }
 
     this.handleSwitchPuzzleCallback = this.handleSwitchPuzzleCallback.bind(this);
     this.unlockPuzzle = this.unlockPuzzle.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
 
     this.handleModalClose = this.handleModalClose.bind(this);
     this.handleModalShowCallback  = this.handleModalShowCallback.bind( this);
   }
 
   validatePassword(inputPuzzle, password){
-    return true;
+    return password.toLowerCase() === this.state.puzzles[inputPuzzle].password;
   }
 
   unlockPuzzle(inputPuzzle){
