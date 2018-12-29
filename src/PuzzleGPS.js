@@ -24,7 +24,7 @@ class PuzzleGPS extends React.Component {
     return (
       <div> 
         <div className="container">
-          <p> {'your location is '+this.state.latitude}</p>
+          <p> {'your location is '+this.state.latitude + ' and ' + this.state.longitude}</p>
         </div>
       </div>
     );
