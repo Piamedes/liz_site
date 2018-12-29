@@ -44,7 +44,7 @@ class PuzzleCastle extends React.Component {
       [ 0, 0, 1, 0, 0 ],//21
   	]; 
 
-    this.xfin = 2;
+    this.xfin = 21;
     this.yfin = 2;
 
     this.boardOverrides = [];

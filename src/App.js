@@ -96,7 +96,7 @@ class PasswordForm extends React.Component{
     if (!this.state.value.length)
       return
 
-    if( this.props.validatePassword(this.props.inputPuzzle, this.state.value)){
+    if( this.props.validatePassword(this.props.inputPuzzle, this.state.value, false)){
       this.props.unlockPuzzle(this.props.inputPuzzle,true);
     } else {
       this.setState({
