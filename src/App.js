@@ -27,11 +27,11 @@ class DropdownMenu extends React.Component {
     const activePuzzle = this.props.puzzles[ this.props.activePuzzle ];
 
     return( 
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{activePuzzle.display}<span class="caret"></span></a>
-        <ul class="dropdown-menu">
+      <li className="dropdown">
+        <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{activePuzzle.display}<span className="caret"></span></a>
+        <ul className="dropdown-menu">
           {this.props.puzzles.map((puzzle) => (
-            <li key={puzzle.id} class={activePuzzle.name === puzzle.name ? "active" : ''}><a href="#" onClick={this.props.makeActiveCallback(puzzle.id)}>{puzzle.display}</a></li>
+            <li key={puzzle.id} className={activePuzzle.name === puzzle.name ? "active" : ''}><a href="#" onClick={this.props.makeActiveCallback(puzzle.id)}>{puzzle.display}</a></li>
           ))}
         </ul>
       </li>
@@ -73,13 +73,13 @@ class App extends React.Component {
   render() {
     return( 
       <div>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="">The Trials:</a>
+        <nav className="navbar navbar-inverse navbar-fixed-top">
+          <div className="container">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="">The Trials:</a>
             </div>
-            <div id="navbar" class="collapse navbar-collapse">
-              <ul class="nav navbar-nav">
+            <div id="navbar" className="collapse navbar-collapse">
+              <ul className="nav navbar-nav">
                 <DropdownMenu activePuzzle={this.state.activePuzzle} makeActiveCallback={this.makeActiveCallback} puzzles={this.state.puzzles} />
               </ul>
             </div>

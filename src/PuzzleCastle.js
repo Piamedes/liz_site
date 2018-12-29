@@ -58,7 +58,7 @@ class PuzzleCastle extends React.Component {
   render() {
     return (
       <div> 
-        <div class="container">
+        <div className="container">
           <h3>spacing</h3>
           <p> You wake up in a dimly lit room, unsure of how you arrived.  An exit is to the north.</p>
           <ActionList actions={this.state.actions} />
