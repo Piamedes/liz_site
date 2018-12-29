@@ -1,7 +1,7 @@
 import React from 'react';
 import PuzzleCastle from './PuzzleCastle.js';
 import './App.css';
-import { Nav, NavItem, NavDropdown, Navbar, MenuItem } from 'react-bootstrap/dist/react-bootstrap.min.js';
+import { Button, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
 class Temp extends React.Component{
   render() {
@@ -48,7 +48,7 @@ class NavbarRenderer extends React.Component {
             </NavDropdown>
           </Nav>
           <Nav pullRight>
-            <NavItem eventKey={1} href="#">
+            <NavItem eventKey={1} onClick={this.props.handleModalShow('FAQ','FAQ')}>
               FAQ
             </NavItem>
             <NavItem eventKey={2} href="#">
@@ -61,11 +61,34 @@ class NavbarRenderer extends React.Component {
   }
 }
 
+class ModalManager extends React.Component {
+  render(){
+    return(
+      <div>
+        <Modal show={this.props.modalShow} onHide={this.props.handleModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{this.props.modalTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{this.props.modalBody}</Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleClose}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    );
+  }
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+
+      modalShow:  false,
+      modalTitle: '',
+      modalBody:  '',
+
       activePuzzle:    0,
       unlockedPuzzles: ['castle','temp'],
 
@@ -86,7 +109,28 @@ class App extends React.Component {
     }
 
     this.makeActiveCallback = this.makeActiveCallback.bind(this);
+
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalShow  = this.handleModalShow.bind( this);
   }
+
+  handleModalClose(){ 
+    this.setState({ 
+      modalShow:  false,
+      modalTitle: '',
+      modalBody:  '',
+    })
+  };
+
+  handleModalShow( title, body ){ 
+    return( ()=>{
+      this.setState({ 
+        modalShow: true,
+        modalTitle: title,
+        modalBody:  body,
+      })
+    });
+  };
 
   makeActiveCallback(inputPuzzle){
     return( ()=>{ this.setState( { activePuzzle: inputPuzzle} ) } );
@@ -95,8 +139,9 @@ class App extends React.Component {
   render() {
     return( 
       <div>
-        <NavbarRenderer activePuzzle={this.state.activePuzzle} makeActiveCallback={this.makeActiveCallback} puzzles={this.state.puzzles} />
+        <NavbarRenderer activePuzzle={this.state.activePuzzle} makeActiveCallback={this.makeActiveCallback} puzzles={this.state.puzzles} handleModalShow={this.handleModalShow} />
         <ContentRenderer activePuzzle={this.state.activePuzzle} puzzles={this.state.puzzles}/>
+        <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>
     );
   }
