@@ -1,7 +1,7 @@
 import React from 'react';
 import PuzzleCastle from './PuzzleCastle.js';
 import './App.css';
-import { Button, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
+import { Button, ControlLabel, FormControl, FormGroup, Image, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
 class Temp extends React.Component{
   render() {
@@ -27,6 +27,7 @@ class NavbarRenderer extends React.Component {
   render(){
 
     const activePuzzle = this.props.puzzles[ this.props.activePuzzle ];
+
     return( 
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
@@ -41,14 +42,14 @@ class NavbarRenderer extends React.Component {
               {this.props.puzzles.map((puzzle) => (
                 <MenuItem key={puzzle.id} 
                           className={activePuzzle.name === puzzle.name ? "active" : ''} 
-                          onClick={this.props.makeActiveCallback(puzzle.id)}>
-                          {puzzle.display}
+                          onClick={this.props.handleSwitchPuzzleCallback(puzzle.id)}>
+                          {puzzle.unlocked ? puzzle.display : 'XXXXX'}
                 </MenuItem>
               ))}
             </NavDropdown>
           </Nav>
           <Nav pullRight>
-            <NavItem eventKey={1} onClick={this.props.handleModalShow('FAQ','FAQ')}>
+            <NavItem eventKey={1} onClick={this.props.handleModalShowCallback('FAQ',<Image src={require('./castle.png')} responsive/>)}>
               FAQ
             </NavItem>
             <NavItem eventKey={2} href="#">
@@ -58,6 +59,56 @@ class NavbarRenderer extends React.Component {
         </Navbar.Collapse>
       </Navbar>
     )
+  }
+}
+
+class PasswordForm extends React.Component{
+  constructor(props) {
+    super(props);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      value:   '',
+      isValid: true,
+    };
+  }
+
+  handleChange(e) {
+    console.log(e.target.value);
+    this.setState({ value: e.target.value });
+  }
+
+  handleSubmit(e){
+    e.preventDefault();
+
+    if (!this.state.value.length)
+      return
+
+    if( this.props.validatePassword(this.props.inputPuzzle, this.state.value)){
+      this.props.unlockPuzzle(this.props.inputPuzzle);
+    } else {
+      this.setState({isValid: false});
+    }
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <FormGroup controlId="formBasicText" validationState={this.state.isValid}>
+          <ControlLabel>{'Please enter the password for puzzle ' + this.props.inputPuzzle}</ControlLabel>
+          <FormControl
+            type="text"
+            value={this.state.value}
+            placeholder="Enter password"
+            onChange={this.handleChange}
+
+          />
+          <FormControl.Feedback />
+        </FormGroup>
+      </form>
+    );
   }
 }
 
@@ -71,7 +122,7 @@ class ModalManager extends React.Component {
           </Modal.Header>
           <Modal.Body>{this.props.modalBody}</Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleClose}>Close</Button>
+            <Button onClick={this.props.handleModalClose}>Close</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -90,7 +141,6 @@ class App extends React.Component {
       modalBody:  '',
 
       activePuzzle:    0,
-      unlockedPuzzles: ['castle','temp'],
 
       puzzles: [
         {
@@ -98,49 +148,93 @@ class App extends React.Component {
           name:      'castle',
           display:   'The Castle',
           className: PuzzleCastle,
+          unlocked:  true,
         },
         {
           id:        1,
           name:      'temp',
           display:   'The Temp', 
           className: Temp,
+          unlocked:  true,
+        },
+        {
+          id:        2,
+          name:      'temp2',
+          display:   'The Temp2', 
+          className: Temp,
+          unlocked:  false,
         },
       ],
     }
 
-    this.makeActiveCallback = this.makeActiveCallback.bind(this);
+    this.handleSwitchPuzzleCallback = this.handleSwitchPuzzleCallback.bind(this);
+    this.unlockPuzzle = this.unlockPuzzle.bind(this);
 
     this.handleModalClose = this.handleModalClose.bind(this);
-    this.handleModalShow  = this.handleModalShow.bind( this);
+    this.handleModalShowCallback  = this.handleModalShowCallback.bind( this);
+  }
+
+  validatePassword(inputPuzzle, password){
+    return true;
+  }
+
+  unlockPuzzle(inputPuzzle){
+      var puzzles = this.state.puzzles;
+      puzzles[inputPuzzle].unlocked = true;
+
+      this.setState({ puzzles: puzzles });
+      this.handleModalClose();
+      this.setState( { activePuzzle: inputPuzzle} );
   }
 
   handleModalClose(){ 
-    this.setState({ 
-      modalShow:  false,
-      modalTitle: '',
-      modalBody:  '',
-    })
+      this.setState({ 
+        modalShow:  false,
+        modalTitle: '',
+        modalBody:  '',
+      })
   };
 
   handleModalShow( title, body ){ 
-    return( ()=>{
-      this.setState({ 
-        modalShow: true,
-        modalTitle: title,
-        modalBody:  body,
-      })
-    });
+    this.setState({ 
+      modalShow: true,
+      modalTitle: title,
+      modalBody:  body,
+    })
+  };  
+
+  handleModalShowCallback( title, body ){ 
+    return( ()=>{ this.handleModalShow(title, body) })
   };
 
-  makeActiveCallback(inputPuzzle){
-    return( ()=>{ this.setState( { activePuzzle: inputPuzzle} ) } );
+  handleSwitchPuzzle(inputPuzzle){
+    const puzzle = this.state.puzzles[inputPuzzle];
+
+    if(puzzle.unlocked){
+      this.setState( { activePuzzle: inputPuzzle} );
+    } else {
+      this.handleModalShow('Unlock Puzzle ' + inputPuzzle, <PasswordForm inputPuzzle={inputPuzzle} validatePassword={this.validatePassword} unlockPuzzle={this.unlockPuzzle} responsive/>);
+    }
+  }
+
+  handleSwitchPuzzleCallback(inputPuzzle){
+    return( ()=>{ this.handleSwitchPuzzle(inputPuzzle)});
   }
 
   render() {
     return( 
       <div>
-        <NavbarRenderer activePuzzle={this.state.activePuzzle} makeActiveCallback={this.makeActiveCallback} puzzles={this.state.puzzles} handleModalShow={this.handleModalShow} />
-        <ContentRenderer activePuzzle={this.state.activePuzzle} puzzles={this.state.puzzles}/>
+        <NavbarRenderer 
+          activePuzzle={this.state.activePuzzle} 
+          handleSwitchPuzzleCallback={this.handleSwitchPuzzleCallback} 
+          handleModalShowCallback={this.handleModalShowCallback} 
+          puzzles={this.state.puzzles} 
+        />
+        <ContentRenderer 
+          activePuzzle={this.state.activePuzzle} 
+          puzzles={this.state.puzzles}
+          handleModalShowCallback={this.handleModalShowCallback} 
+        />
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>
     );
