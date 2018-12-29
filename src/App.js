@@ -1,5 +1,6 @@
 import React from 'react';
 import PuzzleCastle from './PuzzleCastle.js';
+import PuzzleGPS from './PuzzleGPS.js';
 import './App.css';
 import { Button, ControlLabel, FormControl, FormGroup, Image, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
@@ -77,7 +78,6 @@ class PasswordForm extends React.Component{
   }
 
   handleChange(e) {
-    console.log(e.target.value);
     this.setState({ value: e.target.value });
   }
 
@@ -153,15 +153,15 @@ class App extends React.Component {
           display:   'The Castle',
           className: PuzzleCastle,
           unlocked:  true,
-          password:  '',
+          answer:    'peach',
         },
         {
           id:        1,
-          name:      'temp',
-          display:   'The Temp', 
-          className: Temp,
+          name:      'GPS',
+          display:   'The GPS', 
+          className: PuzzleGPS,
           unlocked:  false,
-          password:  'peach',
+          answer:    'temp',
         },
         {
           id:        2,
@@ -169,21 +169,21 @@ class App extends React.Component {
           display:   'The Temp2', 
           className: Temp,
           unlocked:  false,
-          password:  'temp',
+          answer:    '2',
         },
       ],
     }
 
     this.handleSwitchPuzzleCallback = this.handleSwitchPuzzleCallback.bind(this);
-    this.unlockPuzzle = this.unlockPuzzle.bind(this);
-    this.validatePassword = this.validatePassword.bind(this);
+    this.unlockPuzzle               = this.unlockPuzzle.bind(this);
+    this.validatePassword           = this.validatePassword.bind(this);
 
-    this.handleModalClose = this.handleModalClose.bind(this);
-    this.handleModalShowCallback  = this.handleModalShowCallback.bind( this);
+    this.handleModalClose           = this.handleModalClose.bind(this);
+    this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
   }
 
   validatePassword(inputPuzzle, password){
-    return password.toLowerCase() === this.state.puzzles[inputPuzzle].password;
+    return password.toLowerCase() === this.state.puzzles[inputPuzzle - 1].answer;
   }
 
   unlockPuzzle(inputPuzzle){
