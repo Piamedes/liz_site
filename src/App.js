@@ -27,6 +27,7 @@ class ContentRenderer extends React.Component {
         puzzle={puzzle} 
         unlockPuzzle={this.props.unlockPuzzle}
         validatePassword={this.props.validatePassword}
+        changeActivePuzzle={this.props.changeActivePuzzle}
       />
     );
   }  
@@ -148,6 +149,7 @@ class App extends React.Component {
 
     this.state = {
 
+      modalCloseCallback: null,
       modalShow:  false,
       modalTitle: '',
       modalBody:  '',
@@ -182,6 +184,7 @@ class App extends React.Component {
       ],
     }
 
+    this.changeActivePuzzle         = this.changeActivePuzzle.bind(this);
     this.handleSwitchPuzzleCallback = this.handleSwitchPuzzleCallback.bind(this);
     this.unlockPuzzle               = this.unlockPuzzle.bind(this);
     this.validatePassword           = this.validatePassword.bind(this);
@@ -195,42 +198,51 @@ class App extends React.Component {
     return passString.toLowerCase() === this.state.puzzles[inputPuzzle + fromPuzzle ? 0 : -1 ].answer;
   }
 
-  unlockPuzzle(inputPuzzle,changeActive){
+  changeActivePuzzle(inputPuzzle){
+    this.setState( { activePuzzle: inputPuzzle } );   
+  }
+
+  unlockPuzzle(inputPuzzle,changeActivePuzzle){
       var puzzles = this.state.puzzles;
       puzzles[inputPuzzle].unlocked = true;
 
       this.setState({ puzzles: puzzles });
       this.handleModalClose();
 
-      if(changeActive)
-        this.setState( { activePuzzle: inputPuzzle } );
+      if(changeActivePuzzle)
+        this.changeActivePuzzle(inputPuzzle)
   }
 
   handleModalClose(){ 
+      if(this.state.modalCloseCallback !== null)
+        this.state.modalCloseCallback();
+
       this.setState({ 
         modalShow:  false,
         modalTitle: '',
         modalBody:  '',
+        modalCloseCallback: null,
       })
   };
 
-  handleModalShow( title, body ){ 
+  handleModalShow( title, body, closeCallback = null ){ 
     this.setState({ 
       modalShow: true,
       modalTitle: title,
       modalBody:  body,
+      modalCloseCallback: closeCallback,
     })
   };  
 
-  handleModalShowCallback( title, body ){ 
-    return( ()=>{ this.handleModalShow(title, body) })
+  handleModalShowCallback( title, body, closeCallback = null){ 
+    return( ()=>{ this.handleModalShow(title, body, closeCallback ) })
   };
 
   handleSwitchPuzzle(inputPuzzle){
     const puzzle = this.state.puzzles[inputPuzzle];
 
     if(puzzle.unlocked){
-      this.setState( { activePuzzle: inputPuzzle} );
+      this.changeActivePuzzle(inputPuzzle)
     } else {
       this.handleModalShow('Unlock Puzzle ' + inputPuzzle, <PasswordForm inputPuzzle={inputPuzzle} validatePassword={this.validatePassword} unlockPuzzle={this.unlockPuzzle} responsive/>);
     }
@@ -255,6 +267,7 @@ class App extends React.Component {
           handleModalShowCallback={this.handleModalShowCallback} 
           unlockPuzzle={this.unlockPuzzle}
           validatePassword={this.validatePassword}
+          changeActivePuzzle={this.changeActivePuzzle}
         />
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>

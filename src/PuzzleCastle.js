@@ -44,7 +44,7 @@ class PuzzleCastle extends React.Component {
       [ 0, 0, 1, 0, 0 ],//21
   	]; 
 
-    this.xfin = 21;
+    this.xfin = 2;
     this.yfin = 2;
 
     this.boardOverrides = [];
@@ -54,7 +54,7 @@ class PuzzleCastle extends React.Component {
     }
 
     this.boardOverrides[ 0         ][ 2         ] = 'You walk into a brightly lit room with exits to the north, south, and east.  A sign hanging on the wall reads "The light will show you the answer".'
-    this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An older looking man wearing a large spotted hat looks at you strangely.  He asks you who you seek.'
+    this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An odd looking man wearing a large spotted hat looks at you strangely.  He asks you who you seek.'
     
     this.state = { 
       actions:   [], 
@@ -238,7 +238,7 @@ class PuzzleCastle extends React.Component {
 
     if(completeInfo.puzzleComplete){
       this.props.unlockPuzzle(this.props.puzzle.id + 1, false);
-      var callback = this.props.handleModalShowCallback('Puzzle Complete!',<Image src={require('./castle.png')} responsive/>);
+      var callback = this.props.handleModalShowCallback('Puzzle Complete!',<Image src={require('./castle.png')} responsive/>,()=>{this.props.changeActivePuzzle(this.props.puzzle.id+1)});
       callback();
     }else if(completeInfo.invalidAnswer){
       this.publishResult(completeInfo.message);
