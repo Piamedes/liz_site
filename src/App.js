@@ -1,14 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PuzzleCastle from './PuzzleCastle.js';
-import logo from './logo.svg';
 import './App.css';
 
 class Temp extends React.Component{
-   constructor(props) {
-    super(props);
-
-  }
-
   render() {
     return (
       <div> 
@@ -22,19 +16,27 @@ class Temp extends React.Component{
 }
 
 class ContentRenderer extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.puzzles = {
-        castle: PuzzleCastle,
-        temp:   Temp
-    }
-  }
-
   render() {
-    const TagName = this.puzzles[this.props.activePuzzle];
+    const TagName = this.props.puzzles[this.props.activePuzzle].className;
     return( <TagName />);
   }  
+}
+
+class DropdownMenu extends React.Component {
+  render() {
+    const activePuzzle = this.props.puzzles[ this.props.activePuzzle ];
+
+    return( 
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{activePuzzle.display}<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          {this.props.puzzles.map((puzzle) => (
+            <li key={puzzle.id} class={activePuzzle.name === puzzle.name ? "active" : ''}><a href="#" onClick={this.props.makeActiveCallback(puzzle.id)}>{puzzle.display}</a></li>
+          ))}
+        </ul>
+      </li>
+    )
+  }
 }
 
 class App extends React.Component {
@@ -42,7 +44,23 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      activePuzzle: 'temp',
+      activePuzzle:    0,
+      unlockedPuzzles: ['castle','temp'],
+
+      puzzles: [
+        {
+          id:        0,
+          name:      'castle',
+          display:   'The Castle',
+          className: PuzzleCastle,
+        },
+        {
+          id:        1,
+          name:      'temp',
+          display:   'The Temp', 
+          className: Temp,
+        },
+      ],
     }
 
     this.makeActiveCallback = this.makeActiveCallback.bind(this);
@@ -58,23 +76,16 @@ class App extends React.Component {
         <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#">The Trials:</a>
+              <a class="navbar-brand" href="">The Trials:</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
-                <li class={this.state.activePuzzle === 'castle' ? "active" : ''}><a href="#" onClick={this.makeActiveCallback('castle')}>The Castle</a></li>
-                <li class={this.state.activePuzzle === 'temp' ?   "active" : ''}><a href="#" onClick={this.makeActiveCallback('temp')}>Temp</a></li>
+                <DropdownMenu activePuzzle={this.state.activePuzzle} makeActiveCallback={this.makeActiveCallback} puzzles={this.state.puzzles} />
               </ul>
             </div>
           </div>
         </nav>
-        <ContentRenderer activePuzzle={this.state.activePuzzle}/>
+        <ContentRenderer activePuzzle={this.state.activePuzzle} puzzles={this.state.puzzles}/>
       </div>
     );
   }
