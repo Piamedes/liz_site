@@ -1,21 +1,9 @@
 import React from 'react';
 import PuzzleCastle from './PuzzleCastle.js';
 import PuzzleGPS from './PuzzleGPS.js';
+import PuzzleSimon from './PuzzleSimon.js';
 import './App.css';
 import { Button, ControlLabel, FormControl, FormGroup, Image, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
-
-class Temp extends React.Component{
-  render() {
-    return (
-      <div> 
-        <h3>test</h3>
-        <h3>test</h3>
-        <h3>test</h3>
-        <h3>test</h3>
-      </div>
-    );
-  } 
-}
 
 class ContentRenderer extends React.Component {
   render() {
@@ -176,9 +164,9 @@ class App extends React.Component {
         },
         {
           id:        2,
-          name:      'temp2',
-          display:   'The Temp2', 
-          className: Temp,
+          name:      'Simon',
+          display:   'Simon Says', 
+          className: PuzzleSimon,
           unlocked:  false,
           answer:    '2',
         },
@@ -195,8 +183,11 @@ class App extends React.Component {
   }
 
   validatePassword(inputPuzzle, password, fromPuzzle){
-    var passString = password + '';
-    return passString.toLowerCase() === this.state.puzzles[inputPuzzle + fromPuzzle ? 0 : -1 ].answer;
+    var passString  = password + '';
+    var puzzleIndex = inputPuzzle + ( fromPuzzle ? 0 : -1 );
+    var puzzleData  = this.state.puzzles[ puzzleIndex];
+
+    return passString.toLowerCase() === puzzleData.answer;
   }
 
   changeActivePuzzle(inputPuzzle){
