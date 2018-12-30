@@ -84,6 +84,7 @@ class PasswordForm extends React.Component{
       valid:   null,
       message: 'Please enter the password.'
     };
+
   }
 
   handleChange(e) {
