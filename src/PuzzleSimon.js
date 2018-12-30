@@ -22,7 +22,7 @@ class PuzzleSimon extends React.Component {
       directions:  '', 
       value:       '', 
       valid:       null, 
-      message:     this.simonPuzzles[0].message, 
+      message:     <div><p>To pass you must obey Simon's direction to the letter.</p>{this.simonPuzzles[0].message}</div>, 
       simonPuzzle: 0,
     };
 
@@ -79,7 +79,7 @@ class PuzzleSimon extends React.Component {
 
     if(directions.length === simonPuzzle.answer.length){
       if(directions === simonPuzzle.answer ){
-        message = this.simonPuzzles[ this.state.simonPuzzle + 1 ].message;
+        message = <div><p>Simon provides more directions.</p>{this.simonPuzzles[ this.state.simonPuzzle + 1 ].message}</div>;
         this.setState({simonPuzzle: this.state.simonPuzzle + 1});
       }
       else
@@ -88,7 +88,7 @@ class PuzzleSimon extends React.Component {
       directions = '';
     }
     else
-      message = simonPuzzle.message;
+      message = <div><br/>{simonPuzzle.message}</div>;
 
     this.setState({
         directions: directions,

@@ -2,6 +2,7 @@ import React from 'react';
 import PuzzleCastle from './PuzzleCastle.js';
 import PuzzleGPS from './PuzzleGPS.js';
 import PuzzleSimon from './PuzzleSimon.js';
+import PuzzleSpy from './PuzzleSpy.js';
 import './App.css';
 import { Button, ControlLabel, FormControl, FormGroup, Image, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
@@ -148,28 +149,37 @@ class App extends React.Component {
       puzzles: [
         {
           id:        0,
-          name:      'castle',
-          display:   'The Castle',
-          className: PuzzleCastle,
+          name:      'spy',
+          display:   'Spy', 
+          className: PuzzleSpy,
           unlocked:  true,
-          answer:    'peach',
+          answer:    '1234',
         },
         {
           id:        1,
+          name:      'Simon',
+          display:   'Simon Says', 
+          className: PuzzleSimon,
+          unlocked:  true,
+          answer:    '2',
+        },
+        {
+          id:        2,
+          name:      'castle',
+          display:   'The Castle',
+          className: PuzzleCastle,
+          unlocked:  false,
+          answer:    'peach',
+        },
+        {
+          id:        3,
           name:      'GPS',
           display:   'The GPS', 
           className: PuzzleGPS,
           unlocked:  false,
           answer:    'temp',
         },
-        {
-          id:        2,
-          name:      'Simon',
-          display:   'Simon Says', 
-          className: PuzzleSimon,
-          unlocked:  false,
-          answer:    '2',
-        },
+
       ],
     }
 
