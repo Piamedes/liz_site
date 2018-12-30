@@ -16,6 +16,8 @@ class PuzzleSimon extends React.Component {
       },
     ];
 
+    this.validInputs = ['n','s','e','w'];
+
     this.state = { 
       directions:  '', 
       value:       '', 
@@ -48,15 +50,27 @@ class PuzzleSimon extends React.Component {
     );
   }
 
+  isValidInput(input){
+    return this.validInputs.includes( input );
+  }
+
   handleChange(e) {
-    this.setState({ value: e.target.value });
+    this.setState({ 
+      value: e.target.value,
+      valid: this.isValidInput(e.target.value) ? null : 'error',
+    });
   }
 
   handleSubmit(e){
     e.preventDefault();
 
     if(!this.state.value.length)
-      return
+      return;
+
+    if(!this.isValidInput(this.state.value)){
+      this.setState({ value: ''});
+      return;
+    }
 
     var message     = '';
     var simonPuzzle = this.simonPuzzles[ this.state.simonPuzzle ];
