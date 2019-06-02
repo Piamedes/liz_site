@@ -67,7 +67,7 @@ class PuzzleCastle extends React.Component {
       this.boardOverrides.push( Array(this.board[ 0 ].length ).fill( null ) );
     }
 
-    this.boardOverrides[ 0         ][ 2         ] = 'You walk into a brightly lit room with exits to the north, south, and east.  A sign hanging on the wall reads "Explore carefulll, the light will show you the answer".'
+    this.boardOverrides[ 0         ][ 2         ] = 'You walk into a brightly lit room with exits to the north, south, and east.  A sign hanging on the wall reads "Explore carefully, the light will show you the answer".'
     this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An odd looking man wearing a large spotted hat looks at you strangely.  He asks you what you seek.'
     
     this.state = { 
