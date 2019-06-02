@@ -17,7 +17,7 @@ class PuzzleCastle extends React.Component {
   	  //One character + space P
   	  [ 3, 2, 4, 2, 3 ],
   	  [ 0, 0, 3, 0, 4 ],
-  	  [ 0, 4, 2, 3, 2 ],
+  	  [ 0, 1, 2, 3, 2 ],
   	  [ 0, 1, 0, 0, 1 ],
       //One character + space A
       [ 4, 2, 3, 2, 4 ],
