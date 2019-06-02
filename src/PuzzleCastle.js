@@ -252,7 +252,7 @@ class PuzzleCastle extends React.Component {
 
     if(completeInfo.puzzleComplete){
       //this.props.unlockPuzzle(this.props.puzzle.id + 1, false);
-      var callback = this.props.handleModalShowCallback('Puzzle Complete!',<Image src={require('./castle.png')} responsive/>,()=>{this.props.changeActivePuzzle(this.props.puzzle.id+1)});
+      var callback = this.props.handleModalShowCallback('Puzzle Complete! - PANERA',<Image src={require('./castle.png')} responsive/>,()=>{this.props.changeActivePuzzle(this.props.puzzle.id+1)});
       callback();
     }else if(completeInfo.invalidAnswer){
       this.publishResult(completeInfo.message);
