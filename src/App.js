@@ -35,6 +35,13 @@ class NavbarRenderer extends React.Component {
           </Navbar.Brand>
           <Navbar.Toggle/>
         </Navbar.Header>
+      </Navbar>
+    )
+  }
+}
+
+
+/*
         <Navbar.Collapse>
           <Nav>
             <NavDropdown eventKey={0} title="Puzzles" id="basic-nav-dropdown">
@@ -56,10 +63,7 @@ class NavbarRenderer extends React.Component {
             </NavItem>
           </Nav>
         </Navbar.Collapse>
-      </Navbar>
-    )
-  }
-}
+*/
 
 class PasswordForm extends React.Component{
   constructor(props) {
@@ -144,7 +148,7 @@ class App extends React.Component {
       modalTitle: '',
       modalBody:  '',
 
-      activePuzzle:    0,
+      activePuzzle:    2,
 
       puzzles: [
         {
@@ -169,7 +173,7 @@ class App extends React.Component {
           display:   'The Castle',
           className: PuzzleCastle,
           unlocked:  false,
-          answer:    'peach',
+          answer:    'panera',
         },
         {
           id:        3,
@@ -201,7 +205,7 @@ class App extends React.Component {
   }
 
   changeActivePuzzle(inputPuzzle){
-    this.setState( { activePuzzle: inputPuzzle } );   
+//    this.setState( { activePuzzle: inputPuzzle } );   
   }
 
   unlockPuzzle(inputPuzzle,changeActivePuzzle){

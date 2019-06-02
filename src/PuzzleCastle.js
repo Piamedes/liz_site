@@ -14,37 +14,51 @@ class PuzzleCastle extends React.Component {
   	];
 
   	this.board = [
-  	  //One character + space
+  	  //One character + space P
   	  [ 3, 2, 4, 2, 3 ],
   	  [ 0, 0, 3, 0, 4 ],
   	  [ 0, 4, 2, 3, 2 ],
   	  [ 0, 1, 0, 0, 1 ],
-  	  //One character + space
-  	  [ 2, 4, 3, 2, 4 ],
-  	  [ 4, 0, 2, 0, 2 ],
-  	  [ 3, 0, 2, 1, 2 ],
-  	  [ 1, 0, 0, 0, 0 ],
-  	  //One character + space
-  	  [ 4, 2, 3, 2, 4 ],
-  	  [ 1, 0, 2, 0, 2 ],
-  	  [ 4, 2, 3, 3, 4 ],
-  	  [ 1, 0, 0, 0, 0 ],
-  	  //One character + space
-  	  [ 4, 3, 2, 2, 2 ],
-  	  [ 3, 0, 0, 1, 3 ],
-  	  [ 4, 0, 1, 1, 4 ],
-  	  [ 0, 0, 0, 1, 0 ],
-  	  //One character + space
-  	  [ 2, 4, 3, 2, 4 ],
-  	  [ 0, 0, 2, 0, 1 ],
-  	  [ 4, 2, 3, 4, 2 ],
-      //One character + space
+      //One character + space A
+      [ 4, 2, 3, 2, 4 ],
+      [ 1, 0, 2, 0, 2 ],
+      [ 4, 2, 3, 3, 4 ],
+      [ 1, 0, 0, 0, 0 ],
+
+
+      //One character + space N
+      [ 4, 3, 2, 2, 2 ],
+      [ 1, 0, 0, 3, 1 ],
+      [ 1, 0, 2, 1, 0 ],
+      [ 1, 4, 0, 0, 1 ],
+      [ 3, 2, 4, 2, 3 ],   
+      [ 0, 0, 0, 1, 0 ],
+
+      //One character + space E
+      [ 2, 4, 3, 2, 4 ],
+      [ 4, 0, 2, 0, 2 ],
+      [ 3, 0, 2, 1, 2 ],
+      [ 1, 0, 0, 0, 0 ],
+
+      //One character + space R
+      [ 2, 4, 3, 2, 4 ],
+      [ 0, 2, 2, 0, 2 ],
+      [ 3, 0, 2, 4, 2 ],
+      [ 1, 0, 1, 0, 0 ],
+
+      //One character + space A
+      [ 4, 3, 2, 3, 4 ],
+      [ 0, 0, 2, 0, 4 ],
+      [ 4, 4, 3, 2, 2 ],
+      [ 1, 0, 1, 0, 0 ],
+
+      //One character + space end
       [ 0, 0, 1, 0, 0 ],
       [ 0, 0, 1, 0, 0 ],
-      [ 0, 0, 1, 0, 0 ],//21
+      [ 0, 0, 1, 0, 0 ],
   	]; 
 
-    this.xfin = 21;
+    this.xfin = this.board.length - 1;
     this.yfin = 2;
 
     this.boardOverrides = [];
@@ -54,7 +68,7 @@ class PuzzleCastle extends React.Component {
     }
 
     this.boardOverrides[ 0         ][ 2         ] = 'You walk into a brightly lit room with exits to the north, south, and east.  A sign hanging on the wall reads "The light will show you the answer".'
-    this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An odd looking man wearing a large spotted hat looks at you strangely.  He asks you who you seek.'
+    this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An odd looking man wearing a large spotted hat looks at you strangely.  He asks you what you seek.'
     
     this.state = { 
       actions:   [], 
@@ -237,7 +251,7 @@ class PuzzleCastle extends React.Component {
     var completeInfo = this.puzzleComplete();
 
     if(completeInfo.puzzleComplete){
-      this.props.unlockPuzzle(this.props.puzzle.id + 1, false);
+      //this.props.unlockPuzzle(this.props.puzzle.id + 1, false);
       var callback = this.props.handleModalShowCallback('Puzzle Complete!',<Image src={require('./castle.png')} responsive/>,()=>{this.props.changeActivePuzzle(this.props.puzzle.id+1)});
       callback();
     }else if(completeInfo.invalidAnswer){
