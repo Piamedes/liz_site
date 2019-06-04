@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-bootstrap/dist/react-bootstrap.min.js';
+import { Image, Button, Row, Col } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
 class PuzzleCastle extends React.Component {
   constructor(props) {
@@ -67,8 +67,8 @@ class PuzzleCastle extends React.Component {
       this.boardOverrides.push( Array(this.board[ 0 ].length ).fill( null ) );
     }
 
-    this.boardOverrides[ 0         ][ 2         ] = 'You walk into a brightly lit room with exits to the north, south, and east.  A sign hanging on the wall reads "Explore carefully, the light will show you the answer".'
-    this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An odd looking man wearing a large spotted hat looks at you strangely.  He asks you what you seek.'
+    this.boardOverrides[ 0         ][ 2         ] = 'You walk into a brightly lit room with exits to the north, south, and east.  A sign hanging on the wall reads "Explore carefully, the light will show you the path forward".'
+    this.boardOverrides[ this.xfin ][ this.yfin ] = 'You walk into a dark room.  An odd looking man wearing a large spotted hat looks at you strangely.  He asks you:'
     
     this.state = { 
       actions:   [], 
@@ -84,27 +84,63 @@ class PuzzleCastle extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);    
+    this.handleClickYes   = this.handleClickYes.bind(this); 
+    this.handleClickNo    = this.handleClickNo.bind(this);
+    this.handleClickMaybe = this.handleClickMaybe.bind(this);
   }
 
   render() {
+
+
+    if(this.state.xloc !== this.xfin || this.state.yloc !== this.yfin){
+        var form =           
+            <form onSubmit={this.handleSubmit}>
+                <label htmlFor="new-action">
+                  Where do you want to move (N/S/E/W)?
+                </label>
+                <input
+                  id="new-action"
+                  onChange={this.handleChange}
+                  value={this.state.inputText}
+                />
+          </form>
+    }else{
+        var form = 
+        <div>
+            <p>Can you beat Liz in Dr. Mario?</p>
+            <Button variant="success" onClick={this.handleClickYes}>Yes</Button>
+            <Button variant="danger" onClick={this.handleClickNo}>No</Button>
+            <Button variant="info" onClick={this.handleClickMaybe}>Maybe?</Button>
+        </div>
+    }
+
     return (
       <div> 
         <div className="container">
           <p> You wake up in a dimly lit room, unsure of how you arrived.  An exit is to the north.</p>
           <ActionList actions={this.state.actions} />
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="new-action">
-              Where do you want to move (N/S/E/W)?
-            </label>
-            <input
-              id="new-action"
-              onChange={this.handleChange}
-              value={this.state.inputText}
-            />
-          </form>
+          {form}
         </div>
       </div>
     );
+  }
+
+  handleClickYes(){
+    this.handleClickNotNo("Stop Lying!",<Image className="center-block" float="center" src={require('./liar.gif')} responsive/>);
+  }
+
+  handleClickNo(){
+    var callback = this.props.handleModalShowCallback('Good answer.  Now actually solve the puzzle you were given at the beginning.',<Image src={require('./castle.png')} responsive/>);
+    callback();    
+  }
+
+  handleClickMaybe(){
+   this.handleClickNotNo("So non-committal!",<Image className="center-block" float="center" src={require('./committ.gif')} responsive/>);
+  }
+
+  handleClickNotNo(title,body){
+    var callback = this.props.handleModalShowCallback(title,body);
+    callback();   
   }
 
   parseInput(inputRaw){
