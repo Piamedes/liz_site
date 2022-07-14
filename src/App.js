@@ -3,6 +3,7 @@ import PuzzleCastle from './PuzzleCastle.js';
 import PuzzleGPS from './PuzzleGPS.js';
 import PuzzleSimon from './PuzzleSimon.js';
 import PuzzleSpy from './PuzzleSpy.js';
+import PuzzleMaze from './PuzzleMaze.js';
 import './App.css';
 import { Button, ControlLabel, FormControl, FormGroup, Image, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
@@ -31,7 +32,7 @@ class NavbarRenderer extends React.Component {
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#brand">{'The Trials:  ' + activePuzzle.display}</a>
+            <a href="#brand">{''}</a>
           </Navbar.Brand>
           <Navbar.Toggle/>
         </Navbar.Header>
@@ -148,7 +149,7 @@ class App extends React.Component {
       modalTitle: '',
       modalBody:  '',
 
-      activePuzzle:    2,
+      activePuzzle:    4,
 
       puzzles: [
         {
@@ -183,6 +184,14 @@ class App extends React.Component {
           unlocked:  false,
           answer:    'temp',
         },
+         {
+          id:        4,
+          name:      'pop',
+          display:   'pop', 
+          className: PuzzleMaze,
+          unlocked:  true,
+          answer:    'temp',
+        },     
 
       ],
     }

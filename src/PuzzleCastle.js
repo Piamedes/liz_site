@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Button, Row, Col } from 'react-bootstrap/dist/react-bootstrap.min.js';
+import { Image, Button } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
 class PuzzleCastle extends React.Component {
   constructor(props) {
