@@ -104,8 +104,9 @@ class PuzzlePopups extends React.Component {
 
 		Puzzle answers can only be applied to the room they're in, so first check that, then 
 		*/
-		let text = this.state.inputText.toLowerCase();
-		let data = {}
+		let text       = this.state.inputText.toLowerCase();
+		let data       = {}
+		var defaultMsg = {text:"??? - Currently invalid input"}
 
 		if(text==="look"){
 			this.publishResult(this.state.board.roomDescriptionDetails(this.state.roomId));
@@ -113,9 +114,12 @@ class PuzzlePopups extends React.Component {
 			//Is this the answer to a puzzle?
 			data = this.checkAnswer(this.state.roomId,text);
 
-			this.applyCorrectAnswer(data.id);
-			this.publishResult({text:this.answerClearedMessage(data.id)})
-
+			if(!this.state.puzzles.puzzles[data.id].solved){
+				this.applyCorrectAnswer(data.id);
+				this.publishResult({text:this.answerClearedMessage(data.id)})
+			}else{
+				this.publishResult({text:"You've already solved that puzzle"});
+			}
 		}else if(text in this.validDirections){
 			if(this.canGo(this.state.roomId,this.validDirections[text]).canGo){
 				data = this.moveRooms(this.validDirections[text]);
@@ -126,10 +130,10 @@ class PuzzlePopups extends React.Component {
 				if(data.isLocked)
 					this.publishResult({text:'The door is locked'})
 				else
-					this.publishResult({text:'???'})
+					this.publishResult(defaultMsg)
 			}			
 		}else{
-			this.publishResult({text:'???'})
+			this.publishResult(defaultMsg)
 		}
 	}
 
@@ -139,7 +143,7 @@ class PuzzlePopups extends React.Component {
 		var result    = {match:false,id:''}
 
 		for( let id of puzzleIds){
-			if(this.state.puzzles.puzzles[id].answer === input){
+			if(this.state.puzzles.puzzles[id].answer === input.replace(/\s+/g,'')){
 				result = {match:true, id}
 				break;
 			}
@@ -230,7 +234,7 @@ class PuzzleButton extends React.Component{
 		var puzzle = this.props.puzzles[this.props.puzzleId];
 		var image  = puzzle.image;
 
-		var callback = this.props.handleModalShowCallback(puzzle.name,<Image className="center-block" float="center" src={image} responsive/>);
+		var callback = this.props.handleModalShowCallback("",<Image className="center-block" float="center" src={image} responsive/>);
 		callback();   
 	}
 

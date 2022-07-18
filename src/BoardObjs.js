@@ -86,7 +86,6 @@ class PuzzleSpot extends React.Component{
         super(props)
         this.id   = props.id;   
         this.description = props.description;
-        this.linkText = props.linkText;
         this.puzzleId = props.puzzleId;
     }
 }

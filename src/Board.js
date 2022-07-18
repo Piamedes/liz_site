@@ -67,8 +67,8 @@ class Board extends React.Component{
         return new Room({id, description, paths, puzzleSpots, descriptionFirst })
     }
 
-    makePSpotFromProps(id, description, linkText, puzzleId){
-        return new PuzzleSpot({id,description,linkText,puzzleId})
+    makePSpotFromProps(id, description, puzzleId){
+        return new PuzzleSpot({id,description,puzzleId})
     }
 
     //Manipulate the Board

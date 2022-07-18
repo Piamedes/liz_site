@@ -126,16 +126,16 @@ class PuzzleCastle extends React.Component {
   }
 
   handleClickYes(){
-    this.handleClickNotNo("Stop Lying!",<Image className="center-block" float="center" src={require('./liar.gif')} responsive/>);
+    this.handleClickNotNo("Stop Lying!",<Image className="center-block" float="center" src={require('./images/liar.gif')} responsive/>);
   }
 
   handleClickNo(){
-    var callback = this.props.handleModalShowCallback('Good answer.  Now actually solve the puzzle you were given at the beginning.',<Image src={require('./castle.png')} responsive/>);
+    var callback = this.props.handleModalShowCallback('Good answer.  Now actually solve the puzzle you were given at the beginning.',<Image src={require('./images/castle.png')} responsive/>);
     callback();    
   }
 
   handleClickMaybe(){
-   this.handleClickNotNo("So non-committal!",<Image className="center-block" float="center" src={require('./committ.gif')} responsive/>);
+   this.handleClickNotNo("So non-committal!",<Image className="center-block" float="center" src={require('./images/committ.gif')} responsive/>);
   }
 
   handleClickNotNo(title,body){
@@ -288,7 +288,7 @@ class PuzzleCastle extends React.Component {
 
     if(completeInfo.puzzleComplete){
       //this.props.unlockPuzzle(this.props.puzzle.id + 1, false);
-      var callback = this.props.handleModalShowCallback('Puzzle Complete! - PANERA',<Image src={require('./castle.png')} responsive/>,()=>{this.props.changeActivePuzzle(this.props.puzzle.id+1)});
+      var callback = this.props.handleModalShowCallback('Puzzle Complete! - PANERA',<Image src={require('./images/castle.png')} responsive/>,()=>{this.props.changeActivePuzzle(this.props.puzzle.id+1)});
       callback();
     }else if(completeInfo.invalidAnswer){
       this.publishResult(completeInfo.message);
