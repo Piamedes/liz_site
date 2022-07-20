@@ -1,3 +1,5 @@
+import React from 'react';
+
 class Puzzle{
     constructor(id, name, image, answer ){
         this.id   = id;   
@@ -8,7 +10,8 @@ class Puzzle{
     }
 
     onSolvedMessage(){
-    	return '"' + this.answer + '" is the correct answer!!<br>';
+    	let string = " is the correct answer!!";
+    	return <p>{this.answer}{string}></p>;
     }
 }
 

@@ -3,7 +3,6 @@ import { Image, Button } from 'react-bootstrap/dist/react-bootstrap.min.js';
 import InitBoard from "./InitBoard.js";
 import {DIRS} from "./Constants.js";
 
-
 class ActionList extends React.Component {
 
 	render(){
@@ -11,7 +10,7 @@ class ActionList extends React.Component {
 			<ul>
 			{this.props.actions.map((action) => (
 				<li key={action.id}>
-					<div className="content" dangerouslySetInnerHTML={{__html: action.message}}></div>
+					<div className="content">{action.message}</div>
 					<PuzzleButton handleModalShowCallback={this.props.handleModalShowCallback} puzzleId={action.puzzleId} puzzles={this.props.puzzles}/>
 				</li>
 			))}
@@ -190,15 +189,15 @@ class PuzzlePopups extends React.Component {
 		this.setState( newState )
 
 		var result = this.state.board.roomDescriptionDetails(roomIdNew);
-
 		var text = 'You ';
 
 		if(this.dirList.includes(direction))
 			text += 'go ' + direction + ' into ';
 		else
-			text += direction + "<br>";
+			text += direction;
 
-		result.text = text + result.text;
+		result.text = <div>{text}{result.text}</div>;
+
 		return result;
 	}
 

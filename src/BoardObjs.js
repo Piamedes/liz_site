@@ -20,23 +20,32 @@ class Room extends React.Component{
         }
     }
 
-    describe(firstEncounter = false){
-        let msg = (firstEncounter ? this.descriptionfirst : this.description) + "<br>";
-        let path;
+    describePaths(){
+    	var msg = [];
+    	let pathdesc = "";
 
-        for( const pathDir in this.paths){
-            path = this.paths[ pathDir ];
+    	for( let key in this.paths){
+    		if(this.paths[key].isVisible)
+    			msg.push( <li><b>{key}:</b>{this.paths[key].describe()} </li> )
+    	}
 
-            if( path.isVisible )
-                msg += "<br><b>" + pathDir.toUpperCase() + ":</b> " + path.describe(); //fix this later!!!       
-        }
-
-        for( const puzzleSpot of this.puzzleSpots){
-        	msg += "<br><br>" + puzzleSpot.description 
-        }
-
-        return( msg ); 
+    	return msg;
     }
+
+
+    describe(firstEncounter = false){
+    	let paths = this.describePaths();
+
+    	let msg = <div> 
+    				<p>{this.description}</p><br/>
+    				<ul>
+    					{paths}
+    				</ul>
+    				<p>{this.puzzleSpot}</p>
+    			</div>;
+
+    	return msg
+    };
 }
 
 class Path extends React.Component{
