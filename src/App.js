@@ -1,10 +1,6 @@
 import React from 'react';
-import PuzzleCastle from './PuzzleCastle.js';
-import PuzzleGPS from './PuzzleGPS.js';
-import PuzzleSimon from './PuzzleSimon.js';
-import PuzzleSpy from './PuzzleSpy.js';
-import PuzzleMaze from './PuzzleMaze.js';
-import './App.css';
+import Game from './game/Game.js';
+import './resources/App.css';
 import { Button, ControlLabel, FormControl, FormGroup, Image, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
 
 class ContentRenderer extends React.Component {
@@ -149,50 +145,17 @@ class App extends React.Component {
       modalTitle: '',
       modalBody:  '',
 
-      activePuzzle:    4,
+      activePuzzle:    0,
 
       puzzles: [
         {
           id:        0,
-          name:      'spy',
-          display:   'Spy', 
-          className: PuzzleSpy,
+          name:      'game',
+          display:   'Game', 
+          className: Game,
           unlocked:  true,
-          answer:    '1234',
-        },
-        {
-          id:        1,
-          name:      'Simon',
-          display:   'Simon Says', 
-          className: PuzzleSimon,
-          unlocked:  true,
-          answer:    '2',
-        },
-        {
-          id:        2,
-          name:      'castle',
-          display:   'The Castle',
-          className: PuzzleCastle,
-          unlocked:  false,
-          answer:    'panera',
-        },
-        {
-          id:        3,
-          name:      'GPS',
-          display:   'The GPS', 
-          className: PuzzleGPS,
-          unlocked:  false,
-          answer:    'temp',
-        },
-         {
-          id:        4,
-          name:      'pop',
-          display:   'pop', 
-          className: PuzzleMaze,
-          unlocked:  true,
-          answer:    'temp',
-        },     
-
+          answer:    'game',
+        }
       ],
     }
 

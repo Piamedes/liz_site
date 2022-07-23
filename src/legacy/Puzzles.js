@@ -1,18 +1,24 @@
 import React from 'react';
 
 class Puzzle{
-    constructor(id, name, image, answer ){
+    constructor(id, name, image, answer, description = "" ){
         this.id   = id;   
         this.name  = name;
         this.image = image;
         this.answer = answer;
         this.solved = false;
+        this.description =  description;
     }
 
     onSolvedMessage(){
     	let string = " is the correct answer!!";
-    	return <p>{this.answer}{string}></p>;
+    	return <p>{this.answer}{string}</p>;
     }
+
+    isCorrect(input){
+    	return this.answer === input.replace(/\s+/g,'')
+    }
+
 }
 
 class Puzzles{
