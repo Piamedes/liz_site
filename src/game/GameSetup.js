@@ -4,7 +4,7 @@ import {clone, componentExists} from "../lib/Utils.js";
 import {DIRS,DIR_OPPOSITES} from "../lib/Constants.js";
 import Room from "./Room.js";
 import Path from "./Path.js";
-import Puzzle from "./Puzzle.js";
+//import Puzzle from "./Puzzle.js";
 import Player from "./Player.js";
 
 class GameSetup extends React.Component{
@@ -63,6 +63,11 @@ class GameSetup extends React.Component{
 			descriptions: ["green NE"],
 		});
 
+		this.makeDoor(G0SW, G0NW, [],[DIRS.N]);
+		this.makeDoor(G0SE, G0NE, [],[DIRS.N]);
+		this.makeDoor(G0SW, G0SE, [],[DIRS.E]);
+		this.makeDoor(G0NW, G0NE, [],[DIRS.E]);
+
 		//first floor
 		let G1 = this.createRoom({
 			id: "G1",
@@ -90,6 +95,15 @@ class GameSetup extends React.Component{
 			id: "G2Venice",
 			descriptions: ["green second floor venice"],
 		})
+
+		this.makeDoor(G2Landing, G2Venice, [],[DIRS.SW]);
+		this.makeDoor(G2Venice, G2Nano, [],[DIRS.N]);
+		this.makeDoor(G2Landing, G2Insects, [],[DIRS.N]);
+		this.makeDoor(G2Landing,G2Nano,[],[DIRS.W]);
+
+		//connect the floors!
+		this.makeDoor(G0SW, G1,       [],[DIRS.U],[DIRS.D],'staircase');
+		this.makeDoor(G1, G2Landing,  [],[DIRS.U],[DIRS.D],'staircase');
 
 		return {G2Landing,G1,G0SE}
 	}

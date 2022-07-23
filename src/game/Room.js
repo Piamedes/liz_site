@@ -1,5 +1,4 @@
 import React from 'react';
-import {DIRS} from "../lib/Constants.js";
 import {componentExtract} from "../lib/Utils.js";
 
 class Room extends React.Component{

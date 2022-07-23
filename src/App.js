@@ -1,7 +1,17 @@
 import React from 'react';
 import Game from './game/Game.js';
 import './resources/App.css';
-import { Button, ControlLabel, FormControl, FormGroup, Image, Nav, NavItem, NavDropdown, Navbar, MenuItem, Modal } from 'react-bootstrap/dist/react-bootstrap.min.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+//import { Button, ControlLabel, FormControl, FormGroup, Navbar, Modal } from 'react-bootstrap/';
+
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
+//import ControlLabel from 'react-bootstrap/ControlLabel';
+import Form from 'react-bootstrap/Form';
+import FormGroup from 'react-bootstrap/FormGroup';
+import Modal from 'react-bootstrap/Modal';
+
 
 class ContentRenderer extends React.Component {
   render() {
@@ -22,16 +32,14 @@ class ContentRenderer extends React.Component {
 class NavbarRenderer extends React.Component {
   render(){
 
-    const activePuzzle = this.props.puzzles[ this.props.activePuzzle ];
-
     return( 
-      <Navbar inverse collapseOnSelect>
-        <Navbar.Header>
+      <Navbar bg="dark" variant="dark" expand="lg">
+
+
+
           <Navbar.Brand>
             <a href="#brand">{''}</a>
           </Navbar.Brand>
-          <Navbar.Toggle/>
-        </Navbar.Header>
       </Navbar>
     )
   }
@@ -100,18 +108,17 @@ class PasswordForm extends React.Component{
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <FormGroup controlId="formBasicText" validationState={this.state.valid}>
-          <ControlLabel>{this.state.message}</ControlLabel>
-          <FormControl
+          <Form.Label>{this.state.message}</Form.Label>
+          <Form.Control
             type="text"
             value={this.state.value}
             placeholder="Enter password"
             onChange={this.handleChange}
           />
-          <FormControl.Feedback />
         </FormGroup>
-      </form>
+      </Form>
     );
   }
 }

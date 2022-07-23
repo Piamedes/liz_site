@@ -16,19 +16,19 @@ var componentExists = function componentExists(object,key){
 function clone(obj) {
   let result = obj;
   var type = {}.toString.call(obj).slice(8, -1);
-  if (type == 'Set') {
+  if (type === 'Set') {
     return new Set([...obj].map(value => clone(value)));
   }
-  if (type == 'Map') {
+  if (type === 'Map') {
     return new Map([...obj].map(kv => [clone(kv[0]), clone(kv[1])]));
   }
-  if (type == 'Date') {
+  if (type === 'Date') {
     return new Date(obj.getTime());
   }
-  if (type == 'RegExp') {
+  if (type === 'RegExp') {
     return RegExp(obj.source, getRegExpFlags(obj));
   }
-  if (type == 'Array' || type == 'Object') {
+  if (type === 'Array' || type === 'Object') {
     result = Array.isArray(obj) ? [] : {};
     for (var key in obj) {
       // include prototype properties

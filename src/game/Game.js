@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image, Button } from 'react-bootstrap/dist/react-bootstrap.min.js';
 import GameSetup from "./GameSetup.js";
 import {DIRS,DIR_LIST} from "../lib/Constants.js";
 import {camelCase} from "../lib/Utils.js";
@@ -30,8 +29,6 @@ class Game extends React.Component {
 			render: initialSetup.roomMap[initialSetup.player.currentRoomId()].render(),
 			id:     Date.now(),
 		};
-
-		console.log(message.render);
 
 		//top level game state, let's say used for messages & layout for now
 		this.state = {
@@ -174,7 +171,7 @@ class Game extends React.Component {
 
     	for( let key in room.paths){
     		if(this.pathMap[room.paths[key]].isVisible())
-    			msg.push( <li><b>{camelCase(key)}:</b>{this.pathMap[room.paths[key]].render()} </li> )
+    			msg.push( <li key={key}><b>{camelCase(key)}:</b>{this.pathMap[room.paths[key]].render()} </li> )
     	}
 
     	return msg;

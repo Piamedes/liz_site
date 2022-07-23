@@ -1,5 +1,4 @@
 import React from 'react';
-import {DIRS, camelCase} from "../lib/Constants.js";
 
 class Path extends React.Component{
     constructor(props){ 
