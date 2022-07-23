@@ -1,201 +1,26 @@
-import React from 'react';
-import Game from './game/Game.js';
+import React 		  from 'react';
+import Game 		  from './game/Game.js';
+import NavbarRenderer from './components/NavbarRenderer';
+import EntryUI 		  from './components/EntryUI.js';
+import ModalManager   from './components/ModalManager.js';
 import './resources/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-//import { Button, ControlLabel, FormControl, FormGroup, Navbar, Modal } from 'react-bootstrap/';
-
-import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
-//import ControlLabel from 'react-bootstrap/ControlLabel';
-import Form from 'react-bootstrap/Form';
-import FormGroup from 'react-bootstrap/FormGroup';
-import Modal from 'react-bootstrap/Modal';
-
-
-class ContentRenderer extends React.Component {
-  render() {
-    const puzzle  = this.props.puzzles[this.props.activePuzzle];
-    const TagName = puzzle.className;
-    return( 
-      <TagName 
-        handleModalShowCallback={this.props.handleModalShowCallback} 
-        puzzle={puzzle} 
-        unlockPuzzle={this.props.unlockPuzzle}
-        validatePassword={this.props.validatePassword}
-        changeActivePuzzle={this.props.changeActivePuzzle}
-      />
-    );
-  }  
-}
-
-class NavbarRenderer extends React.Component {
-  render(){
-
-    return( 
-      <Navbar bg="dark" variant="dark" expand="lg">
-
-
-
-          <Navbar.Brand>
-            <a href="#brand">{''}</a>
-          </Navbar.Brand>
-      </Navbar>
-    )
-  }
-}
-
-
-/*
-        <Navbar.Collapse>
-          <Nav>
-            <NavDropdown eventKey={0} title="Puzzles" id="basic-nav-dropdown">
-              {this.props.puzzles.map((puzzle) => (
-                <MenuItem key={puzzle.id} 
-                          className={activePuzzle.name === puzzle.name ? "active" : ''} 
-                          onClick={this.props.handleSwitchPuzzleCallback(puzzle.id)}>
-                          {puzzle.unlocked ? puzzle.display : 'XXXXX'}
-                </MenuItem>
-              ))}
-            </NavDropdown>
-          </Nav>
-          <Nav pullRight>
-            <NavItem eventKey={1} onClick={this.props.handleModalShowCallback('FAQ',<Image src={require('./castle.png')} responsive/>)}>
-              FAQ
-            </NavItem>
-            <NavItem eventKey={2} href="#">
-              Help
-            </NavItem>
-          </Nav>
-        </Navbar.Collapse>
-*/
-
-class PasswordForm extends React.Component{
-  constructor(props) {
-    super(props);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
-    this.state = {
-      value:   '',
-      valid:   null,
-      message: 'Please enter the password.'
-    };
-
-  }
-
-  handleChange(e) {
-    this.setState({ value: e.target.value });
-  }
-
-  handleSubmit(e){
-    e.preventDefault();
-
-    if (!this.state.value.length)
-      return
-
-    if( this.props.validatePassword(this.props.inputPuzzle, this.state.value, false)){
-      this.props.unlockPuzzle(this.props.inputPuzzle,true);
-    } else {
-      this.setState({
-          value:   '', 
-          valid:   'error',
-          message: 'Invalid password.  Please try again.'
-        });
-    }
-  }
-
-  render() {
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormGroup controlId="formBasicText" validationState={this.state.valid}>
-          <Form.Label>{this.state.message}</Form.Label>
-          <Form.Control
-            type="text"
-            value={this.state.value}
-            placeholder="Enter password"
-            onChange={this.handleChange}
-          />
-        </FormGroup>
-      </Form>
-    );
-  }
-}
-
-class ModalManager extends React.Component {
-  render(){
-    return(
-      <div>
-        <Modal show={this.props.modalShow} onHide={this.props.handleModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>{this.props.modalTitle}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{this.props.modalBody}</Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.props.handleModalClose}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-    );
-  }
-}
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.Game = new Game();
 
+    this.state = {
       modalCloseCallback: null,
       modalShow:  false,
       modalTitle: '',
       modalBody:  '',
-
-      activePuzzle:    0,
-
-      puzzles: [
-        {
-          id:        0,
-          name:      'game',
-          display:   'Game', 
-          className: Game,
-          unlocked:  true,
-          answer:    'game',
-        }
-      ],
     }
-
-    this.changeActivePuzzle         = this.changeActivePuzzle.bind(this);
-    this.handleSwitchPuzzleCallback = this.handleSwitchPuzzleCallback.bind(this);
-    this.unlockPuzzle               = this.unlockPuzzle.bind(this);
-    this.validatePassword           = this.validatePassword.bind(this);
 
     this.handleModalClose           = this.handleModalClose.bind(this);
     this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
-  }
-
-  validatePassword(inputPuzzle, password, fromPuzzle){
-    var passString  = password + '';
-    var puzzleIndex = inputPuzzle + ( fromPuzzle ? 0 : -1 );
-    var puzzleData  = this.state.puzzles[ puzzleIndex];
-
-    return passString.toLowerCase() === puzzleData.answer;
-  }
-
-  changeActivePuzzle(inputPuzzle){
-//    this.setState( { activePuzzle: inputPuzzle } );   
-  }
-
-  unlockPuzzle(inputPuzzle,changeActivePuzzle){
-      var puzzles = this.state.puzzles;
-      puzzles[inputPuzzle].unlocked = true;
-
-      this.setState({ puzzles: puzzles });
-      this.handleModalClose();
-
-      if(changeActivePuzzle)
-        this.changeActivePuzzle(inputPuzzle)
   }
 
   handleModalClose(){ 
@@ -223,37 +48,11 @@ class App extends React.Component {
     return( ()=>{ this.handleModalShow(title, body, closeCallback ) })
   };
 
-  handleSwitchPuzzle(inputPuzzle){
-    const puzzle = this.state.puzzles[inputPuzzle];
-
-    if(puzzle.unlocked){
-      this.changeActivePuzzle(inputPuzzle)
-    } else {
-      this.handleModalShow('Unlock Puzzle ' + inputPuzzle, <PasswordForm inputPuzzle={inputPuzzle} validatePassword={this.validatePassword} unlockPuzzle={this.unlockPuzzle} responsive/>);
-    }
-  }
-
-  handleSwitchPuzzleCallback(inputPuzzle){
-    return( ()=>{ this.handleSwitchPuzzle(inputPuzzle)});
-  }
-
   render() {
     return( 
       <div>
-        <NavbarRenderer 
-          activePuzzle={this.state.activePuzzle} 
-          handleSwitchPuzzleCallback={this.handleSwitchPuzzleCallback} 
-          handleModalShowCallback={this.handleModalShowCallback} 
-          puzzles={this.state.puzzles} 
-        />
-        <ContentRenderer 
-          activePuzzle={this.state.activePuzzle} 
-          puzzles={this.state.puzzles}
-          handleModalShowCallback={this.handleModalShowCallback} 
-          unlockPuzzle={this.unlockPuzzle}
-          validatePassword={this.validatePassword}
-          changeActivePuzzle={this.changeActivePuzzle}
-        />
+        <NavbarRenderer handleModalShowCallback={this.handleModalShowCallback}/>
+        <EntryUI processInput={this.Game.processInput}/>
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>
     );
