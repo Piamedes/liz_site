@@ -7,7 +7,7 @@ class MessageList extends React.Component {
 			<ul>
 			{this.props.messages.map((message) => (
 				<li key={message.id}>
-					<div className="content">{message.message}</div>
+					<div className="content">{message.message}</div><br/>
 				</li>
 			))}
 			</ul>

@@ -38,12 +38,11 @@ class Path extends React.Component{
 
     renderDoor(){
     	let locked = (this.state.isLocked ? 'locked ' : '');
-    	return <div>{locked}{this.doorDescription}</div>
+    	return <span>{locked}{this.doorDescription}</span>
     }
 
 	render(){
-		let msgSelf = <p>{this.descriptions[this.state.descriptionIndex]}</p>;
-		return <div>{msgSelf}</div>
+		return <span>{this.descriptions[this.state.descriptionIndex]}</span>
 	}
 
     updateDescriptionState(){

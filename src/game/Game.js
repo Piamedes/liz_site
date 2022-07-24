@@ -1,5 +1,5 @@
 import React from 'react';
-import GameSetup from "./GameSetup.js";
+import GameSetupMain from "./gameSetups/GameSetupMain.js";
 import {DIRS,DIR_LIST} from "../lib/Constants.js";
 import {camelCase} from "../lib/Utils.js";
 
@@ -7,7 +7,7 @@ class Game extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let initialSetup = new GameSetup();
+		let initialSetup = new GameSetupMain();
 		initialSetup.init()
 
 		//OBJECTS IMPACTING STATE
@@ -15,13 +15,13 @@ class Game extends React.Component {
 		this.player = initialSetup.player;
 		//console.log(this.player.currentRoomId());
 		//Room ID to room object (each with own state) - objects may be removed from state updates and pushed onto the message queue for rendering with that locked state
-		this.roomMap = initialSetup.roomMap;
+		this.roomMap = initialSetup.GB.roomMap;
 
 		//Path ID to path object (each with own state) - objects may be removed from state updates and pushed onto the message queue for rendering with that locked state
-		this.pathMap = initialSetup.pathMap;
+		this.pathMap = initialSetup.GB.pathMap;
 
 		//Puzzle ID to puzzle object (each with own state) - objects may be removed from state updates and pushed onto the message queue for rendering with that locked state
-		this.puzzleMap = initialSetup.puzzleMap;
+		this.puzzleMap = initialSetup.GB.puzzleMap;
 
 		//REFERENCE INFO - this stuff doesn't change over time
 		this.validDirections = this.getValidMovementDirections();
@@ -127,10 +127,21 @@ class Game extends React.Component {
 
     	for( let key in room.paths){
     		if(this.pathMap[room.paths[key]].isVisible())
-    			msg.push( <li key={key}><b>{camelCase(key)}:</b>{this.pathMap[room.paths[key]].render()} </li> )
+    			msg.push( <span><br/><b>{camelCase(key)}:  </b>{this.pathMap[room.paths[key]].render()}</span>)
     	}
 
     	return msg;
+	}
+
+	renderMessage(direction,roomIdNew){
+		let text = 'You ';
+
+		if(this.dirList.includes(direction))
+			text += 'go ' + direction + ' into ';
+		else
+			text += direction + ' ';
+
+		return <span>{text}{this.roomMap[roomIdNew].render()}{this.renderPuzzles(roomIdNew)}{this.renderPaths(roomIdNew)}</span>		
 	}
 
 	moveRooms(direction){
@@ -138,14 +149,7 @@ class Game extends React.Component {
 	
 		this.player.moveRooms(roomIdNew);
 
-		let text = 'You ';
-
-		if(this.dirList.includes(direction))
-			text += 'go ' + direction + ' into ';
-		else
-			text += direction;
-
-		return <div>{text}{this.roomMap[roomIdNew].render()}{this.renderPuzzles(roomIdNew)}{this.renderPaths(roomIdNew)}</div>
+		return this.renderMessage(direction,roomIdNew)
 	}
 
 	canMove(roomId, direction, lockMatters=true ){ 

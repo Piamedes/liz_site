@@ -26,7 +26,7 @@ class Room extends React.Component{
     //The Room class is used in two places:  storing state within the main application state, and rendering the UI
     //In the rendering case, the state is disconnected from live main application state
 	render(){
-		return <p>{this.descriptions[this.state.descriptionIndex]}</p>;
+		return <span>{this.descriptions[this.state.descriptionIndex]}:</span>
 	}
 
     componentDidMount(){
@@ -37,17 +37,9 @@ class Room extends React.Component{
 		return this.render()
 	}
 
-	renderPaths(){
-
-	}
-
 	//just in case we need to potentially filter out hidden puzzles?
 	puzzleIds(){
 		return this._puzzleIds;
-	}
-
-	renderPuzzles(){
-
 	}
 
     getPuzzleId(){
