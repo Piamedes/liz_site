@@ -49,17 +49,22 @@ class EntryUI extends React.Component {
 	}
 
 	publishMessage(message){
-		const newMessage = {
-			message: message.message,
-			puzzleId: ( "puzzleId" in message ) ? message.puzzleId : '',
-			id: Date.now()
-		};
+		if(message.message !== null){
+			const newMessage = {
+				message: message.message,
+				puzzleId: ( "puzzleId" in message ) ? message.puzzleId : '',
+				id: Date.now()
+			};
 
-		this.setState(state => ({
-			messages: state.messages.concat(newMessage),
-			inputText: '',
-			currentPuzzle: message.puzzleId,
-		}));
+			this.setState(state => ({
+				messages: state.messages.concat(newMessage),
+				inputText: '',
+			}));
+		}else{
+			this.setState(state => ({
+				inputText: '',
+			}));
+		}
 	}
 
 	componentDidMount(){

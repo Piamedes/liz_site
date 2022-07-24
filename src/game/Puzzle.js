@@ -5,21 +5,20 @@ class Puzzle extends React.Component{
     	super(props);
         this.id   = props.id;   
         this.name  = props.name;
-        this.image = props.mage;
+        this.image = props.image;
         this.answer = props.answer;
+        this.verbose = props.verbose;
         this.solved = false;
         this.description =  props.description;
-
-        this.state = {
-        	solved: false,
-        }
     }
 
     solve(){
-    	this.setState({solved:true});
+    	this.solved = true;
     }
 
     onSolvedMessage(){
+    	if( !this.verbose ) return null
+
     	let string = " is the correct answer!!";
     	return <p>{this.answer}{string}</p>;
     }

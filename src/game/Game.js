@@ -72,13 +72,21 @@ class Game extends React.Component {
 
 		Puzzle answers can only be applied to the room they're in, so first check that, then 
 		*/
-		let words = rawText.toLowerCase().split(" ");
-		let text  = "";
+		let text  = rawText.toLowerCase();
+		let words = text.split(" ");
 		let data  = {}
 		var msg   = {message:<p>??? - Currently invalid input</p>}
 
-		if(words.length===1){
-			text = words[0];
+		if(words[0]==='debug'){
+
+
+		}else{
+
+			if(this.isValidPuzzleSolutionInRoom(text)){
+				msg = this.applyPuzzleSolutionInRoom(text);
+				if(msg.message !== null)
+					return msg;
+			};
 
 			if(text==="look"){
 				msg = {message:this.roomMap[this.player.currentRoomId()].render()}
@@ -93,28 +101,39 @@ class Game extends React.Component {
 					msg = {message:moveDetails.message}
 				}		
 			}		
-		}else if(words[0]==='solve'){
-			text = words.slice(2).join(" ");
-
-			if(this.isValidPuzzleName(words[1])){
-				let puzzleId = this.puzzleNameMap[text];
-
-				if(this.puzzleMap[puzzleId].isCorrect(text)){
-					if(!this.puzzleMap[puzzleId].solved()){
-						this.applyCorrectAnswer(puzzleId);
-						msg = {message:this.answerClearedMessage(puzzleId)};
-					}else{
-						msg = {message:<p>You've already solved that puzzle</p>};
-					}
-				}else{
-					msg = {message:<p>{'Wrong answer "' + text + '" for ' + words[1]}</p>};
-				}								
-			}else{
-				msg = {message:<p>{words[1]+' is an invalid puzzle name'}</p>}
-			}
 		}
 
 		return msg
+	}
+
+	isValidPuzzleSolutionInRoom(text){
+		for(const puzzleId of this.roomMap[this.player.currentRoomId()].puzzleIds()){
+			if(this.puzzleMap[puzzleId].isCorrect(text)){
+				return true
+			}
+		}
+	}
+
+	applyPuzzleSolutionInRoom(text,defaultMsg){
+		let puzzle = null;
+		let msg    = defaultMsg;
+
+		for(const puzzleId of this.roomMap[this.player.currentRoomId()].puzzleIds()){
+			puzzle = this.puzzleMap[puzzleId];
+
+			if(puzzle.isCorrect(text)){
+				if(puzzle.solved){
+					msg = {message:<p>You've already solved that puzzle</p>};
+				}else{
+					this.applyCorrectAnswer(puzzleId);
+					msg = {message:this.answerClearedMessage(puzzleId)};				
+				}
+
+				break;
+			}
+		}
+
+		return msg;
 	}
 
 	isValidPuzzleName(puzzleName){
@@ -142,7 +161,7 @@ class Game extends React.Component {
 
     	for( let key in room.paths){
     		if(this.pathMap[room.paths[key]].isVisible())
-    			msg.push( <span><br/><b>{camelCase(key)}:  </b>{this.pathMap[room.paths[key]].render()}</span>)
+    			msg.push( <span key={key}><br/><b>{camelCase(key)}:  </b>{this.pathMap[room.paths[key]].render()}</span>)
     	}
 
     	return msg;

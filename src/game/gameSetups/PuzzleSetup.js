@@ -13,8 +13,8 @@ class PuzzleSetup extends React.Component{
 	puzzleProps(){
 
 		let puzzles = tableInit([
-			["id","name","answer","description","image"],
-			["P0","testing","hello","description","none"],
+			["id","name","answer","description","image","verbose"],
+			["P0","testing","knock","description","none",false],
 		]);
 
 		return( puzzles);
