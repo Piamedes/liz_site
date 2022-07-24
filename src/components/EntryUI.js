@@ -35,9 +35,12 @@ class EntryUI extends React.Component {
 
 	handleSubmit(e){
 		e.preventDefault();
+		this.handleTextSubmit(this.state.inputText)
+	}
 
-		if (this.state.inputText.length){
-			let message = this.props.processInput(this.state.inputText);
+	handleTextSubmit(text){
+		if (text.length){
+			let message = this.props.processInput(text);
 			this.publishMessage(message);
 		}
 	}
@@ -57,6 +60,11 @@ class EntryUI extends React.Component {
 			inputText: '',
 			currentPuzzle: message.puzzleId,
 		}));
+	}
+
+	componentDidMount(){
+		console.log('triggered')
+		this.handleTextSubmit('look')
 	}
 
 }

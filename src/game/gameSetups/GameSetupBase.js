@@ -3,8 +3,9 @@ import React from 'react';
 class GameSetupBase extends React.Component{
 	constructor(props){
 		super(props);
-
+		this.PSCB = props.puzzleSpotCallback;
 		this.externalIds = {}
+
 	}
 
 	init(storedSettings={},GB){

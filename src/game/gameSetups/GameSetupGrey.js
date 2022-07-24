@@ -1,14 +1,14 @@
 import React from 'react';
 import GameSetupBase from "./GameSetupBase.js";
 import {DIRS} from "../../lib/Constants.js";
+import PuzzleSpot from "../../components/PuzzleSpot.js";
 
 class GameSetupGrey extends GameSetupBase{
-
 	initRoomsPathsPuzzles(GB,storedSettings={}){
 		//outside entrace
 		let start = GB.createRoom({
 			id: "START",
-			descriptions: ["game start"],
+			descriptions: [<span>You find yourselves trapped just outside the front lobby of the Boston Museum of science, with all the surrounding roads completely flooded.  There's a <PuzzleSpot PSCB={this.props.PSCB} puzzleId={'P0'} text={<u>small sign</u>}/> on the door.</span>],
 		})
 
 		let LANDING = GB.createRoom({

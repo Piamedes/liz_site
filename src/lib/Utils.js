@@ -5,6 +5,31 @@ var camelCase = function camelCase(str) {
     });
 }
 
+
+var tableInit = function tableInit(table){
+	let objects = [];
+
+	if( table.length > 1 ){
+		let keys 	= table[0];
+		let pairs   = [];
+
+		for(let rowIdx=0; rowIdx<table.length;rowIdx++){
+			if(rowIdx !== 0){
+				for(let colIdx=0;colIdx<keys.length;colIdx++){
+					pairs.push([keys[colIdx],table[rowIdx][colIdx]])
+				}
+			}
+
+			if(pairs.length){
+				objects.push(Object.fromEntries(pairs));
+				pairs = [];	
+			}
+		}
+	}
+
+	return objects
+}
+
 var componentExtract = function componentExtract(object,key,defaultValue){
 	return ( key in object ) ? object[key] : defaultValue
 }
@@ -53,4 +78,4 @@ function getRegExpFlags(regExp) {
   }
 }
 
-export {camelCase, componentExtract, clone, componentExists}
+export {camelCase, componentExtract, clone, componentExists,tableInit}

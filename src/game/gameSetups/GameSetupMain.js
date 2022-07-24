@@ -5,6 +5,7 @@ import GameBuilder from "../GameBuilder.js";
 import GameSetupGreen from "./GameSetupGreen.js";
 import GameSetupBlue from "./GameSetupBlue.js";
 import GameSetupGrey from "./GameSetupGrey.js";
+import PuzzleSetup from "./PuzzleSetup.js";
 
 class GameSetupMain extends React.Component{
 	constructor(props){
@@ -15,24 +16,32 @@ class GameSetupMain extends React.Component{
 
 	init(storedSettings={}){
 		this.initPlayer(storedSettings);
-		this.initRoomsPathsPuzzles(storedSettings);
+		this.initPuzzles(storedSettings);
+		this.initRoomsPaths(storedSettings);
 	}
 
 	initPlayer(storedSettings){
 		this.player = new Player({roomId: "START"});
 	}
 
+	initPuzzles(storedSettings){
+		let puzzles = new PuzzleSetup();
+		puzzles.init(this.GB,storedSettings);
+	}
+
 	initializeWing(storedSettings,classObj){
-		let engine = new classObj();
+		let engine = new classObj({PSCB:this.props.puzzleSpotCallback});
 		engine.init(this.GB,storedSettings);
 
 		return engine.externalIds
 	}
 
-	initRoomsPathsPuzzles(storedSettings){
+	initRoomsPaths(storedSettings){
+		let atriumIds = this.initializeWing(storedSettings,GameSetupGrey);
+
 		let greenIds  = this.initializeWing(storedSettings,GameSetupGreen);
 		let blueIds   = this.initializeWing(storedSettings,GameSetupBlue);
-		let atriumIds = this.initializeWing(storedSettings,GameSetupGrey);
+
 
 		this.GB.makeDoor(blueIds.BM0,atriumIds.AL0,[],[DIRS.W]);
 		this.GB.makeDoor(blueIds.BM1,atriumIds.AL1,[],[DIRS.W]);

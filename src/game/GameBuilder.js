@@ -4,6 +4,7 @@ import {clone, componentExists} from "../lib/Utils.js";
 import {DIR_OPPOSITES} from "../lib/Constants.js";
 import Room from "./Room.js";
 import Path from "./Path.js";
+import Puzzle from "./Puzzle.js";
 
 class GameBuilder extends React.Component{
 	constructor(props){
@@ -13,13 +14,28 @@ class GameBuilder extends React.Component{
 		this.roomMap   = {};
 		this.puzzleMap = {};
 		this.pathMap   = {};
+
+		this.validate = false;
 	}
 
 	createRoom(props){
 		if( props.id in this.roomMap )
 			throw new Error( 'room id already in use')
 		else{
-			this.roomMap[props.id] = new Room(props)
+			this.roomMap[props.id] = new Room(props);
+
+			for(const puzzleId in this.roomMap[props.id]._puzzleIds)
+				this.validatePuzzleId(puzzleId);
+	
+			return props.id;
+		}
+	}
+
+	createPuzzle(props){
+		if( props.id in this.puzzleMap )
+			throw new Error( 'puzzle id already in use')
+		else{
+			this.puzzleMap[props.id] = new Puzzle(props)
 			return props.id;
 		}
 	}
@@ -86,6 +102,11 @@ class GameBuilder extends React.Component{
 		}
 
 		return this.makeTwoWayConnection(roomIdA,roomIdB,roomADirs,roomBDirs,propsBase);
+	}
+
+	validatePuzzleId(puzzleId){
+		if(this.validate && !componentExists(this.puzzleMap,puzzleId))
+			throw new Error(puzzleId+' does not exist in puzzle map');		
 	}
 }
 

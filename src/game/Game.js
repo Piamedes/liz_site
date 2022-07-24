@@ -1,13 +1,13 @@
 import React from 'react';
 import GameSetupMain from "./gameSetups/GameSetupMain.js";
 import {DIRS,DIR_LIST} from "../lib/Constants.js";
-import {camelCase} from "../lib/Utils.js";
+import {camelCase,componentExtract,componentExists} from "../lib/Utils.js";
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let initialSetup = new GameSetupMain();
+		let initialSetup = new GameSetupMain(props);
 		initialSetup.init()
 
 		//OBJECTS IMPACTING STATE
@@ -22,12 +22,24 @@ class Game extends React.Component {
 
 		//Puzzle ID to puzzle object (each with own state) - objects may be removed from state updates and pushed onto the message queue for rendering with that locked state
 		this.puzzleMap = initialSetup.GB.puzzleMap;
+		this.puzzleNameMap = this.initPuzzleNameMap();
+
 
 		//REFERENCE INFO - this stuff doesn't change over time
 		this.validDirections = this.getValidMovementDirections();
 		this.dirList = DIR_LIST;
 
 		this.processInput = this.processInput.bind(this);
+	}
+
+	initPuzzleNameMap(){
+		let map = {};
+
+		for( const puzzleId in this.puzzleMap){
+			map[this.puzzleMap[puzzleId].name] = puzzleId
+		}
+
+		return map;
 	}
 
 	getValidMovementDirections(){
@@ -60,50 +72,53 @@ class Game extends React.Component {
 
 		Puzzle answers can only be applied to the room they're in, so first check that, then 
 		*/
-		let text = rawText.toLowerCase();
-		let data = {}
-		var msg  = {message:<p>??? - Currently invalid input</p>}
+		let words = rawText.toLowerCase().split(" ");
+		let text  = "";
+		let data  = {}
+		var msg   = {message:<p>??? - Currently invalid input</p>}
 
-		if(text==="look"){
-			msg = {message:this.roomMap[this.player.currentRoomId()].render()}
-		}else if( this.checkAnswer(this.player.currentRoomId(),text).match){
-			//Is this the answer to a puzzle?
-			data = this.checkAnswer(this.player.currentRoomId(),text);
+		if(words.length===1){
+			text = words[0];
 
-			if(!this.puzzleMap[data.id].solved()){
-				this.applyCorrectAnswer(data.id);
-				msg = {message:this.answerClearedMessage(data.id)};
-			}else{
-				msg = {message:<p>You've already solved that puzzle</p>};
-			}
-		}else if(text in this.validDirections){
-			let direction 	= this.validDirections[text];
-			let moveDetails = this.canMove(this.player.currentRoomId(),direction)
+			if(text==="look"){
+				msg = {message:this.roomMap[this.player.currentRoomId()].render()}
+			}else if(text in this.validDirections){
+				let direction 	= this.validDirections[text];
+				let moveDetails = this.canMove(this.player.currentRoomId(),direction)
 
-			if(!moveDetails.isLocked && moveDetails.exists){
-				let moveMessage = this.moveRooms(direction); 
-				msg = {message:moveMessage};	
-			}else if(moveDetails.exists){
-				msg = {message:moveDetails.message}
+				if(!moveDetails.isLocked && moveDetails.exists){
+					let moveMessage = this.moveRooms(direction); 
+					msg = {message:moveMessage};	
+				}else if(moveDetails.exists){
+					msg = {message:moveDetails.message}
+				}		
 			}		
+		}else if(words[0]==='solve'){
+			text = words.slice(2).join(" ");
+
+			if(this.isValidPuzzleName(words[1])){
+				let puzzleId = this.puzzleNameMap[text];
+
+				if(this.puzzleMap[puzzleId].isCorrect(text)){
+					if(!this.puzzleMap[puzzleId].solved()){
+						this.applyCorrectAnswer(puzzleId);
+						msg = {message:this.answerClearedMessage(puzzleId)};
+					}else{
+						msg = {message:<p>You've already solved that puzzle</p>};
+					}
+				}else{
+					msg = {message:<p>{'Wrong answer "' + text + '" for ' + words[1]}</p>};
+				}								
+			}else{
+				msg = {message:<p>{words[1]+' is an invalid puzzle name'}</p>}
+			}
 		}
 
 		return msg
 	}
 
-	//Logic for handling changing state (movement & puzzle answers)
-	checkAnswer(roomId, input){
-		let puzzleIds = this.roomMap[roomId].puzzleIds();
-		let match     = {match:false,id:''}
-
-		for( let id of puzzleIds){
-			if(this.puzzleMap[id].isCorrect(input)){
-				match = {match:true, id}
-				break;
-			}
-		}
-
-		return match;
+	isValidPuzzleName(puzzleName){
+		return componentExists(this.puzzleNameMap, puzzleName )
 	}
 
 	applyCorrectAnswer(puzzleId){

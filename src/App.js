@@ -10,7 +10,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.Game = new Game();
+    this.handleModalClose           = this.handleModalClose.bind(this);
+    this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
+    this.puzzleSpotCallback	 		= this.puzzleSpotCallback.bind(this);
+
+    this.Game = new Game({puzzleSpotCallback:this.puzzleSpotCallback});
 
     this.state = {
       modalCloseCallback: null,
@@ -18,9 +22,6 @@ class App extends React.Component {
       modalTitle: '',
       modalBody:  '',
     }
-
-    this.handleModalClose           = this.handleModalClose.bind(this);
-    this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
   }
 
   handleModalClose(){ 
@@ -47,6 +48,10 @@ class App extends React.Component {
   handleModalShowCallback( title, body, closeCallback = null){ 
     return( ()=>{ this.handleModalShow(title, body, closeCallback ) })
   };
+
+  puzzleSpotCallback(puzzleId){
+  	alert(this.Game.puzzleMap[puzzleId].name);
+  }
 
   render() {
     return( 
