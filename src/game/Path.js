@@ -15,35 +15,28 @@ class Path extends React.Component{
         //array of puzzle IDs locking this path
         this.lockPuzzleIds = props.lockPuzzleIds;
 
-        let lockState = this.processLockState(props.puzzleMap);
+        this.lockDescription = props.lockDescription;
 
-	    this.state = {
-	    	lockedPuzzleState: lockState.lockedPuzzleState,
-	    	isLocked: lockState.isLocked,
-	    	descriptionIndex: 0,
-	    }
+        this.ME = props.ME;
+        this.lockState = this.processLockState(this.ME.puzzleMap);
+
+	    this.descriptionIndex = 0;
+
+
     }
 
     isVisible(){
-    	return true
+    	return this.doorDescription !== null
     }
 
     isLocked(){
-    	return this.state.isLocked;
+    	return this.lockState.isLocked;
     }
 
-    componentDidMount(){
- 		this.updateDescriptionState();   	
+    render(){
+    	let message = this.isLocked() ? this.lockDescription : this.doorDescription;
+    	return <span>{message}</span>	
     }
-
-    renderDoor(){
-    	let locked = (this.state.isLocked ? 'locked ' : '');
-    	return <span>{locked}{this.doorDescription}</span>
-    }
-
-	render(){
-		return <span>{this.descriptions[this.state.descriptionIndex]}</span>
-	}
 
     updateDescriptionState(){
     	//increment but never above the length, assuming zero indexing
@@ -59,7 +52,7 @@ class Path extends React.Component{
 
         	for(let puzzleId of this.lockPuzzleIds){
 	        	lockedPuzzleState.push({id:puzzleId,name:puzzleMap[puzzleId].name,solved:puzzleMap[puzzleId].solved});
-	        	_isLocked = _isLocked && puzzleMap[puzzleId].solved;
+	        	_isLocked = _isLocked && !puzzleMap[puzzleId].solved;
 	        }
         };		
 
@@ -67,15 +60,9 @@ class Path extends React.Component{
 	}
 
     updateLockState(puzzleMap){
-    	this.setState(function(state,props){
-			return this.processLockState(props.puzzleMap);
-    	})
+    	this.lockState = this.processLockState(puzzleMap);
+
     }
-
-	describe(){
-		return this.render()
-	}
-
 }
 
 export default Path

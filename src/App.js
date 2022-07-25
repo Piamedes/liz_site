@@ -1,5 +1,5 @@
 import React 		  from 'react';
-import Game 		  from './game/Game.js';
+import GameEngine     from './game/GameEngine.js';
 import NavbarRenderer from './components/NavbarRenderer';
 import EntryUI 		  from './components/EntryUI.js';
 import ModalManager   from './components/ModalManager.js';
@@ -14,7 +14,7 @@ class App extends React.Component {
     this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
     this.puzzleSpotCallback	 		= this.puzzleSpotCallback.bind(this);
 
-    this.Game = new Game({puzzleSpotCallback:this.puzzleSpotCallback});
+    this.GameEngine = new GameEngine({puzzleSpotCallback:this.puzzleSpotCallback});
 
     this.state = {
       modalCloseCallback: null,
@@ -57,7 +57,7 @@ class App extends React.Component {
     return( 
       <div>
         <NavbarRenderer handleModalShowCallback={this.handleModalShowCallback}/>
-        <EntryUI processInput={this.Game.processInput}/>
+        <EntryUI processInput={this.GameEngine.processInput}/>
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>
     );

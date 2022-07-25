@@ -10,6 +10,9 @@ class Puzzle extends React.Component{
         this.verbose = props.verbose;
         this.solved = false;
         this.description =  props.description;
+
+        this.ME = props.ME;
+
     }
 
     solve(){

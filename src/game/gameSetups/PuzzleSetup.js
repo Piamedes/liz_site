@@ -15,6 +15,7 @@ class PuzzleSetup extends React.Component{
 		let puzzles = tableInit([
 			["id","name","answer","description","image","verbose"],
 			["P0","testing","knock","description","none",false],
+			["P1","testing","knock","description","none",false],
 		]);
 
 		return( puzzles);

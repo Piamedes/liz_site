@@ -37,4 +37,18 @@ const DIR_OPPOSITES = {
 	[DIRS.D]:  DIRS.U,
 }
 
-export {DIRS, DIR_LIST,DIR_OPPOSITES}
+
+const DIRS_SHORT_MAP = {
+    n: DIRS.N,
+    s: DIRS.S,
+    e: DIRS.E,
+    w: DIRS.W,
+    u: DIRS.U,
+    d: DIRS.D,    
+    ne: DIRS.NE,
+    nw: DIRS.NW,
+    se: DIRS.SE,
+    sw: DIRS.SW,	
+}
+
+export {DIRS, DIR_LIST,DIR_OPPOSITES,DIRS_SHORT_MAP}

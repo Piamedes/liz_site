@@ -1,5 +1,6 @@
 import React from 'react';
 import {componentExtract,componentExists} from "../lib/Utils.js";
+import {DIR_LIST} from "../lib/Constants.js";
 
 class Room extends React.Component{
     constructor(props){
@@ -7,13 +8,13 @@ class Room extends React.Component{
         //Unique string identifying the room - must be unique across all rooms
         this.id   		   = props.id;
         //description array (i.e. if there's more than one description we only show the first on the first entry)
-        this.descriptions  = props.descriptions;
+        this.descriptions  = componentExtract( props, 'descriptions',[]);
         this.paths		   = {};
-        this._puzzleIds    = this.puzzleIdsFromDescriptions(props.descriptions);
+        this._puzzleIds    = this.puzzleIdsFromDescriptions(this.descriptions);
+        this.descriptionIndex = 0;
+        this.type = 'base';
 
-        this.state = {
-        	descriptionIndex: 0,
-        };
+        this.ME = props.ME;
     }
 
     findPuzzleSpots(children){
@@ -25,7 +26,7 @@ class Room extends React.Component{
     			if( componentExists( child, "children")){
     				nested = this.findPuzzleSpots(child.children);
     				puzzles = {...puzzles, ...nested};
-    			}else{
+    			}else if(componentExists(child,'props') && componentExists(child.props,'puzzleId')){
     				puzzles[child.props.puzzleId]=true;
     			}
     		}
@@ -48,46 +49,45 @@ class Room extends React.Component{
     	return Object.keys(puzzles);
     }
 
-
-    updateDescriptionState(){
-    	//increment but never above the length, assuming zero indexing
-    	this.setState({ descriptionIndex: Math.min(this.descriptions.length - 1, this.state.descriptionIndex+1)})
-    }
-
     //The Room class is used in two places:  storing state within the main application state, and rendering the UI
     //In the rendering case, the state is disconnected from live main application state
-	render(){
-		return <span>{this.descriptions[this.state.descriptionIndex]}</span>
+	render(direction){
+		return <span>{this.directionText(direction)}{this.description()}{this.renderPaths()}</span>		
 	}
 
-    componentDidMount(){
- 		this.updateDescriptionState();   	
-    }
+	directionText(direction){
+		let text = null;
 
-	describe(){
-		return this.render()
+		if(direction.length){
+			if(DIR_LIST.includes(direction))
+				text = 'You go ' + direction + ' into ';
+			else
+				text = 'You ' + direction + ' ';		
+		}
+
+		return text;		
+	}
+
+	description(){
+		return this.descriptions[this.descriptionIndex];
+	}
+
+	renderPaths(){
+    	let msg  = [];
+
+    	for( let key in this.paths){
+    		if(this.ME.getPath(this.paths[key]).isVisible())
+   // 			msg.push( <span key={key}><br/><b>{camelCase(key)}:  </b>{this.pathMap[room.paths[key]].render()}</span>)
+			msg.push( <span key={key}>{this.ME.getPath(this.paths[key]).render()}</span>)
+    	}
+
+    	return msg;
 	}
 
 	//just in case we need to potentially filter out hidden puzzles?
 	puzzleIds(){
 		return this._puzzleIds;
 	}
-
-    getPuzzleId(){
-        if(!this.puzzleSpots.length)
-            return ''
-        else{
-            console.log( this.puzzleSpots[0].puzzleId);
-            return this.puzzleSpots[0].puzzleId
-        }
-    }
-
-    addPuzzleId(puzzleId){
-    	if(!(puzzleId in this._puzzleIds))
-    		this._puzzleIds.push(puzzleId);
-    }
-
-
 }
 
 export default Room
