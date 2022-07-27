@@ -1,6 +1,5 @@
 import React from 'react';
 import {tableInit} from "../../lib/Utils.js";
-	import forest  from '../../resources/the_enchanted_forest.pdf';
 
 class PuzzleSetup extends React.Component{
 	init(GB,storedSettings){
@@ -15,7 +14,6 @@ class PuzzleSetup extends React.Component{
 
 		var boolean = require('../../resources/boolean.png');
 		var tetris  = require('../../resources/tetris.png');
-	
 
 		//multiple possible paths after the invitation:
 		let puzzles = tableInit([
@@ -40,7 +38,7 @@ class PuzzleSetup extends React.Component{
 			
 			//endings
 			["E1",	"You Slayed the Dragon",		"stealthier",							null,	  		"dragon",			false	 , null],
-			["P0",	"The Enchanted Forest",			"magic",								null,	  		"trees",			false	 , forest],
+			["P0",	"The Enchanted Forest",			"magic",								null,	  		"trees",			false	 , null],
 		]);
 
 		return( puzzles);
