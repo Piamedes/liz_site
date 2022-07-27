@@ -8,6 +8,7 @@ class Puzzle extends React.Component{
         this.image = props.image;
         this.answer = props.answer;
         this.verbose = props.verbose;
+        this.symbol = props.symbol;
         this.solved = false;
 
         this.rendered = false;

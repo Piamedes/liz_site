@@ -37,13 +37,40 @@ class Path extends React.Component{
 			locked = true;
 
 			for(const puzzleId of this.lockPuzzleIds){
-				console.log(puzzleId)
 				locked = locked && !this.ME.getPuzzle(puzzleId).solved
 			}
     	}else
     		locked = false;
 
     	return locked
+    }
+
+    lockedMessage(){
+    	if(!this.isLocked())
+    		return null
+    	else{
+    		let puzzle = null;
+    		let symbol = ''
+    		let msg    = '';
+    		let msgs   = [];
+    		let length = this.lockPuzzleIds.length;
+
+			for(let idx=0;idx<length;idx++){
+				puzzle = this.ME.getPuzzle(this.lockPuzzleIds[idx]);
+				symbol = puzzle.symbol;
+
+				msg  = (symbol[0] in ['a','e','i','o','u']) ? 'an ' : 'a ';
+				msg += (puzzle.solved) ? 'glowing ' : 'dark ' + symbol;
+
+				if(idx!=length-1)
+					msg += ", "
+
+				msgs.push(msg)
+			}	
+
+			return <span>You can't go that way, it's locked.  As you look closely at the door you see {msg}.</span>
+    	}
+
     }
 
     directionText(direction){

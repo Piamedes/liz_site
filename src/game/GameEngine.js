@@ -59,13 +59,18 @@ class GameEngine extends React.Component {
 						let moveMessage = this.moveRooms(direction); 
 						msg = {message:moveMessage};	
 					}else{
-						msg = {message:<span>You can't go that way, it's locked.</span>}
+						msg = this.lockedMessage(this.player.currentRoomId(),direction);
 					}
 				}
 			}		
 		}
 
 		return msg
+	}
+
+	lockedMessage(roomId,direction){
+		let path = this.mapEngine.getPath(this.mapEngine.getRoom(roomId).paths[direction]);
+		return {message:path.lockedMessage()}
 	}
 
 	isValidPuzzleSolutionInRoom(text){

@@ -16,6 +16,7 @@ class App extends React.Component {
     this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
     this.puzzleSpotCallback	 		= this.puzzleSpotCallback.bind(this);
     this.showHintsCallback			= this.showHintsCallback.bind(this);
+    this.showHelpCallback 			= this.showHelpCallback.bind(this);
 
     this.gameEngine = new GameEngine({puzzleSpotCallback:this.puzzleSpotCallback});
 
@@ -57,15 +58,30 @@ class App extends React.Component {
   		this.handleModalShow(this.gameEngine.mapEngine.getPuzzle(puzzleId).name,modalMessage) 
   }
 
+  showHelpCallback(){
+  	let render = <div>
+  					<ol>
+  						<li>The standard directions (north,south,east,west,up,down) as well as their lazy versions (n,s,e,w,u,d) all work</li>
+  						<li>Some rooms will have more complicated movement options and you'll have to just do your best</li>
+  						<li>Read everything and explore everywhere you can</li>
+  						<li>Don't be afraid to move onto another puzzle and explore any other paths (there are hidden paths and puzzles)</li>
+  						<li>The game is long and it doesn't save yet so keep track of your answers and where everything is unlocked!</li>
+  						<li>Call Ben if you need more help :)</li>
+					</ol>
+  				</div>;
+
+  	this.handleModalShow('Help',render);
+  }
+
   showHintsCallback(){
 	let puzzles = this.gameEngine.getVisiblePuzzles();
-  	this.handleModalShow('',<PuzzleHintUI puzzles={puzzles}/>);
+  	this.handleModalShow('Hints',<PuzzleHintUI puzzles={puzzles}/>);
   }
 
   render() {
     return( 
       <div>
-        <NavbarRenderer handleModalShowCallback={this.handleModalShowCallback} showHintsCallback={this.showHintsCallback}/>
+        <NavbarRenderer showHelpCallback={this.showHelpCallback} showHintsCallback={this.showHintsCallback}/>
         <EntryUI processInput={this.gameEngine.processInput}/>
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>

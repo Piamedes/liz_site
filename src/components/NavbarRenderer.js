@@ -14,7 +14,8 @@ class NavbarRenderer extends React.Component {
 		        <Navbar.Collapse id="responsive-navbar-nav">
 		          <Nav className="me-auto"/>
 		          <Nav>
-		            <Nav.Link eventKey={1} onClick={this.props.showHintsCallback}>FAQ</Nav.Link>
+		            <Nav.Link eventKey={1} onClick={this.props.showHintsCallback}>Hints</Nav.Link>
+		            <Nav.Link eventKey={2} onClick={this.props.showHelpCallback}>Help</Nav.Link>
 		          </Nav>
 		        </Navbar.Collapse>
 		      </Container>
