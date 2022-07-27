@@ -9,7 +9,7 @@ class GameSetupGrey extends GameSetupBase{
 		//outside entrace
 		let start = GB.createRoom({
 			id: "START",
-			descriptions: [<span>You find yourselves trapped just outside the front lobby of the Boston Museum of science, with all the surrounding roads completely flooded.  There's a <PuzzleSpot PSCB={this.props.PSCB} puzzleId={'P0'} text={<u>small sign</u>}/> on the door.</span>],
+			descriptions: [<span>You find yourselves trapped just outside the front lobby of the Boston Museum of science, with all the surrounding roads completely flooded.  There's a <PuzzleSpot PSCB={this.props.PSCB} ME={this.props.ME} puzzleId={'P0'} text={<u>small sign</u>}/> on the door.</span>],
 			includeDirText: false,
 		})
 

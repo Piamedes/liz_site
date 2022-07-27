@@ -6,7 +6,7 @@ class ModalManager extends React.Component {
   render(){
     return(
       <div>
-        <Modal show={this.props.modalShow} onHide={this.props.handleModalClose}>
+        <Modal size="lg" show={this.props.modalShow} onHide={this.props.handleModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>{this.props.modalTitle}</Modal.Title>
           </Modal.Header>

@@ -29,7 +29,7 @@ class MapSetup extends React.Component{
 	}
 
 	initializeWing(storedSettings,classObj){
-		let engine = new classObj({PSCB:this.props.puzzleSpotCallback});
+		let engine = new classObj({PSCB:this.props.puzzleSpotCallback,ME:this.ME});
 		engine.init(this.ME,storedSettings);
 
 		return engine.externalIds

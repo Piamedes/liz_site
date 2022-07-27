@@ -12,33 +12,33 @@ class PuzzleSetup extends React.Component{
 
 	puzzleProps(){
 
+		var boolean = require('../../resources/boolean.png');
+		var tetris  = require('../../resources/tetris.png');
+
 		//multiple possible paths after the invitation:
 		let puzzles = tableInit([
-			["id",	"name",			"answer",			"description",		"image",		"verbose"],
-			["P0",	"Invitation",	"knock",			null,				"none",			false	 ],
-
-
+			["id",	"name",							"answer",								"image",  		"symbol",  			"verbose"],
 			//standard:  looping back and forth
-			["P1",	"MATH",		    "TBD",				"TBD",				"none",			true	 ],  //math room, unlocks lightning basement
-			["P2",	"ATTIC",		"TBD",				"TBD",				"none",			true	 ],  //attic, unlocks green basement landing
-			["P3",	"BEES",			"TBD",				"TBD",				"none",			true	 ],  //bee room, unlocks venice
-			["P4",	"VENICE",		"TBD",				"TBD",				"none",			true	 ],  //venice room, unlocks bridge
-
-			["P5",	"Turtles",		"TBD",				"TBD",				"none",			true	 ],
-			["P6",	"Turtles",		"TBD",				"TBD",				"none",			true	 ],
+			["E2",	"Invitation",					"knock",								tetris,	  		"envelope",			false	 ],
+			["P1",	"Abydos",	    				"pyramid",								null,			"circle",			true	 ],  //math room, unlocks lightning basement
+			["P2",	"Got an Ood Feeling", 			"reflect upon the dangers vampire",		null,			"orb",				true	 ],  //attic, unlocks green basement landing
+			["P3",	"Familiar Faces",				"melody pond",							null,			"tv",				true 	 ],  //hall of human life, unlocks venice
+			["P4",	"Bad Wolf",						"gallifrey",							null,			"wolf",				true	 ],  //venice room, unlocks bridge
+			["P5",	"Time Loops",					"peri brown",							null,			"dalek",			true	 ],
+			["P6",	"Who am I",						"king arthur pendragon",				null,			"sword",			true	 ],
 
 			//secret 1/2:  turtle->lab->main floor or dino->main floor
-			["PS1",	"TURTLES",		"TBD",				"TBD",				"none",			true	 ],  //turtle room, unlocks lightning exit
-			["PS2",	"DINO",			"TBD",				"TBD",				"none",			true	 ],  
-
-
-			//main blue floor
-			["P7",	"ENG1",		"TBD",				"TBD",				"none",			true	 ],  //eng 1
-			["P8",	"ENG2",		"TBD",				"TBD",				"none",			true	 ],  //eng 2
-			["P9",	"ENG2",		"TBD",				"TBD",				"none",			true	 ],  //eng 2
-
-
-			//Escalators
+			["S1",	"T Rex",						['climb','scale','scramble'],			null,	  		"t rex",			false	 ],
+			["S2",	"P3X-179",						"boom",									null,			"box",				true	 ],  //turtle room, unlocks lightning exit
+			["S3",	"Tetris",						"6886",									tetris,			"tetromino",		true	 ],  
+			["S4",	"Boolean",						"314725",								boolean, 		"equal sign",		true	 ],  
+			["S5",	"Searching for Artifacts",		"zero point module",					null,			"artifact",			true	 ],  
+			["S6",	"Thirteeen Steps to Victory",	"the ori",								null,			"letters",			true	 ],  
+			["S7",	"Trophy Puzzle",				null,									null,			null,				false	 ], 
+			
+			//endings
+			["E1",	"You Slayed the Dragon",		"stealthier",							null,	  		"dragon",			false	 ],
+			["P0",	"The Enchanted Forest",			"magic",								null,	  		"trees",			false	 ],
 		]);
 
 		return( puzzles);

@@ -49,8 +49,9 @@ class App extends React.Component {
     return( ()=>{ this.handleModalShow(title, body, closeCallback ) })
   };
 
-  puzzleSpotCallback(puzzleId){
-  	alert(this.gameEngine.mapEngine.getPuzzle(puzzleId).name);
+  puzzleSpotCallback(puzzleId,modalMessage){
+  	if(modalMessage !== null )
+  		this.handleModalShow(this.gameEngine.mapEngine.getPuzzle(puzzleId).name,modalMessage) 
   }
 
   render() {
