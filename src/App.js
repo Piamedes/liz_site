@@ -6,6 +6,8 @@ import ModalManager   from './components/ModalManager.js';
 import './resources/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import PuzzleHintUI from './components/PuzzleHintUI.js';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +15,7 @@ class App extends React.Component {
     this.handleModalClose           = this.handleModalClose.bind(this);
     this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
     this.puzzleSpotCallback	 		= this.puzzleSpotCallback.bind(this);
+    this.showHintsCallback			= this.showHintsCallback.bind(this);
 
     this.gameEngine = new GameEngine({puzzleSpotCallback:this.puzzleSpotCallback});
 
@@ -54,10 +57,15 @@ class App extends React.Component {
   		this.handleModalShow(this.gameEngine.mapEngine.getPuzzle(puzzleId).name,modalMessage) 
   }
 
+  showHintsCallback(){
+	let puzzles = this.gameEngine.getVisiblePuzzles();
+  	this.handleModalShow('',<PuzzleHintUI puzzles={puzzles}/>);
+  }
+
   render() {
     return( 
       <div>
-        <NavbarRenderer handleModalShowCallback={this.handleModalShowCallback}/>
+        <NavbarRenderer handleModalShowCallback={this.handleModalShowCallback} showHintsCallback={this.showHintsCallback}/>
         <EntryUI processInput={this.gameEngine.processInput}/>
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>

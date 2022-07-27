@@ -1,5 +1,5 @@
 import React from 'react';
-import {componentExtract,componentExists} from "../lib/Utils.js";
+import {componentExtract,componentExists,dirText} from "../lib/Utils.js";
 import {DIR_LIST} from "../lib/Constants.js";
 
 class Room extends React.Component{
@@ -61,7 +61,7 @@ class Room extends React.Component{
 	}
 
 	directionText(direction,path){
-		return !this.includeDirText ? null : path.directionText(direction);	
+		return !this.includeDirText ? null : (path===null) ? dirText(direction) : path.directionText(direction);	
 	}
 
 	updateDescriptionIndex(){

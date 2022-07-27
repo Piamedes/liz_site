@@ -20,7 +20,6 @@ class Path extends React.Component{
         this.lockDescription = props.lockDescription;
 
         this.ME = props.ME;
-        this.lockState = this.processLockState(this.ME.puzzleMap);
     }
 
     roomIdOther(roomId){
@@ -32,7 +31,19 @@ class Path extends React.Component{
     }
 
     isLocked(){
-    	return this.lockState.isLocked;
+    	let locked;
+
+    	if(this.lockPuzzleIds.length){
+			locked = true;
+
+			for(const puzzleId of this.lockPuzzleIds){
+				console.log(puzzleId)
+				locked = locked && !this.ME.getPuzzle(puzzleId).solved
+			}
+    	}else
+    		locked = false;
+
+    	return locked
     }
 
     directionText(direction){
@@ -44,31 +55,15 @@ class Path extends React.Component{
 
     render(direction,roomIdFrom){
     	let roomName    = this.ME.getRoom(this.roomIdOther(roomIdFrom)).pathName;
-    	let lockDesc    = this.isLocked() ? 'locked' : 'wide open.';
-    	let directional = componentExtract(DIRS_STRING_DEFAULTS,direction,direction);
+    	let lockDesc    = this.isLocked() ? 'locked' : 'wide open';
+    	let directional;
 
-    	return <span>The <b>{directional}ern</b> exit to the {roomName} is {lockDesc}</span> 
-    }
+    	if(direction=="up" || direction=="down")
+    		directional = <span>staircase <b>{direction}</b></span> 
+    	else 
+    		directional = <span><b>{componentExtract(DIRS_STRING_DEFAULTS,direction,direction)}ern</b> exit</span>
 
-    processLockState(puzzleMap){
-        let lockedPuzzleState = [];
-        let _isLocked = false;
-
-        if(this.lockPuzzleIds.length>0){
-        	_isLocked = true;
-
-        	for(let puzzleId of this.lockPuzzleIds){
-	        	lockedPuzzleState.push({id:puzzleId,name:puzzleMap[puzzleId].name,solved:puzzleMap[puzzleId].solved});
-	        	_isLocked = _isLocked && !puzzleMap[puzzleId].solved;
-	        }
-        };		
-
-		return {lockedPuzzleState,isLocked:_isLocked}
-	}
-
-    updateLockState(puzzleMap){
-    	this.lockState = this.processLockState(puzzleMap);
-
+    	return <span>The {directional} to the {roomName} is {lockDesc}.</span> 
     }
 }
 

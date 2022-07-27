@@ -1,7 +1,6 @@
 import React from 'react';
 
-class MessageList extends React.Component {
-
+class MessageList extends React.Component{
 	render(){
 		return (
 			<ul>
@@ -13,7 +12,6 @@ class MessageList extends React.Component {
 			</ul>
 			);
 	}
-
 }
 
 export default MessageList

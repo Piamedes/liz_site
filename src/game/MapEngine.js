@@ -14,6 +14,7 @@ class MapEngine extends React.Component{
 		this.roomMap   = {};
 		this.puzzleMap = {};
 		this.pathMap   = {};
+		this.puzzleHints = {};
 
 		this.validate = false;
 	}
@@ -159,6 +160,23 @@ class MapEngine extends React.Component{
 		return this.getMapElement(id,'puzzle')
 	}
 
+	getVisiblePuzzles(){
+		let puzzles = [];
+
+		for(const puzzleId in this.puzzleMap)
+			if(this.getPuzzle(puzzleId).rendered)
+				puzzles.push(this.getPuzzle(puzzleId))
+
+		return puzzles
+	}
+
+	addPuzzleHints(hintMap){
+		this.puzzleHints = hintMap;
+	}
+
+	getPuzzleHints(puzzleId){
+		return this.puzzleHints[puzzleId];
+	}
 }
 
 export default MapEngine;

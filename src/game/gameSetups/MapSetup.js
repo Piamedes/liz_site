@@ -46,7 +46,7 @@ class MapSetup extends React.Component{
 		this.ME.makeDoor(blueIds.BM1,atriumIds.AL1,[],[DIRS.W]);
 		this.ME.makeDoor(blueIds.BM2,atriumIds.AL2,[],[DIRS.W]);
 
-		this.ME.makeDoor(greenIds.G0SE,     atriumIds.AL0,["P1"],[DIRS.E],[],<span>The <b>western</b> exit to the green wing is wide open.</span>,<span>The <b>western</b> exit to the green wing is locked.</span>);
+		this.ME.makeDoor(greenIds.G0SE,     atriumIds.AL0,["P2"],[DIRS.E],[],<span>The <b>western</b> exit to the green wing is wide open.</span>,<span>The <b>western</b> exit to the green wing is locked.</span>);
 		this.ME.makeDoor(greenIds.G1,	     atriumIds.AL1,[],[DIRS.E]);
 		this.ME.makeDoor(greenIds.G2Landing,atriumIds.AL2,[],[DIRS.E]);
 	}

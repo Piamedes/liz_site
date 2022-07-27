@@ -19,7 +19,7 @@ class RoomAtriumL0 extends RoomAdv{
 	}
 
 	render(direction,path){
- 		return <span>{this.preface(direction)} {this.floodWaters()} The <b>eastern</b> exit to the blue wing is wide open. The <b>southern</b> door goes to the natural mysteries room. {this.westExit()}. {this.staircase()}</span>;	
+ 		return <span>{this.preface(direction)} {this.floodWaters()} The <b>eastern</b> exit to the blue wing is wide open. The <b>southern</b> door goes to the natural mysteries room. {this.westExit()} {this.staircase()}</span>;	
 	}
 
 	preface(direction){

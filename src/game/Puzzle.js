@@ -9,10 +9,16 @@ class Puzzle extends React.Component{
         this.answer = props.answer;
         this.verbose = props.verbose;
         this.solved = false;
+
+        this.rendered = false;
         this.description =  props.description;
 
         this.ME = props.ME;
 
+    }
+
+    onFirstRender(){
+    	this.rendered = true;
     }
 
     solve(){
@@ -26,8 +32,12 @@ class Puzzle extends React.Component{
     	return <p>{this.answer}{string}</p>;
     }
 
+    hints(){
+    	return this.ME.getPuzzleHints(this.id);
+    }
+
     isCorrect(input){
-    	return this.answer === input.replace(/\s+/g,'')
+    	return this.answer.replace(/\s+/g,'') === input.replace(/\s+/g,'')
     }
 
 }

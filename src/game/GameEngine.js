@@ -109,7 +109,7 @@ class GameEngine extends React.Component {
 		return this.mapEngine.getPuzzle(puzzleId).onSolvedMessage()
 	}
 
-	renderMessage(direction,roomIdNew,path){
+	renderMessage(direction,roomIdNew,path=null){
 		return this.mapEngine.getRoom(roomIdNew).render(direction,path)
 	}
 
@@ -132,6 +132,10 @@ class GameEngine extends React.Component {
 			exists,
 			message,
 		}
+    }
+
+    getVisiblePuzzles(){
+    	return this.mapEngine.getVisiblePuzzles()
     }
 }
 
