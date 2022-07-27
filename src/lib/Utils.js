@@ -1,5 +1,6 @@
 import {DIR_LIST} from "./Constants.js";
 
+
 var camelCase = function camelCase(str) {
     return  (" " + str).toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function(match, chr)
     {
