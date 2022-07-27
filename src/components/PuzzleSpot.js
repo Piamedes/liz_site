@@ -35,7 +35,7 @@ class PuzzleSpot extends React.Component{
 		if(!this.isPdf())
 			return null
 		else
-			return this.puzzle().name.toLowerCase().replace(" ","_") + ".png"
+			return this.puzzle().name.toLowerCase().replaceAll(" ","_") + ".pdf"
 	}
 
 	render(){
