@@ -14,7 +14,7 @@ class App extends React.Component {
     this.handleModalShowCallback    = this.handleModalShowCallback.bind( this);
     this.puzzleSpotCallback	 		= this.puzzleSpotCallback.bind(this);
 
-    this.GameEngine = new GameEngine({puzzleSpotCallback:this.puzzleSpotCallback});
+    this.gameEngine = new GameEngine({puzzleSpotCallback:this.puzzleSpotCallback});
 
     this.state = {
       modalCloseCallback: null,
@@ -50,14 +50,14 @@ class App extends React.Component {
   };
 
   puzzleSpotCallback(puzzleId){
-  	alert(this.Game.puzzleMap[puzzleId].name);
+  	alert(this.gameEngine.mapEngine.getPuzzle(puzzleId).name);
   }
 
   render() {
     return( 
       <div>
         <NavbarRenderer handleModalShowCallback={this.handleModalShowCallback}/>
-        <EntryUI processInput={this.GameEngine.processInput}/>
+        <EntryUI processInput={this.gameEngine.processInput}/>
         <ModalManager modalShow={this.state.modalShow} modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} handleModalClose={this.handleModalClose}/>
       </div>
     );

@@ -9,8 +9,10 @@ class Room extends React.Component{
         this.id   		   = props.id;
         //description array (i.e. if there's more than one description we only show the first on the first entry)
         this.descriptions  = componentExtract( props, 'descriptions',[]);
+        this.pathName	   = componentExtract( props, 'pathName','');
         this.paths		   = {};
         this._puzzleIds    = this.puzzleIdsFromDescriptions(this.descriptions);
+        this.includeDirText = componentExtract(props, 'includeDirText',true);
         this.descriptionIndex = 0;
         this.type = 'base';
 
@@ -51,37 +53,36 @@ class Room extends React.Component{
 
     //The Room class is used in two places:  storing state within the main application state, and rendering the UI
     //In the rendering case, the state is disconnected from live main application state
-	render(direction){
-		return <span>{this.directionText(direction)}{this.description()}{this.renderPaths()}</span>		
+	render(direction,path){
+		let desc = this.description();
+		this.updateDescriptionIndex();
+
+		return <span>{this.directionText(direction,path)}{desc} {this.renderPaths()}</span>		
 	}
 
-	directionText(direction){
-		let text = null;
+	directionText(direction,path){
+		return !this.includeDirText ? null : path.directionText(direction);	
+	}
 
-		if(direction.length){
-			if(DIR_LIST.includes(direction))
-				text = 'You go ' + direction + ' into ';
-			else
-				text = 'You ' + direction + ' ';		
-		}
-
-		return text;		
+	updateDescriptionIndex(){
+		this.descriptionIndex = Math.min(this.descriptionIndex+1,this.descriptions.length-1);
 	}
 
 	description(){
 		return this.descriptions[this.descriptionIndex];
 	}
 
-	renderPaths(){
-    	let msg  = [];
+	renderPaths(skips=[]){
+    	let msgs  = [];
+    	let msg   = null;
 
     	for( let key in this.paths){
-    		if(this.ME.getPath(this.paths[key]).isVisible())
-   // 			msg.push( <span key={key}><br/><b>{camelCase(key)}:  </b>{this.pathMap[room.paths[key]].render()}</span>)
-			msg.push( <span key={key}>{this.ME.getPath(this.paths[key]).render()}</span>)
+    		if(!skips.includes(key) && this.ME.getPath(this.paths[key]).isVisible()){
+    			msgs.push( <span key={key}>{this.ME.getPath(this.paths[key]).render(key,this.id)} </span> );
+    		}		
     	}
 
-    	return msg;
+    	return <span>{msgs}</span>;
 	}
 
 	//just in case we need to potentially filter out hidden puzzles?

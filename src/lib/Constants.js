@@ -51,4 +51,11 @@ const DIRS_SHORT_MAP = {
     sw: DIRS.SW,	
 }
 
-export {DIRS, DIR_LIST,DIR_OPPOSITES,DIRS_SHORT_MAP}
+const DIRS_STRING_DEFAULTS = {
+	[DIRS.NE]: 'north east',
+	[DIRS.NW]: 'north west',
+	[DIRS.SE]: 'south east',
+	[DIRS.SW]: 'south west',	
+}
+
+export {DIRS, DIR_LIST,DIR_OPPOSITES,DIRS_SHORT_MAP,DIRS_STRING_DEFAULTS}

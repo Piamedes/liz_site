@@ -9,6 +9,8 @@ class EntryUI extends React.Component {
 		this.state = {
 			inputText: '',   	 //user input text
 			messages: [], //messages to render - each is an object with props to give correct input state
+			priorInputs: [],
+			priorInputsIdx: null,
 		};
 
 		//Callback bindings
@@ -41,30 +43,52 @@ class EntryUI extends React.Component {
 	handleTextSubmit(text){
 		if (text.length){
 			let message = this.props.processInput(text);
-			this.publishMessage(message);
+			this.publishMessage(message,text);
 		}
 	}
 
 	handleChange(e) { this.setState({ inputText: e.target.value });
 	}
 
-	publishMessage(message){
+	updateFn(state,message,text){
+
+		let updates = {
+			inputText: '',
+		};
+
 		if(message.message !== null){
 			const newMessage = {
 				message: message.message,
-				puzzleId: ( "puzzleId" in message ) ? message.puzzleId : '',
 				id: Date.now()
 			};
 
-			this.setState(state => ({
-				messages: state.messages.concat(newMessage),
-				inputText: '',
-			}));
-		}else{
-			this.setState(state => ({
-				inputText: '',
-			}));
+			updates.messages = state.messages.concat(newMessage)
 		}
+
+		if(state.priorInputs.at(-1)!==text)
+			updates.priorInputs = state.priorInputs.concat(text);
+
+		// if(state.priorInputs.at(state.priorInputsIdx))
+
+		return updates
+	}
+
+	handleKeyDown(e) {
+		const { cursor, result } = this.state
+		// arrow up/down button should select next/previous list element
+		if (e.keyCode === 38 && cursor > 0) {
+			this.setState( prevState => ({
+				cursor: prevState.cursor - 1
+			}))
+		} else if (e.keyCode === 40 && cursor < result.length - 1) {
+			this.setState( prevState => ({
+				cursor: prevState.cursor + 1
+			}))
+		}
+	}
+
+	publishMessage(message,text=''){
+		this.setState(state=>(this.updateFn(state,message,text)))
 	}
 
 	componentDidMount(){

@@ -1,4 +1,6 @@
 import React from 'react';
+import {DIR_LIST,DIRS_STRING_DEFAULTS} from "../lib/Constants.js";
+import {componentExtract,dirText} from "../lib/Utils.js";
 
 class Path extends React.Component{
     constructor(props){ 
@@ -7,22 +9,22 @@ class Path extends React.Component{
         //Unique string identifying the room - must be unique across all rooms
         this.id   		   = props.id;
         //description array (i.e. if there's more than one description we only show the first on the first entry.  This describes the path as you traverse it - not when you see it)
-        this.descriptions  = props.descriptions;
 		this.doorDescription = props.doorDescription;
        	//path goes from room A to room B
         this.roomIdA     = props.roomIdA;
         this.roomIdB     = props.roomIdB;
         //array of puzzle IDs locking this path
         this.lockPuzzleIds = props.lockPuzzleIds;
+        this.customDirectionText = componentExtract(props,'customDirectionText','');
 
         this.lockDescription = props.lockDescription;
 
         this.ME = props.ME;
         this.lockState = this.processLockState(this.ME.puzzleMap);
+    }
 
-	    this.descriptionIndex = 0;
-
-
+    roomIdOther(roomId){
+    	return (roomId === this.roomIdA) ? this.roomIdB : this.roomIdA;
     }
 
     isVisible(){
@@ -33,14 +35,19 @@ class Path extends React.Component{
     	return this.lockState.isLocked;
     }
 
-    render(){
-    	let message = this.isLocked() ? this.lockDescription : this.doorDescription;
-    	return <span>{message}</span>	
+    directionText(direction){
+    	if(this.customDirectionText.length)
+    		return this.customDirectionText
+    	else
+    		return dirText(direction)
     }
 
-    updateDescriptionState(){
-    	//increment but never above the length, assuming zero indexing
-    	this.setState({ descriptionIndex: Math.min(this.descriptions.length - 1, this.state.descriptionIndex+1)})
+    render(direction,roomIdFrom){
+    	let roomName    = this.ME.getRoom(this.roomIdOther(roomIdFrom)).pathName;
+    	let lockDesc    = this.isLocked() ? 'locked' : 'wide open.';
+    	let directional = componentExtract(DIRS_STRING_DEFAULTS,direction,direction);
+
+    	return <span>The <b>{directional}ern</b> exit to the {roomName} is {lockDesc}</span> 
     }
 
     processLockState(puzzleMap){

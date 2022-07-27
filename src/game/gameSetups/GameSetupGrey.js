@@ -10,6 +10,7 @@ class GameSetupGrey extends GameSetupBase{
 		let start = GB.createRoom({
 			id: "START",
 			descriptions: [<span>You find yourselves trapped just outside the front lobby of the Boston Museum of science, with all the surrounding roads completely flooded.  There's a <PuzzleSpot PSCB={this.props.PSCB} puzzleId={'P0'} text={<u>small sign</u>}/> on the door.</span>],
+			includeDirText: false,
 		})
 
 		let LANDING = GB.createRoom({
@@ -37,7 +38,7 @@ class GameSetupGrey extends GameSetupBase{
 			descriptions: ["lobby bridge"],
 		})
 
-		GB.connectRooms( start, LANDING, ['knock'], {doorDescription:'',lockPuzzleIds:[],descriptions:["testing"]});
+		GB.connectRooms( start, LANDING, ['knock'], {doorDescription:null,lockPuzzleIds:[]});
 		GB.makeDoor(LANDING, AL0, [],[DIRS.N],[DIRS.S],null);
 		GB.makeDoor(AL1, AL0, [],[DIRS.D],[DIRS.U],"staircase");
 

@@ -9,21 +9,25 @@ class GameSetupGreen extends GameSetupBase{
 		let G0SW = GB.createRoom({
 			id: "G0SW",
 			descriptions: ["green SW"],
+			pathName: 'green wing stairs and elevator',
 		})
 
 		let G0SE = GB.createRoom({
 			id: "G0SE",
 			descriptions: ["green SE"],
+			pathName: 'green wing lobby',
 		})
 
 		let G0NW = GB.createRoom({
 			id: "G0NW",
 			descriptions: ["green NW"],
+			pathName: 'science stage',
 		});
 
 		let G0NE = GB.createRoom({
 			id: "G0NE",
 			descriptions: ["green NE"],
+			pathName: 'hunting lodge room',
 		});
 
 		GB.makeDoor(G0SW, G0NW, [],[DIRS.N]);

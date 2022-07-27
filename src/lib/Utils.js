@@ -1,3 +1,5 @@
+import {DIR_LIST} from "./Constants.js";
+
 var camelCase = function camelCase(str) {
     return  (" " + str).toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function(match, chr)
     {
@@ -5,6 +7,21 @@ var camelCase = function camelCase(str) {
     });
 }
 
+
+var dirText = function dirText(direction){
+	let text = null;
+
+	if(!direction.length)
+		text = 'You look around '
+	else if(direction.length){
+		if(DIR_LIST.includes(direction))
+			text = 'You go ' + direction + ' into ';
+		else
+			text = 'You ' + direction + ' ';		
+	}
+
+	return text;
+}
 
 var tableInit = function tableInit(table){
 	let objects = [];
@@ -78,4 +95,4 @@ function getRegExpFlags(regExp) {
   }
 }
 
-export {camelCase, componentExtract, clone, componentExists,tableInit}
+export {camelCase, componentExtract, clone, componentExists,tableInit,dirText}
