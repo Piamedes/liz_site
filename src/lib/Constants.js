@@ -32,7 +32,7 @@ const DIR_OPPOSITES = {
 	[DIRS.NE]: DIRS.SW,
 	[DIRS.NW]: DIRS.SE,
 	[DIRS.SE]: DIRS.NW,
-	[DIRS.SW]: DIRS.SE,
+	[DIRS.SW]: DIRS.NE,
 	[DIRS.U]:  DIRS.D,
 	[DIRS.D]:  DIRS.U,
 }

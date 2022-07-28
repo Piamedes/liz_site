@@ -21,26 +21,22 @@ class GameSetupGrey extends GameSetupBase{
 			],
 		})
 
-		let AL0 = GB.addRoom( new RoomAtriumL0({id:"AL0"}) );
-
-		// let AL0 = GB.createRoom({
-		// 	id: "AL0",
-		// 	descriptions: [<span>the lobby basement.  The <b>eastern</b> exit to the blue wing is wide open. The <b>southern</b> door goes to the natural mysteries room.  </span>],
-		// });
+		let AL0 = GB.addRoom( new RoomAtriumL0({id:"AL0",pathName:'lobby basement'}) );
 
 		let AL1 = GB.createRoom({
 			id: "AL1",
 			descriptions: ["museum's main lobby"],
+			pathName:"museum's main lobby"
 		});
 
 		let AL2 = GB.createRoom({
 			id: "AL2",
-			descriptions: ["lobby bridge"],
+			descriptions: ["the atrium atop the lobby bridge"],
+			pathName:'lobby bridge',
 		})
 
 		GB.connectRooms( start, LANDING, ['knock'], {doorDescription:null,lockPuzzleIds:[]});
 		GB.makeDoor(LANDING, AL0, [],[DIRS.N],[DIRS.S],null);
-		GB.makeDoor(AL1, AL0, [],[DIRS.D],[DIRS.U],"staircase");
 
 		return {AL0,AL1,AL2}
 	}

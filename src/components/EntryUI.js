@@ -1,5 +1,10 @@
 import React from 'react';
 import MessageList from "./MessageList.js";
+import Container from 'react-bootstrap/Container';
+import Stack from 'react-bootstrap/Stack';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
 class EntryUI extends React.Component {
 	constructor(props) {
@@ -24,16 +29,29 @@ class EntryUI extends React.Component {
 	render() {       
 		return (
 			<div> 
-				<div className="container">
-					<MessageList messages={this.state.messages}/>
-					<form onSubmit={this.handleSubmit}>
-						<label htmlFor="new-action">So?</label>
-						<input id="new-action" onChange={this.handleChange} value={this.state.inputText}/>
-					</form>
-				</div>
+				<Container fluid='md'>
+					<Row style={{color:'white'}}>Nothing to see here, I'm just bad at CSS layout and this was the laziest solution</Row>
+					<Row>
+						<Form>
+						    <Stack direction="horizontal" gap={1}>
+					     		<Form.Control className="me-auto" placeholder="So..." onChange={this.handleChange} value={this.state.inputText} onSubmit={this.handleSubmit}/>
+					    		<Button type="submit" variant="secondary" onClick={this.handleSubmit}>Submit</Button>
+						    </Stack>
+					    </Form>
+					</Row>
+					<Row style={{color:'white'}}>Also nothing to see here. It worked once so I'll do it again.</Row>
+					<Row>
+						<MessageList messages={this.state.messages}/>
+					</Row>
+				</Container>
 			</div>
 		);
 	}
+
+					// <form onSubmit={this.handleSubmit}>
+					// 	<label htmlFor="new-action">So?</label>
+					// 	<input id="new-action" onChange={this.handleChange} value={this.state.inputText}/>
+					// </form>
 
 	handleSubmit(e){
 		e.preventDefault();
@@ -62,7 +80,9 @@ class EntryUI extends React.Component {
 				id: Date.now()
 			};
 
-			updates.messages = state.messages.concat(newMessage)
+			const msgs = [newMessage];
+
+			updates.messages = msgs.concat( state.messages )
 		}
 
 		if(state.priorInputs.at(-1)!==text)
@@ -73,19 +93,19 @@ class EntryUI extends React.Component {
 		return updates
 	}
 
-	handleKeyDown(e) {
-		const { cursor, result } = this.state
-		// arrow up/down button should select next/previous list element
-		if (e.keyCode === 38 && cursor > 0) {
-			this.setState( prevState => ({
-				cursor: prevState.cursor - 1
-			}))
-		} else if (e.keyCode === 40 && cursor < result.length - 1) {
-			this.setState( prevState => ({
-				cursor: prevState.cursor + 1
-			}))
-		}
-	}
+	// handleKeyDown(e) {
+	// 	const { cursor, result } = this.state
+	// 	// arrow up/down button should select next/previous list element
+	// 	if (e.keyCode === 38 && cursor > 0) {
+	// 		this.setState( prevState => ({
+	// 			cursor: prevState.cursor - 1
+	// 		}))
+	// 	} else if (e.keyCode === 40 && cursor < result.length - 1) {
+	// 		this.setState( prevState => ({
+	// 			cursor: prevState.cursor + 1
+	// 		}))
+	// 	}
+	// }
 
 	publishMessage(message,text=''){
 		this.setState(state=>(this.updateFn(state,message,text)))

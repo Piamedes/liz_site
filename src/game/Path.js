@@ -31,17 +31,13 @@ class Path extends React.Component{
     }
 
     isLocked(){
-    	let locked;
+    	let locked = false
 
     	if(this.lockPuzzleIds.length){
-			locked = true;
-
 			for(const puzzleId of this.lockPuzzleIds){
-				locked = locked && !this.ME.getPuzzle(puzzleId).solved
+				locked = locked || !this.ME.getPuzzle(puzzleId).solved
 			}
-    	}else
-    		locked = false;
-
+		}
     	return locked
     }
 
@@ -49,26 +45,28 @@ class Path extends React.Component{
     	if(!this.isLocked())
     		return null
     	else{
-    		let puzzle = null;
-    		let symbol = ''
-    		let msg    = '';
     		let msgs   = [];
     		let length = this.lockPuzzleIds.length;
 
-			for(let idx=0;idx<length;idx++){
-				puzzle = this.ME.getPuzzle(this.lockPuzzleIds[idx]);
-				symbol = puzzle.symbol;
+    		if(length===1){
+    			msgs =  <span>{this.ME.getPuzzle(this.lockPuzzleIds[0]).lockedMessage()}</span>
+    		}else if(length === 2){
+    			msgs = <span>{this.ME.getPuzzle(this.lockPuzzleIds[0]).lockedMessage()} and {this.ME.getPuzzle(this.lockPuzzleIds[1]).lockedMessage()}</span>
+    		}else{
+	    		let msg    = '';
+	      		let puzzle = null;
 
-				msg  = (symbol[0] in ['a','e','i','o','u']) ? 'an ' : 'a ';
-				msg += (puzzle.solved) ? 'glowing ' : 'dark ' + symbol;
+				for(let idx=0;idx<length;idx++){
+					puzzle = this.ME.getPuzzle(this.lockPuzzleIds[idx]);
+					msg    = puzzle.lockedMessage();
+					if(idx!=length-1)
+						msg += ", "
 
-				if(idx!=length-1)
-					msg += ", "
+					msgs.push(msg)
+				}				
+    		}
 
-				msgs.push(msg)
-			}	
-
-			return <span>You can't go that way, it's locked.  As you look closely at the door you see {msg}.</span>
+			return <span>You can't go that way, it's locked.  As you look closely at the door you see {msgs}.</span>
     	}
 
     }

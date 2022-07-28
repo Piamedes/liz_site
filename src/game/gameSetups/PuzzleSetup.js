@@ -24,9 +24,10 @@ class PuzzleSetup extends React.Component{
 			["P1",	"Abydos",	    				"pyramid",								null,			"circle",			true	 ],  //math room, unlocks lightning basement
 			["P2",	"Got an Ood Feeling", 			"reflect upon the dangers vampire",		null,			"orb",				true	 ],  //attic, unlocks green basement landing
 			["P3",	"Familiar Faces",				"melody pond",							null,			"tv",				true 	 ],  //hall of human life, unlocks venice
-			["P4",	"Bad Wolf",						"gallifrey",							null,			"wolf",				true	 ],  //venice room, unlocks bridge
-			["P5",	"Time Loops",					"peri brown",							null,			"dalek",			true	 ],
-			["P6",	"Who am I",						"king arthur pendragon",				null,			"sword",			true	 ],
+			["P4",  "Venice",						null,									null,			"floodwaters", 		false	 ],
+			["P5",	"Bad Wolf",						"gallifrey",							null,			"wolf",				true	 ],  //venice room, unlocks bridge
+			["P6",	"Time Loops",					"peri brown",							null,			"dalek",			true	 ],
+			["P7",	"Who am I",						"king arthur pendragon",				null,			"sword",			true	 ],
 
 			//secret 1/2:  turtle->lab->main floor or dino->main floor
 			["S1",	"T Rex",						['climb','scale','scramble'],			null,	  		"t rex",			false	 ],
@@ -34,7 +35,7 @@ class PuzzleSetup extends React.Component{
 			["S3",	"Tetris",						"6886",									tetris,			"tetromino",		true	 ],  
 			["S4",	"Boolean",						"314725",								boolean, 		"equal sign",		true	 ],  
 			["S5",	"Searching for Artifacts",		"zero point module",					null,			"artifact",			true	 ],  
-			["S6",	"Thirteeen Steps to Victory",	"the ori",								null,			"letters",			true	 ],  
+			["S6",	"Thirteeen Steps to Victory",	"the ori",								null,			"unclear letter",   true	 ],  
 			["S7",	"Trophy Puzzle",				null,									null,			null,				false	 ], 
 			
 			//endings

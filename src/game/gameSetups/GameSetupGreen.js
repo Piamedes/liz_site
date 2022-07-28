@@ -1,6 +1,9 @@
 import React from 'react';
 import GameSetupBase from "./GameSetupBase.js";
 import {DIRS} from "../../lib/Constants.js";
+import RoomGreenM1 from "../rooms/RoomGreenM1.js";
+import PuzzleSpot from "../../components/PuzzleSpot.js";
+import RoomGreenVenice from "../rooms/RoomGreenVenice.js";
 
 class GameSetupGreen extends GameSetupBase{
 
@@ -8,19 +11,19 @@ class GameSetupGreen extends GameSetupBase{
 		//basement
 		let G0SW = GB.createRoom({
 			id: "G0SW",
-			descriptions: ["green SW"],
-			pathName: 'green wing stairs and elevator',
+			descriptions: [<span>the green wing basement stairs and elevator.  The elevator requires a keycard. Need to use the bathroom? </span>],
+			pathName: 'green wing basement access',
 		})
 
 		let G0SE = GB.createRoom({
 			id: "G0SE",
-			descriptions: ["green SE"],
+			descriptions: [<span>the green wing basement lobby. Not much to see here</span>],
 			pathName: 'green wing lobby',
 		})
 
 		let G0NW = GB.createRoom({
 			id: "G0NW",
-			descriptions: ["green NW"],
+			descriptions: [<span>the science stage for interactive shows.  It's dark and boring right now. </span>],
 			pathName: 'science stage',
 		});
 
@@ -30,49 +33,51 @@ class GameSetupGreen extends GameSetupBase{
 			pathName: 'hunting lodge room',
 		});
 
-		GB.makeDoor(G0SW, G0NW, [],[DIRS.N]);
+		GB.makeDoor(G0SW, G0NW, ['E1','P7','S6'],[DIRS.N]);
 		GB.makeDoor(G0SE, G0NE, [],[DIRS.N]);
 		GB.makeDoor(G0SW, G0SE, [],[DIRS.E]);
-		GB.makeDoor(G0NW, G0NE, [],[DIRS.E]);
 
 		//first floor
-		let G1 = GB.createRoom({
+		let G1 = GB.addRoom(new RoomGreenM1({
 			id: "G1",
-			descriptions: ["green First floor"],
-		})
+			pathName:'green wing first floor landing',
+		}))
 
 		//second floor
-		let G2Landing = GB.createRoom({
-			id: "G2Landing",
-			descriptions: ["green second floor landing"],
+		let G2M = GB.createRoom({
+			id: "G2M",
+			descriptions: [<span>the green wing second floor landing.</span>],
+			pathName:"green second floor landing"
 		})		
 
 
-		let G2Nano = GB.createRoom({
-			id: "G2Nano",
-			descriptions: ["green second floor humans and nano"],
+		let G2Human = GB.createRoom({
+			id: "GHuman",
+			descriptions: [<span>the hall of human life.  There are a bunch of showcases of how science impacts our everday lives.  There's also a TV screen showing a <PuzzleSpot PSCB={this.props.PSCB} ME={this.props.ME} puzzleId={'P3'} text={<u>puzzle</u>}/>. </span>],
+			pathName:'hall of human life'
 		})
 
 		let G2Insects = GB.createRoom({
 			id: "G2Insects",
-			descriptions: ["green second floor bees & tamarinds"],
+			descriptions: [<span> green second floor insect room.  I guess insects are neat?</span>],
+			pathName: 'insect room',
 		})
 
-		let G2Venice = GB.createRoom({
+		let G2Venice = GB.addRoom(new RoomGreenVenice({
 			id: "G2Venice",
-			descriptions: ["green second floor venice"],
-		})
+			pathName: 'venice room'
+		}));
 
-		GB.makeDoor(G2Landing, G2Venice, [],[DIRS.SW]);
-		GB.makeDoor(G2Venice, G2Nano, [],[DIRS.N]);
-		GB.makeDoor(G2Landing, G2Insects, [],[DIRS.N]);
-		GB.makeDoor(G2Landing,G2Nano,[],[DIRS.W]);
+		GB.makeDoor(G2M, G2Venice, [],[DIRS.SW]);
+		GB.makeDoor(G2Venice, G2Human, ['P3'],[DIRS.N]);
+		GB.makeDoor(G2M, G2Insects, [],[DIRS.N]);
+		GB.makeDoor(G2M,G2Human,[],[DIRS.W]);
 
 		//connect the floors!
 		GB.makeDoor(G0SW, G1,       [],[DIRS.U],[DIRS.D],'staircase');
-		GB.makeDoor(G1, G2Landing,  [],[DIRS.U],[DIRS.D],'staircase');
+		GB.makeDoor(G1, G2M,  [],[DIRS.U],[DIRS.D],'staircase');
 
-		return {G2Landing,G1,G0SE}
+		return {G2M,G1,G0SE}
 	}
 }
 

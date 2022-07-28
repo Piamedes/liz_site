@@ -2,18 +2,30 @@ import React from 'react';
 import {componentExtract,componentExists,dirText} from "../../lib/Utils.js";
 import {DIR_LIST,DIRS} from "../../lib/Constants.js";
 import RoomAdv from "../RoomAdv.js";
+import PuzzleSpot from "../../components/PuzzleSpot.js";
 
-class RoomBlueM0 extends RoomAdv{
+class RoomBlueM2 extends RoomAdv{
 	constructor(props){
 		super(props);
 
-		this._puzzleIDs = [];
+		this._puzzleIDs = ['P7'];
 	}
 
 	render(direction,path){
 		let paths = this.renderPaths([DIRS.U]); //skip the escalator
 
-		return <span>{dirText(direction)} blue wing basement. {paths}{this.escalator()}</span>
+		return <span>{dirText(direction)} blue wing second floor lobby. {this.puzzle()}{paths}{this.escalator()}</span>
+	}
+
+	puzzle(){
+		if( this.ME.getPuzzle('P5').solved && this.ME.getPuzzle('P6').solved )
+			return <span> A bunch of the lights in the Light House on the southern side of the room are lit up and projecting a set of <PuzzleSpot PSCB={this.ME.PSCB} ME={this.ME} puzzleId={'P7'} text={<u>questions</u>}/> on the ceiling. </span>
+		else
+			return null
+	}
+
+	puzzleIds(){
+		return ['P7'];
 	}
 
 	escalatorState(){
@@ -44,14 +56,14 @@ class RoomBlueM0 extends RoomAdv{
 				msg = <span>Many of the escalators' metal parts have retracted, but they still aren't safe enough to use.</span>;
 				break;
 			case 3:
-				msg = <span>The escalators seem to be working.  You can go <b>up</b> to the first floor of the blue wing.</span>
+				msg = <span>The escalators seem to be working.  You can go <b>down</b> to the first floor.</span>
 		}
 
 		return msg;	
 	}
 }
 
-export default RoomBlueM0
+export default RoomBlueM2
 
 
 

@@ -6,7 +6,6 @@ class Puzzle extends React.Component{
         this.id   = props.id;   
         this.name  = props.name;
         this.image = props.image;
-        this.answer = props.answer;
         this.verbose = props.verbose;
         this.symbol = props.symbol;
         this.solved = false;
@@ -15,6 +14,12 @@ class Puzzle extends React.Component{
         this.description =  props.description;
 
         this.ME = props.ME;
+
+
+        if(typeof props.answer === 'string')
+        	this.answers = [props.answer]
+        else
+        	this.answers = props.answer;
 
     }
 
@@ -30,7 +35,7 @@ class Puzzle extends React.Component{
     	if( !this.verbose ) return null
 
     	let string = " is the correct answer!!";
-    	return <p>{this.answer}{string}</p>;
+    	return <p>{this.answers[0]}{string}</p>;
     }
 
     hints(){
@@ -38,9 +43,20 @@ class Puzzle extends React.Component{
     }
 
     isCorrect(input){
-    	return this.answer.replace(/\s+/g,'') === input.replace(/\s+/g,'')
+    	if(this.answers === null || this.answers[0] === null)
+    		return false
+
+    	for(const answer of this.answers){
+    		if(answer.replace(/\s+/g,'') === input.replace(/\s+/g,''))
+    			return true
+    	}
+
+    	return false
     }
 
+    lockedMessage(){
+    	return ( (this.symbol[0] in ['a','e','i','o','u']) ? 'an ' : 'a ' ) + ( (this.solved) ? 'glowing ' : 'dark ') + this.symbol
+    }
 }
 
 export default Puzzle

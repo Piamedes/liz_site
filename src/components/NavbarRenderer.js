@@ -25,7 +25,7 @@ class NavbarRenderer extends React.Component {
 };
 
 export default NavbarRenderer
-
+//fixed="top" 
 			            // <Nav.Link href="#features">Features</Nav.Link>
 			            // <Nav.Link href="#pricing">Pricing</Nav.Link>
 			            // <NavDropdown title="Dropdown" id="collasible-nav-dropdown">

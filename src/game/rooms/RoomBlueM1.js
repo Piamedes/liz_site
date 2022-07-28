@@ -3,7 +3,7 @@ import {componentExtract,componentExists,dirText} from "../../lib/Utils.js";
 import {DIR_LIST,DIRS} from "../../lib/Constants.js";
 import RoomAdv from "../RoomAdv.js";
 
-class RoomBlueM0 extends RoomAdv{
+class RoomBlueM1 extends RoomAdv{
 	constructor(props){
 		super(props);
 
@@ -13,7 +13,7 @@ class RoomBlueM0 extends RoomAdv{
 	render(direction,path){
 		let paths = this.renderPaths([DIRS.U]); //skip the escalator
 
-		return <span>{dirText(direction)} blue wing basement. {paths}{this.escalator()}</span>
+		return <span>{dirText(direction)} blue wing first floor lobby. {paths}{this.escalator()}</span>
 	}
 
 	escalatorState(){
@@ -35,7 +35,7 @@ class RoomBlueM0 extends RoomAdv{
 
 		switch(this.escalatorState()){
 			case 0:
-				msg = <span>The escalators to the first floor seem very broken and not in the normal 'becoming stairs' way.  The stairs themselves are missing; you'd have to climb across a ton of fast moving metal parts.</span>;
+				msg = <span>The escalators to the basement and second floors seem very broken and not in the normal 'becoming stairs' way.  The stairs themselves are missing; you'd have to climb across a ton of fast moving metal parts.</span>;
 				break;
 			case 1:
 				msg = <span>The escalators are working but terrifying.  They have power and now seem like giant death machines.</span>;
@@ -44,14 +44,14 @@ class RoomBlueM0 extends RoomAdv{
 				msg = <span>Many of the escalators' metal parts have retracted, but they still aren't safe enough to use.</span>;
 				break;
 			case 3:
-				msg = <span>The escalators seem to be working.  You can go <b>up</b> to the first floor of the blue wing.</span>
+				msg = <span>The escalators seem to be working.  You can go <b>up</b> to the second floor of the blue wing or <b>down</b> to the basement.</span>
 		}
 
 		return msg;	
 	}
 }
 
-export default RoomBlueM0
+export default RoomBlueM1
 
 
 

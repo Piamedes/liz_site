@@ -15,6 +15,7 @@ class MapEngine extends React.Component{
 		this.puzzleMap = {};
 		this.pathMap   = {};
 		this.puzzleHints = {};
+		this.PSCB = props.PSCB;
 
 		this.validate = false;
 	}

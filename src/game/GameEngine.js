@@ -34,8 +34,20 @@ class GameEngine extends React.Component {
 		var msg   = {message:<p>??? - Currently invalid input</p>}
 
 		if(words[0]==='debug'){
-
-
+			if(words[1]==='solve'){
+				let puzzleId = words[2].toUpperCase();
+				this.applyCorrectAnswer(puzzleId);
+				msg = {message:this.answerClearedMessage(puzzleId)};
+			}else if(words[1]==='move'){
+				let roomId = words[2].toUpperCase();
+				if(!componentExists(this.mapEngine.roomMap,roomId))
+					msg = {message:'invalid room Id ' + roomId}
+				else{
+					console.log(roomId)
+					this.player.moveRooms(roomId);
+					msg = this.processInput('look');
+				}
+			}
 		}else{
 
 			if(this.isValidPuzzleSolutionInRoom(text)){
