@@ -64,6 +64,8 @@ class App extends React.Component {
   						<li>The standard directions (north,south,east,west,up,down) as well as their lazy versions (n,s,e,w,u,d) all work</li>
   						<li>Some rooms will have more complicated movement options and you'll have to just do your best</li>
   						<li>Read everything and explore everywhere you can</li>
+  						<li>Many puzzles are taken from puzzled pint or other puzzle hunts.  Looking them up is cheating!</li>
+  						<li>Here's some helpful <a target="_blank" rel="noopener" href={'faq_basic.pdf'}><u>{'guidance'}</u></a> and <a target="_blank" rel="noopener" href={"faq_codes.pdf"}><u>{'code pages'}</u></a></li>
   						<li>Don't be afraid to move onto another puzzle and explore any other paths (there are hidden paths and puzzles)</li>
   						<li>The game is long and it doesn't save yet so keep track of your answers and where everything is unlocked!</li>
   						<li>Call Ben if you need more help :)</li>

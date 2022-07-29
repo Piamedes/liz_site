@@ -14,12 +14,24 @@ class Path extends React.Component{
         this.roomIdA     = props.roomIdA;
         this.roomIdB     = props.roomIdB;
         //array of puzzle IDs locking this path
-        this.lockPuzzleIds = props.lockPuzzleIds;
+        this.processInputPuzzleIDs(props.lockPuzzleIds);
+
         this.customDirectionText = componentExtract(props,'customDirectionText','');
 
         this.lockDescription = props.lockDescription;
+        this.isHidden    = componentExtract(props,'isHidden',false);
 
         this.ME = props.ME;
+    }
+
+    processInputPuzzleIDs(puzzleIds){
+    	if(puzzleIds.length === 0 || !( puzzleIds[0].includes('|') ) ){
+    		this.orPuzzleMode  = false;
+    		this.lockPuzzleIds = puzzleIds;
+    	}else{
+   			this.orPuzzleMode  = true;
+    		this.lockPuzzleIds = puzzleIds.split('|');
+    	}
     }
 
     roomIdOther(roomId){
@@ -27,15 +39,22 @@ class Path extends React.Component{
     }
 
     isVisible(){
-    	return this.doorDescription !== null
+    	return this.doorDescription !== null && ( (this.isHidden && this.ME.hiddenPathsVisible) || !this.isHidden )
     }
 
     isLocked(){
-    	let locked = false
+    	let locked;
 
     	if(this.lockPuzzleIds.length){
 			for(const puzzleId of this.lockPuzzleIds){
-				locked = locked || !this.ME.getPuzzle(puzzleId).solved
+				if(!this.orPuzzleMode){
+					locked = false;
+					locked = locked || !this.ME.getPuzzle(puzzleId).solved					
+				}else{
+					let open = false;
+					open = open || this.ME.getPuzzle(puzzleId).solved
+					locked = !open;
+				}
 			}
 		}
     	return locked
@@ -51,7 +70,7 @@ class Path extends React.Component{
     		if(length===1){
     			msgs =  <span>{this.ME.getPuzzle(this.lockPuzzleIds[0]).lockedMessage()}</span>
     		}else if(length === 2){
-    			msgs = <span>{this.ME.getPuzzle(this.lockPuzzleIds[0]).lockedMessage()} and {this.ME.getPuzzle(this.lockPuzzleIds[1]).lockedMessage()}</span>
+    			msgs = <span>{this.ME.getPuzzle(this.lockPuzzleIds[0]).lockedMessage()} {(this.orPuzzleMode)? 'or' : 'and'} {this.ME.getPuzzle(this.lockPuzzleIds[1]).lockedMessage()}</span>
     		}else{
 	    		let msg    = '';
 	      		let puzzle = null;
@@ -59,14 +78,22 @@ class Path extends React.Component{
 				for(let idx=0;idx<length;idx++){
 					puzzle = this.ME.getPuzzle(this.lockPuzzleIds[idx]);
 					msg    = puzzle.lockedMessage();
+
+
 					if(idx!=length-1)
 						msg += ", "
+
+					if(idx==length-2)
+						msg += ((this.orPuzzleMode) ? 'or' : 'and') + ' '
 
 					msgs.push(msg)
 				}				
     		}
 
-			return <span>You can't go that way, it's locked.  As you look closely at the door you see {msgs}.</span>
+    		let door = (this.doorDescription==='elevator') ? 'elevator' : 'door';
+
+
+			return <span>You can't go that way, it's locked.  As you look closely at the {door} you see {msgs} on it.</span>
     	}
 
     }
@@ -81,14 +108,21 @@ class Path extends React.Component{
     render(direction,roomIdFrom){
     	let roomName    = this.ME.getRoom(this.roomIdOther(roomIdFrom)).pathName;
     	let lockDesc    = this.isLocked() ? 'locked' : 'wide open';
+    	let article     = 'the ';
     	let directional;
 
     	if(direction=="up" || direction=="down")
     		directional = <span>staircase <b>{direction}</b></span> 
-    	else 
+    	else if(direction=='elevator')
+    		directional = <span><b>elevator</b></span>
+    	else if(direction==='floor1'||direction==='floor2'||direction==='basement'){
+    		roomName 	= <b>{direction}</b> 
+    		directional = 'elevator';
+    		article     = '';
+    	}else 
     		directional = <span><b>{componentExtract(DIRS_STRING_DEFAULTS,direction,direction)}ern</b> exit</span>
 
-    	return <span>The {directional} to the {roomName} is {lockDesc}.</span> 
+    	return <span>The {directional} to {article}{roomName} is {lockDesc}.</span> 
     }
 }
 

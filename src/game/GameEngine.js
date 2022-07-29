@@ -59,10 +59,11 @@ class GameEngine extends React.Component {
 				//some puzzles may require re-rendering.  how to do that:
 				//{some unlock message}{look message from down below(which now will reflect new state)}
 			};
-
-			if(text==="look"||text==='l'){
+			if(text==='attack'&&this.player.currentRoomId()==="E2" && !this.mapEngine.getRoom("E2").attacked){
+				msg = {message:this.mapEngine.getRoom("E2").render('attack')}
+			}else if(text==="look"||text==='l'){
 				msg = {message:this.renderMessage('',this.player.currentRoomId())};
-			}else if(text in this.validDirections){
+			}else if(this.mapEngine.movementEnabled && text in this.validDirections){
 				let direction 	= this.validDirections[text];
 				let moveDetails = this.canMove(this.player.currentRoomId(),direction)
 
@@ -135,6 +136,7 @@ class GameEngine extends React.Component {
 		let roomIdNew = path.roomIdB;
 	
 		this.player.moveRooms(roomIdNew);
+		this.mapEngine.incrementRoomVisitMap(roomIdNew);
 
 		return this.renderMessage(direction,roomIdNew,path)
 	}

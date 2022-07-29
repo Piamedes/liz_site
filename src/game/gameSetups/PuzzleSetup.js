@@ -18,9 +18,9 @@ class PuzzleSetup extends React.Component{
 
 		//multiple possible paths after the invitation:
 		let puzzles = tableInit([
-			["id",	"name",							"answer",								"image",  		"symbol",  			"verbose", "pdf"],
+			["id",	"name",							"answer",								"image",  		"symbol",  			"verbose"],
 			//standard:  looping back and forth
-			["P0",	"Invitation",					"knock",								tetris,	  		"envelope",			false	 ],
+			["P0",	"Instructions",					"knock",								null,	  		"Instructions",		false	 ],
 			["P1",	"Abydos",	    				"pyramid",								null,			"circle",			true	 ],  //math room, unlocks lightning basement
 			["P2",	"Got an Ood Feeling", 			"reflect upon the dangers vampire",		null,			"orb",				true	 ],  //attic, unlocks green basement landing
 			["P3",	"Familiar Faces",				"melody pond",							null,			"tv",				true 	 ],  //hall of human life, unlocks venice
@@ -39,8 +39,8 @@ class PuzzleSetup extends React.Component{
 			["S7",	"Trophy Puzzle",				null,									null,			null,				false	 ], 
 			
 			//endings
-			["E1",	"You Slayed the Dragon",		"stealthier",							null,	  		"dragon",			false	 ],
-			["E2",	"The Enchanted Forest",			"magic",								null,	  		"trees",			false	 ],
+			["E2",	"You Slayed the Dragon",		"stealthier",							null,	  		"dragon",			true	 ],
+			["E1",	"The Enchanted Forest",			"magic",								null,	  		"trees",			true	 ],
 		]);
 
 		return( puzzles);
@@ -49,7 +49,8 @@ class PuzzleSetup extends React.Component{
 	hintMap(){
 		let map = {
 			P0:[
-				'HINT ME',
+				'Really?  Do what it says',
+				'KNOCK',
 			],
 			P1:[
 				"The dots are arrange very specifically such that you can create 7 straight lines",
@@ -78,6 +79,14 @@ class PuzzleSetup extends React.Component{
 				'Putting the names in place, you get "Melody Pond".',
 			],
 			P4:[
+				"Yes there's actually a puzzle here",
+				"Notice anything change when you enter and exit the room?",
+				"You'll need to unlock the second entrance",
+				"Why do you think there are two ways to enter and exit?",
+				'What happens if you repeatedly use one entrance?',
+				'Enter from the locked entrance repeatedly to lower the water level', 
+			],
+			P5:[
 				"There's an important # you get to get out of the flavor text.  It'll help you find the answers to the clues",
 				"Each answer will be exactly seven letters (The number of letters in BadWolf, The 7 seas, the 7 muses, and the 7 deadly sins)",
 				"Notice the first letters of each clue spell out 'Bad Wolf' in each column.",
@@ -86,7 +95,7 @@ class PuzzleSetup extends React.Component{
 				"You've looked at the first letter of each answer.  Perhaps look at a different letter?",
 				"The last letters spell 'The Doctor's Home' which is GALLIFREY, as found on the reference sheet"
 			],
-			P5:[
+			P6:[
 				"You are going to need your code sheet for this one",
 				"The flavor text keywords to notice: 'Organize' 'Parallel'.",  
 				"You have to view the loops side-by-side",
@@ -102,7 +111,7 @@ class PuzzleSetup extends React.Component{
 				"This is telling you to read the loop one more time but decoding morse code with every TARDIS a Dash and every Dalek a Dot (A Dalek is a single Dot regardless of the number of Braille dots on its chassis). Numbers separate morse letters. Only one side will decode correctly, the 'WRONG SIDE' won't",
 				"'PERI BROWN', one of the Doctor's companions as listed on the reference sheet",
 			],
-			P6:[
+			P7:[
 				"The answers to these 20 questions will clue you to the meta puzzle answer by describing it. But what are the answers?",
 				"Answer each question using the puzzle answer from the puzzle specified in the first column. For example, Answer 1 is 'Yes' because River Song grows and breathes",
 				"Use the reference material provided to help answer the questions",
@@ -125,10 +134,22 @@ class PuzzleSetup extends React.Component{
 		    	"BOOM",		
 			],
 			S3:[
-				"HINT ME",
+				"You get to finish playing the game of tetris!",
+				"Blocks fall in the order that is pictured",
+				"When a line is complete, that line disappears and everything above shifts down one",
+				"A previously placed block no longer falls if a line disappears",
+				"Using graph paper, a spreadsheet, or scissors may all be helpful",
+				"6886",
 			],
 			S4:[
-				"HINT ME",
+				"Time for fun boolean math!",
+				"White is True",
+				'Perform the operations bottom-up',
+				"Keep all images as you apply operations",
+				"Do the images look like anything?",
+				"Only the red boxed images matter",
+				"The images in red boxes should each be an easily recognizable number",
+				'314725'
 			],
 			S5:[
 				"Shaded letters are the first letter of each answer",

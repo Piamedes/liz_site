@@ -18,6 +18,46 @@ class MapEngine extends React.Component{
 		this.PSCB = props.PSCB;
 
 		this.validate = false;
+
+		this.movementEnabled 	= true;
+		this.hiddenPathsVisible = false;
+		this.resetRoomVisitMap();
+	}
+
+	resetRoomVisitMap(){
+		this.roomVisitMap = {};
+		for(const roomId in this.roomMap){
+			this.roomVisitMap[roomId] = 0;
+		}
+	}
+
+	showHiddenPaths(){
+		this.hiddenPathsVisible = true;
+	}
+
+	incrementRoomVisitMap(roomId){
+		this.roomVisitMap[roomId] +=1;
+	}
+
+	allRoomsVisitedOnce(){
+		let result = true
+
+		for(const roomId in this.roomVisitMap){
+			if(this.roomVisitMap[roomId]!==1){
+				result =  false;
+				break;
+			}			
+		}
+	
+		return result
+	}
+
+	disableMovement(){
+		this.movementEnabled = false
+	}
+
+	enableMovement(){
+		this.movementEnabled = true;
 	}
 
 	//To Build a Map (RW)
