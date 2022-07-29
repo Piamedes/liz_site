@@ -1,6 +1,4 @@
 import React from 'react';
-import {componentExtract,componentExists,dirText} from "../../lib/Utils.js";
-import {DIR_LIST,DIRS} from "../../lib/Constants.js";
 import RoomAdv from "../RoomAdv.js";
 import PuzzleSpot from "../../components/PuzzleSpot.js";
 
@@ -12,8 +10,6 @@ class RoomE1 extends RoomAdv{
 	}
 
 	render(direction,path){
-		let desc;
-
 		if(!this.entered){
 			this.ME.disableMovement();
 			this.entered = true;

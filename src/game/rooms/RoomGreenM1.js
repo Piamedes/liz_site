@@ -1,6 +1,5 @@
 import React from 'react';
-import {componentExtract,componentExists,dirText} from "../../lib/Utils.js";
-import {DIR_LIST,DIRS} from "../../lib/Constants.js";
+import {dirText} from "../../lib/Utils.js";
 import RoomAdv from "../RoomAdv.js";
 import PuzzleSpot from "../../components/PuzzleSpot.js";
 

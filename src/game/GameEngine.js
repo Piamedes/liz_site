@@ -1,7 +1,7 @@
 import React from 'react';
 import MapSetup from "./gameSetups/MapSetup.js";
-import {DIRS,DIR_LIST,DIRS_SHORT_MAP} from "../lib/Constants.js";
-import {camelCase,componentExtract,componentExists} from "../lib/Utils.js";
+import {DIRS_SHORT_MAP} from "../lib/Constants.js";
+import {componentExists} from "../lib/Utils.js";
 
 class GameEngine extends React.Component {
 	constructor(props) {
@@ -30,7 +30,6 @@ class GameEngine extends React.Component {
 		*/
 		let text  = rawText.toLowerCase();
 		let words = text.split(" ");
-		let data  = {}
 		var msg   = {message:<p>??? - Currently invalid input</p>}
 
 		if(words[0]==='debug'){

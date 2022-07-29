@@ -1,6 +1,5 @@
 import React from 'react';
 import {componentExtract,componentExists,dirText} from "../lib/Utils.js";
-import {DIR_LIST} from "../lib/Constants.js";
 
 class Room extends React.Component{
     constructor(props){
@@ -74,7 +73,6 @@ class Room extends React.Component{
 
 	renderPaths(skips=[]){
     	let msgs  = [];
-    	let msg   = null;
 
     	for( let key in this.paths){
     		if(!skips.includes(key) && this.ME.getPath(this.paths[key]).isVisible()){

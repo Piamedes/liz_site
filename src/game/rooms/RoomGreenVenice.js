@@ -1,8 +1,7 @@
 import React from 'react';
-import {componentExtract,componentExists,dirText} from "../../lib/Utils.js";
-import {DIR_LIST,DIRS} from "../../lib/Constants.js";
+import {dirText} from "../../lib/Utils.js";
+import {DIRS} from "../../lib/Constants.js";
 import RoomAdv from "../RoomAdv.js";
-import PuzzleSpot from "../../components/PuzzleSpot.js";
 
 class RoomGreenVenice extends RoomAdv{
 	constructor(props){
@@ -35,6 +34,9 @@ class RoomGreenVenice extends RoomAdv{
 				message = <span>The floodwaters have receded entirely.  You saved Venice!</span>;
 				this.ME.getPuzzle('P4').solve();
 				break;
+			default:
+				message = <span>Well you broke something but let's say you finished the puzzle anyways just in case</span>
+				this.ME.getPuzzle('P4').solve();				
 		}
 	
 		return message;

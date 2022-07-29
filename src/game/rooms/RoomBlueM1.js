@@ -1,6 +1,6 @@
 import React from 'react';
-import {componentExtract,componentExists,dirText} from "../../lib/Utils.js";
-import {DIR_LIST,DIRS} from "../../lib/Constants.js";
+import {dirText} from "../../lib/Utils.js";
+import {DIRS} from "../../lib/Constants.js";
 import RoomAdv from "../RoomAdv.js";
 
 class RoomBlueM1 extends RoomAdv{
@@ -45,6 +45,9 @@ class RoomBlueM1 extends RoomAdv{
 				break;
 			case 3:
 				msg = <span>The escalators seem to be working.  You can go <b>up</b> to the second floor of the blue wing or <b>down</b> to the basement.</span>
+				break
+			default:
+				msg = <span>You're really special you broke the game.  Not a joke.  Hopefully you can go <b>up</b> to the second floor of the blue wing or <b>down</b> to the basement.  If not you may need to reload.</span>
 		}
 
 		return msg;	

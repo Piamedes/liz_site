@@ -1,5 +1,5 @@
 import React from 'react';
-import {DIR_LIST,DIRS_STRING_DEFAULTS} from "../lib/Constants.js";
+import {DIRS_STRING_DEFAULTS} from "../lib/Constants.js";
 import {componentExtract,dirText} from "../lib/Utils.js";
 
 class Path extends React.Component{
@@ -80,10 +80,10 @@ class Path extends React.Component{
 					msg    = puzzle.lockedMessage();
 
 
-					if(idx!=length-1)
+					if(idx!==length-1)
 						msg += ", "
 
-					if(idx==length-2)
+					if(idx===length-2)
 						msg += ((this.orPuzzleMode) ? 'or' : 'and') + ' '
 
 					msgs.push(msg)
@@ -111,9 +111,9 @@ class Path extends React.Component{
     	let article     = 'the ';
     	let directional;
 
-    	if(direction=="up" || direction=="down")
+    	if(direction==="up" || direction==="down")
     		directional = <span>staircase <b>{direction}</b></span> 
-    	else if(direction=='elevator')
+    	else if(direction==='elevator')
     		directional = <span><b>elevator</b></span>
     	else if(direction==='floor1'||direction==='floor2'||direction==='basement'){
     		roomName 	= <b>{direction}</b> 

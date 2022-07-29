@@ -42,7 +42,7 @@ class PuzzleSpot extends React.Component{
 		this.props.ME.getPuzzle(this.props.puzzleId).onFirstRender();
 
 		if( this.isPdf() )
-			return <span><a target="_blank" rel="noopener" href={this.pdfLink()}><u>{this.props.text}</u></a></span>
+			return <span><a target="_blank" rel="noopener noreferrer" href={this.pdfLink()}><u>{this.props.text}</u></a></span>
 		else
 			return <span onClick={this.onClick}><u>{this.props.text}</u></span>
 	}
