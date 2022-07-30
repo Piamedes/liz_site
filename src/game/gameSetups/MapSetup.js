@@ -20,7 +20,7 @@ class MapSetup extends React.Component{
 	}
 
 	initPlayer(storedSettings){
-		this.player = new Player({roomId: "START"});
+		this.player = new Player();
 	}
 
 	initPuzzles(storedSettings){

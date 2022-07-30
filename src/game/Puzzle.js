@@ -1,4 +1,5 @@
 import React from 'react';
+import {getSavedValue,setSavedValue} from "../lib/Utils.js";
 
 class Puzzle extends React.Component{
     constructor(props){
@@ -8,27 +9,28 @@ class Puzzle extends React.Component{
         this.image = props.image;
         this.verbose = props.verbose;
         this.symbol = props.symbol;
-        this.solved = false;
-
-        this.rendered = false;
         this.description =  props.description;
 
         this.ME = props.ME;
-
 
         if(typeof props.answer === 'string')
         	this.answers = [props.answer]
         else
         	this.answers = props.answer;
 
+        //state to load and save
+        this.solved = getSavedValue(this.id,'solved',false);
+        this.rendered = getSavedValue(this.id,'rendered',false);
     }
 
     onFirstRender(){
     	this.rendered = true;
+    	setSavedValue(this.id,'rendered',true)
     }
 
     solve(){
     	this.solved = true;
+    	setSavedValue(this.id,'solved',true)
 
 		if(this.id==='E1')
 			this.ME.enableMovement();

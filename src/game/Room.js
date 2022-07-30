@@ -1,5 +1,5 @@
 import React from 'react';
-import {componentExtract,componentExists,dirText} from "../lib/Utils.js";
+import {componentExtract,componentExists,dirText,getSavedValue,setSavedValue} from "../lib/Utils.js";
 
 class Room extends React.Component{
     constructor(props){
@@ -12,10 +12,11 @@ class Room extends React.Component{
         this.paths		   = {};
         this._puzzleIds    = this.puzzleIdsFromDescriptions(this.descriptions);
         this.includeDirText = componentExtract(props, 'includeDirText',true);
-        this.descriptionIndex = 0;
         this.type = 'base';
 
         this.ME = props.ME;
+
+        this.descriptionIndex = getSavedValue(this.id,'descriptionIndex',0)
     }
 
     findPuzzleSpots(children){
@@ -65,6 +66,7 @@ class Room extends React.Component{
 
 	updateDescriptionIndex(){
 		this.descriptionIndex = Math.min(this.descriptionIndex+1,this.descriptions.length-1);
+		setSavedValue(this.id,'descriptionIndex',this.descriptionIndex);
 	}
 
 	description(){

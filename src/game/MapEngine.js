@@ -1,6 +1,5 @@
 import React from 'react';
-
-import {clone, componentExists} from "../lib/Utils.js";
+import {clone, componentExists,getSavedValue,setSavedValue} from "../lib/Utils.js";
 import {DIR_OPPOSITES} from "../lib/Constants.js";
 import Room from "./Room.js";
 import Path from "./Path.js";
@@ -19,9 +18,13 @@ class MapEngine extends React.Component{
 
 		this.validate = false;
 
-		this.movementEnabled 	= true;
-		this.hiddenPathsVisible = false;
 		this.resetRoomVisitMap();
+
+		this.movementEnabled 	= getSavedValue('ME','movementEnabled',true);
+		this.hiddenPathsVisible = getSavedValue('ME','hiddenPathsVisible',false);
+		let stored = getSavedValue('ME','roomVisitMap',null)
+		if(stored!==null)
+			this.roomVisitMap = stored;
 	}
 
 	resetRoomVisitMap(){
@@ -33,10 +36,12 @@ class MapEngine extends React.Component{
 
 	showHiddenPaths(){
 		this.hiddenPathsVisible = true;
+		setSavedValue('ME','hiddenPathsVisible',true);
 	}
 
 	incrementRoomVisitMap(roomId){
 		this.roomVisitMap[roomId] +=1;
+		setSavedValue('ME','roomVisitMap',this.roomVisitMap)
 	}
 
 	allRoomsVisitedOnce(){
@@ -54,10 +59,12 @@ class MapEngine extends React.Component{
 
 	disableMovement(){
 		this.movementEnabled = false
+		setSavedValue('ME','movementEnabled',false);
 	}
 
 	enableMovement(){
 		this.movementEnabled = true;
+		setSavedValue('ME','movementEnabled',true);
 	}
 
 	//To Build a Map (RW)
@@ -85,7 +92,7 @@ class MapEngine extends React.Component{
 		return room.id;
 	}
 
-	createPuzzle(props){
+	createPuzzle(props,storedSettings){
 		if( props.id in this.puzzleMap )
 			throw new Error( 'puzzle id already in use')
 		else{

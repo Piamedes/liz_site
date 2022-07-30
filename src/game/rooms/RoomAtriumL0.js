@@ -2,12 +2,13 @@ import React from 'react';
 import {dirText} from "../../lib/Utils.js";
 import {DIRS} from "../../lib/Constants.js";
 import RoomAdv from "../RoomAdv.js";
+import {getSavedValue,setSavedValue} from "../../lib/Utils.js";
 
 class RoomAtriumL0 extends RoomAdv{
 	constructor(props){
 		super(props);
 
-		this.staircaseRendered = false;
+		this.staircaseRendered = getSavedValue(this.id,'staircaseRendered',false);
 	}
 
 	render(direction,path){
@@ -31,6 +32,7 @@ class RoomAtriumL0 extends RoomAdv{
 			if(!this.staircaseRendered){
 				msg = <span>The marble sculpture seems to be making a grinding noise.  As you continue to watch it starts spinning and sinking into the ground.  In it's place a staircase <b>down</b> has appeared.</span>
 				this.staircaseRendered = true;
+				setSavedValue(this.id,'staircaseRendered',true)
 				this.ME.getPuzzle('S7').solve();
 			}else{
 				msg = <span>There's a staircase <b>down</b> to somewhere in the statue's place</span>

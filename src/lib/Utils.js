@@ -24,6 +24,19 @@ var dirText = function dirText(direction){
 	return text;
 }
 
+var setSavedValue = function setSavedValue(id,key,value){
+	let string = JSON.stringify(value);
+
+	localStorage.setItem(id+":"+key,string);
+}
+
+var getSavedValue = function getSavedValue(id,key,defaultValue){
+	let string = localStorage.getItem(id+":"+key);
+	let value  = (string!==null) ? JSON.parse(string) : defaultValue
+
+	return (value===null) ? defaultValue : value;
+}
+
 var tableInit = function tableInit(table){
 	let objects = [];
 
@@ -96,4 +109,4 @@ function getRegExpFlags(regExp) {
   }
 }
 
-export {camelCase, componentExtract, clone, componentExists,tableInit,dirText}
+export {camelCase, componentExtract, clone, componentExists,tableInit,dirText,getSavedValue,setSavedValue}

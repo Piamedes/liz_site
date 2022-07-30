@@ -1,10 +1,11 @@
 import React from 'react';
+import {getSavedValue,setSavedValue} from "../lib/Utils.js";
 
 class Player extends React.Component{
     constructor(props){
     	super(props);
 
-    	this.roomId = props.roomId;
+    	this.roomId = getSavedValue('player','roomId','START');
     }
 
     currentRoomId(){
@@ -14,6 +15,7 @@ class Player extends React.Component{
 
     moveRooms(roomIdNew){
     	this.roomId = roomIdNew;
+    	setSavedValue('player','roomId',roomIdNew)
     }
 
 }

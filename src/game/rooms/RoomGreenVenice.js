@@ -1,5 +1,5 @@
 import React from 'react';
-import {dirText} from "../../lib/Utils.js";
+import {dirText,getSavedValue,setSavedValue} from "../../lib/Utils.js";
 import {DIRS} from "../../lib/Constants.js";
 import RoomAdv from "../RoomAdv.js";
 
@@ -9,7 +9,7 @@ class RoomGreenVenice extends RoomAdv{
 
 		this.waterLevelMax = 4;
 		this.waterLevelMin = 1;
-		this.waterLevel    = this.waterLevelMax;
+		this.waterLevel    = getSavedValue(this.id,'waterLevel',this.waterLevelMax)
 	}
 
 	render(direction,path){
@@ -47,6 +47,8 @@ class RoomGreenVenice extends RoomAdv{
 			this.waterLevel = Math.max(this.waterLevel - 1,this.waterLevelMin)
 		else
 			this.waterLevel = Math.min(this.waterLevel + 1,this.waterLevelMax);
+
+		setSavedValue(this.id,'waterLevel',this.waterLevel);
 	}
 
 	puzzleIds(){

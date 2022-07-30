@@ -62,6 +62,10 @@ class GameEngine extends React.Component {
 				msg = {message:this.mapEngine.getRoom("E2").render('attack')}
 			}else if(text==="look"||text==='l'){
 				msg = {message:this.renderMessage('',this.player.currentRoomId())};
+			}else if(text==='reset'){
+				this.resetStorage()
+				window.location.reload()
+				msg = {message:'game is resetting, window will reload'}
 			}else if(this.mapEngine.movementEnabled && text in this.validDirections){
 				let direction 	= this.validDirections[text];
 				let moveDetails = this.canMove(this.player.currentRoomId(),direction)
@@ -78,6 +82,10 @@ class GameEngine extends React.Component {
 		}
 
 		return msg
+	}
+
+	resetStorage(){
+		localStorage.clear();
 	}
 
 	lockedMessage(roomId,direction){
