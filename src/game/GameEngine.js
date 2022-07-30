@@ -48,15 +48,10 @@ class GameEngine extends React.Component {
 				}
 			}
 		}else{
-
 			if(this.isValidPuzzleSolutionInRoom(text)){
 				msg = this.applyPuzzleSolutionInRoom(text);
 				if(msg.message !== null)
 					return msg;
-
-
-				//some puzzles may require re-rendering.  how to do that:
-				//{some unlock message}{look message from down below(which now will reflect new state)}
 			};
 			if(text==='attack'&&this.player.currentRoomId()==="E2" && !this.mapEngine.getRoom("E2").attacked){
 				msg = {message:this.mapEngine.getRoom("E2").render('attack')}

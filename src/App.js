@@ -67,8 +67,8 @@ class App extends React.Component {
   						<li>Many puzzles are taken from puzzled pint or other puzzle hunts.  Looking them up is cheating!</li>
   						<li>Here's some helpful <a target="_blank" rel="noopener noreferrer" href={'faq_basic.pdf'}><u>{'guidance'}</u></a> and <a target="_blank" rel="noopener noreferrer" href={"faq_codes.pdf"}><u>{'code pages'}</u></a></li>
   						<li>Don't be afraid to move onto another puzzle and explore any other paths (there are hidden paths and puzzles)</li>
-  						<li>The game is long and it doesn't save yet so keep track of your answers and where everything is unlocked!</li>
-  						<li>Call Ben if you need more help :)</li>
+  						<li>The game is AUTOSAVES every action - if you think you're completely stuck and want to reset, simply type <b>reset</b></li>
+  						<li>Call Ben if you need more help :).  Entirely possible the game is broken, so don't hesitate to ask</li>
 					</ol>
   				</div>;
 
