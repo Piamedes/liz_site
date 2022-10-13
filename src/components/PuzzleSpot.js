@@ -19,7 +19,7 @@ class PuzzleSpot extends React.Component{
 		if( this.isPdf() )
 			return null
 
-		return <Image className="center-block" float="center" src={this.puzzle().image} responsive/>
+		return <Image className="center-block" responsive float="center" src={this.puzzle().image}/>
 				
 	}
 

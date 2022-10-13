@@ -1,6 +1,5 @@
 import React from 'react';
-import {componentExtract,componentExists,dirText,getSavedValue,setSavedValue} from "../../lib/Utils.js";
-import {DIR_LIST,DIRS} from "../../lib/Constants.js";
+import {getSavedValue,setSavedValue} from "../../lib/Utils.js";
 import RoomAdv from "../RoomAdv.js";
 import PuzzleSpot from "../../components/PuzzleSpot.js";
 
@@ -12,7 +11,6 @@ class RoomE2 extends RoomAdv{
 	}
 
 	render(direction,path){
-		let desc;
 		let ps = <PuzzleSpot PSCB={this.ME.PSCB} ME={this.ME} puzzleId={'E2'} text={<u>piece of paper</u>}/>;
 
 		if(!this.entered){

@@ -12,6 +12,7 @@ class Room extends React.Component{
         this.paths		   = {};
         this._puzzleIds    = this.puzzleIdsFromDescriptions(this.descriptions);
         this.includeDirText = componentExtract(props, 'includeDirText',true);
+        this.hiddenDescription = componentExtract(props,'hiddenDescription','')
         this.type = 'base';
 
         this.ME = props.ME;
@@ -54,10 +55,14 @@ class Room extends React.Component{
     //The Room class is used in two places:  storing state within the main application state, and rendering the UI
     //In the rendering case, the state is disconnected from live main application state
 	render(direction,path){
-		let desc = this.description();
-		this.updateDescriptionIndex();
+		if(this.ME.hiddenPathsVisible && this.hiddenDescription.length !== 0){
+			return this.hiddenDescription
+		}else{
+			let desc = this.description();
+			this.updateDescriptionIndex();
 
-		return <span>{this.directionText(direction,path)}{desc} {this.renderPaths()}</span>		
+			return <span>{this.directionText(direction,path)}{desc} {this.renderPaths()}</span>	
+		}
 	}
 
 	directionText(direction,path){

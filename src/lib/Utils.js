@@ -32,7 +32,7 @@ var setSavedValue = function setSavedValue(id,key,value){
 
 var getSavedValue = function getSavedValue(id,key,defaultValue){
 	let string = localStorage.getItem(id+":"+key);
-	let value  = (string!==null) ? JSON.parse(string) : defaultValue
+	let value  = (string !== null && string !== "undefined") ? JSON.parse(string) : defaultValue
 
 	return (value===null) ? defaultValue : value;
 }

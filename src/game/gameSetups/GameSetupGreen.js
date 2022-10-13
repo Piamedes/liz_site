@@ -5,6 +5,7 @@ import RoomGreenM1 from "../rooms/RoomGreenM1.js";
 import PuzzleSpot from "../../components/PuzzleSpot.js";
 import RoomGreenVenice from "../rooms/RoomGreenVenice.js";
 import RoomE1 from "../rooms/RoomE1.js";
+import RoomGreenTrophy from "../rooms/RoomGreenTrophy.js";
 
 class GameSetupGreen extends GameSetupBase{
 
@@ -28,14 +29,15 @@ class GameSetupGreen extends GameSetupBase{
 			pathName: 'science stage',
 		});
 
-		let G0NE = ME.createRoom({
+		let G0NE = ME.addRoom(new RoomGreenTrophy({
 			id: "G0NE",
 			descriptions: ["green NE"],
-			pathName: 'hunting lodge room',
-		});
+			pathName: 'hunting lodge trophy room',
+		}));
 
-		ME.makeDoor(G0SW, G0NW, ['E1','P7','S6'],[DIRS.N]);
-		ME.makeDoor(G0SE, G0NE, [],[DIRS.N]);
+		ME.makeDoor(G0SW, G0NW, [],[DIRS.N]);
+		ME.makeDoor(G0SE, G0NE, ['E1','P7','S6'],[DIRS.N]);
+		ME.makeHiddenDoor(G0SE,G0NW,[DIRS.NW])
 		ME.makeDoor(G0SW, G0SE, [],[DIRS.E]);
 
 		//first floor
@@ -73,9 +75,10 @@ class GameSetupGreen extends GameSetupBase{
 		ME.makeDoor(G2Venice, G2Human, ['P3'],[DIRS.N]);
 		ME.makeDoor(G2M, G2Insects, [],[DIRS.N]);
 		ME.makeDoor(G2M,G2Human,[],[DIRS.W]);
+		ME.makeHiddenDoor(G2Human,G2Insects,[DIRS.NE],[DIRS.W])
 
 		//connect the floors!
-		ME.makeDoor(G0SW, G1,       [],[DIRS.U],[DIRS.D],'staircase');
+		ME.makeDoor(G0SW, G1, [],[DIRS.U],[DIRS.D],'staircase');
 		ME.makeDoor(G1, G2M,  [],[DIRS.U],[DIRS.D],'staircase');
 
 		let E1 = ME.addRoom(new RoomE1({
@@ -86,6 +89,7 @@ class GameSetupGreen extends GameSetupBase{
 		ME.makeDoor(G2M, E1,['P7'],['elevator'],["floor2"  ],'elevator');
 		ME.makeDoor(G1,  E1,['S6'],['elevator'],["floor1"  ],'elevator');
 		ME.makeDoor(G0SW,E1,['P7'],['elevator'],["basement"],'elevator');
+		ME.makeHiddenDoor(G1,G2Venice,['stairwell'],['stairwell'])
 
 		return {G2M,G1,G0SE}
 	}

@@ -35,9 +35,11 @@ class PuzzleSetup extends React.Component{
 			["S3",	"Tetris",						"6886",									tetris,			"tetromino",		true	 ],  
 			["S4",	"Boolean",						"314725",								boolean, 		"equal sign",		true	 ],  
 			["S5",	"Searching for Artifacts",		"zero point module",					null,			"artifact",			true	 ],  
-			["S6",	"Thirteeen Steps to Victory",	"the ori",								null,			"unclear letter",   true	 ],  
+			["S6",	"Thirteen Steps to Victory",	"the ori",								null,			"unclear letter",   true	 ],  
 			["S7",	"Trophy Puzzle",				null,									null,			null,				false	 ], 
 			
+			//Expected Path for S7
+
 			//endings
 			["E2",	"You Slayed the Dragon",		"stealthier",							null,	  		"dragon",			true	 ],
 			["E1",	"The Enchanted Forest",			"magic",								null,	  		"trees",			true	 ],
@@ -77,6 +79,7 @@ class PuzzleSetup extends React.Component{
 				'Also consider instances of things like "Fawkes and Phoenix"',
 				'The actors and actresses, in order, are Jack Lemmon, Nic Cage, Peter Sellers, Harrison Ford, Heath Ledger, Cary Grant, River Phoenix, Robin Wright, John Hurt, Brad Pitt',
 				'Putting the names in place, you get "Melody Pond".',
+				'Applying the rule one more time gets you "River Song"',
 			],
 			P4:[
 				"Yes there's actually a puzzle here",
@@ -196,6 +199,9 @@ class PuzzleSetup extends React.Component{
 				"His jaws will do more damage than his claw",
 				"Once you have the right choices, notice which item you used for each line.",
 				"Apply the Initative value as an index on the puzzle answer corresponding to the item you used on each line",
+				"The items are what you grapped from the trophy room and stuffed in the bag of holding",
+				"Items were:  Harry Potter's Wand, Excalibur, Cladding of the Fire Drake, and the light green vial",
+				"Magic Attack = Harry Potter's Wand, Healing Potion = lucky green vial, Sword Attack = Excalibur, Cloak = Cladding of the Fire Drake",
 				"STEALTHIER",
 			],
 		}

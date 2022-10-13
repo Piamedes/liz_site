@@ -28,7 +28,7 @@ class RoomAtriumL0 extends RoomAdv{
 	staircase(){
 		let msg = '';
 
-		if( this.ME.allRoomsVisitedOnce() ){
+		if( this.ME.allRoomsVisitedOnce() || this.ME.getPuzzle('S7').solved){
 			if(!this.staircaseRendered){
 				msg = <span>The marble sculpture seems to be making a grinding noise.  As you continue to watch it starts spinning and sinking into the ground.  In it's place a staircase <b>down</b> has appeared.</span>
 				this.staircaseRendered = true;

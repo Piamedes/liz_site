@@ -11,9 +11,16 @@ class RoomBlueM1 extends RoomAdv{
 	}
 
 	render(direction,path){
+		let text = ''
+
+		if( path != null && path.customDirectionText.length > 0 ) 
+			text = path.customDirectionText
+		else
+			text = dirText(direction)
+
 		let paths = this.renderPaths([DIRS.U]); //skip the escalator
 
-		return <span>{dirText(direction)} blue wing first floor lobby. {paths}{this.escalator()}</span>
+		return <span>{text} blue wing first floor lobby.{paths}{this.escalator()}</span>
 	}
 
 	escalatorState(){

@@ -45,7 +45,7 @@ class Puzzle extends React.Component{
 		if(this.id==='E1'){
 			return <p>A great marriage is definitely magic!  Good luck and have fun on more adventures together.  Why not find the true ending to this game?  You have a bunch more puzzles to go and the real prize awaits!</p>
 		}else if(this.id ==='E2'){
-
+			return <p>Amazing!  I'm honestly surprised the game managed to hold together to this point.  Call Elliot for your prize!</p>
 		}else{
 	    	let string = " is the correct answer!!";
     		return <p>{this.answers[0]}{string}</p>;			

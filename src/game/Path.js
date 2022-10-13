@@ -65,12 +65,15 @@ class Path extends React.Component{
     		return null
     	else{
     		let msgs   = [];
+    		let symbolMsg
     		let length = this.lockPuzzleIds.length;
 
     		if(length===1){
     			msgs =  <span>{this.ME.getPuzzle(this.lockPuzzleIds[0]).lockedMessage()}</span>
+    			symbolMsg = 'a square around'
     		}else if(length === 2){
     			msgs = <span>{this.ME.getPuzzle(this.lockPuzzleIds[0]).lockedMessage()} {(this.orPuzzleMode)? 'or' : 'and'} {this.ME.getPuzzle(this.lockPuzzleIds[1]).lockedMessage()}</span>
+    			symbolMsg = 'a pair of squares each around'
     		}else{
 	    		let msg    = '';
 	      		let puzzle = null;
@@ -87,13 +90,15 @@ class Path extends React.Component{
 						msg += ((this.orPuzzleMode) ? 'or' : 'and') + ' '
 
 					msgs.push(msg)
-				}				
+				}	
+
+				symbolMsg = "a bunch of squares each around"			
     		}
 
     		let door = (this.doorDescription==='elevator') ? 'elevator' : 'door';
 
 
-			return <span>You can't go that way, it's locked.  As you look closely at the {door} you see {msgs} on it.</span>
+			return <span>You can't go that way, it's locked.  As you look closely at the {door} you see {symbolMsg} {msgs}.</span>
     	}
 
     }

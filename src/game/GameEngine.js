@@ -46,6 +46,18 @@ class GameEngine extends React.Component {
 					this.player.moveRooms(roomId);
 					msg = this.processInput('look');
 				}
+			}else if(words[1].toLowerCase()==='th'){
+				this.mapEngine.setHiddenPaths(words[2]==='1')
+				msg = this.processInput('look');
+			}else if(words[1]==='solveex'){
+
+				let puzzleIds = words[2].toUpperCase().split(',');
+
+				for(const id in this.mapEngine.puzzleMap)
+					if(!(id in puzzleIds))
+						this.applyCorrectAnswer(id);
+
+				msg = {message:'Solved all puzzles except ' + words[2]};				
 			}
 		}else{
 			if(this.isValidPuzzleSolutionInRoom(text)){
@@ -70,7 +82,10 @@ class GameEngine extends React.Component {
 						let moveMessage = this.moveRooms(direction); 
 						msg = {message:moveMessage};	
 					}else{
-						msg = this.lockedMessage(this.player.currentRoomId(),direction);
+						let lockMsg = this.lockedMessage(this.player.currentRoomId(),direction);
+
+						if(lockMsg.message!==null)
+							msg = lockMsg 
 					}
 				}
 			}		
@@ -107,7 +122,7 @@ class GameEngine extends React.Component {
 			puzzle = this.mapEngine.getPuzzle(puzzleId);
 
 			if(puzzle.isCorrect(text)){
-				if(puzzle.solved){
+				if(puzzle.solved && puzzle.id !== 'S1'){
 					msg = {message:<p>You've already solved that puzzle</p>};
 				}else{
 					this.applyCorrectAnswer(puzzleId);

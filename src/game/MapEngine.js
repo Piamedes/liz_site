@@ -1,8 +1,9 @@
 import React from 'react';
-import {clone, componentExists,getSavedValue,setSavedValue} from "../lib/Utils.js";
+import {clone, componentExists,componentExtract,getSavedValue,setSavedValue} from "../lib/Utils.js";
 import {DIR_OPPOSITES} from "../lib/Constants.js";
 import Room from "./Room.js";
 import Path from "./Path.js";
+import PathHidden from "./PathHidden.js";
 import Puzzle from "./Puzzle.js";
 
 class MapEngine extends React.Component{
@@ -32,11 +33,16 @@ class MapEngine extends React.Component{
 		for(const roomId in this.roomMap){
 			this.roomVisitMap[roomId] = 0;
 		}
+		setSavedValue('ME','roomVisitMap',this.roomVisitMap)
 	}
 
 	showHiddenPaths(){
-		this.hiddenPathsVisible = true;
-		setSavedValue('ME','hiddenPathsVisible',true);
+		this.setHiddenPaths(true)
+	}
+
+	setHiddenPaths(value){
+		this.hiddenPathsVisible = value;
+		setSavedValue('ME','hiddenPathsVisible',value)
 	}
 
 	incrementRoomVisitMap(roomId){
@@ -114,7 +120,7 @@ class MapEngine extends React.Component{
 			pathProps.roomIdA = roomIdA
 			pathProps.ME 	  = this;
 
-			this.pathMap[pathProps.id] = new Path(pathProps)
+			this.pathMap[pathProps.id] = (!pathProps.isHidden) ? new Path(pathProps) : new PathHidden(pathProps)
 
 			for(let dir of directions){
 				if(dir in this.roomMap[roomIdA].paths)
@@ -127,10 +133,16 @@ class MapEngine extends React.Component{
 		}		
 	}
 
+	connectRoomsHidden(roomIdA, roomIdB, directions){
+		let props = this.enrichPathProps( roomIdA, roomIdB, {doorDescription:null,lockDescription:'',lockPuzzleIds:[],isHidden:true} )
+
+		return this.connectRooms(roomIdA,roomIdB,directions,props)
+	}
+
 	enrichPathProps(roomIdA, roomIdB,propsBase){
 		let newProps = clone( propsBase );
 
-		newProps.id   	 = this.makePathId( roomIdA, roomIdB );
+		newProps.id   	 = this.makePathId( roomIdA, roomIdB, componentExtract(newProps,'isHidden',false) );
 		newProps.roomIdA = roomIdA;
 		newProps.roomIdB = roomIdB;
 
@@ -147,8 +159,8 @@ class MapEngine extends React.Component{
 		return {pathIdA, pathIdB}
 	}
 
-	makePathId(roomIdA,roomIdB){
-		return roomIdA + '->' + roomIdB
+	makePathId(roomIdA,roomIdB,isHidden=false){
+		return roomIdA + '->' + roomIdB + (isHidden ? 'H' : '' )
 	}
 
 	makeDoor(roomIdA, roomIdB, lockPuzzleIds, roomADirs, roomBDirs=[], doorDescription = "makeDoorDefaultDoor ",lockDescription="makeDoorDefaultLock "){
@@ -158,6 +170,22 @@ class MapEngine extends React.Component{
 			lockDescription,
 			lockPuzzleIds,
 		};
+
+		if(!roomBDirs.length){
+			for( let dir of roomADirs)
+				roomBDirs.push(DIR_OPPOSITES[dir])
+		}
+
+		return this.makeTwoWayConnection(roomIdA,roomIdB,roomADirs,roomBDirs,propsBase);
+	}
+
+	makeHiddenDoor(roomIdA,roomIdB,roomADirs,roomBDirs=[]){
+		let propsBase = {
+			isHidden: true,
+			doorDescription: '',
+			lockDescription: '',
+			lockPuzzleIds: [],
+		}
 
 		if(!roomBDirs.length){
 			for( let dir of roomADirs)

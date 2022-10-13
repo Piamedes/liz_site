@@ -6,6 +6,7 @@ class Player extends React.Component{
     	super(props);
 
     	this.roomId = getSavedValue('player','roomId','START');
+    	//this.roomId = 'START'
     }
 
     currentRoomId(){

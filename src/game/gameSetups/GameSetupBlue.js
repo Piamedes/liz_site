@@ -51,6 +51,7 @@ class GameSetupBlue extends GameSetupBase{
 		ME.makeDoor(BM0, BDino,   [],[DIRS.SE],[DIRS.N]);
 		ME.makeDoor(BM0, BTurtle, [],[DIRS.SW],[DIRS.N]);
 		ME.makeDoor(BM0, BMath,   [],[DIRS.E]);
+		ME.makeHiddenDoor(BTurtle,BDino,[DIRS.E])
 
 		//first floor
 
@@ -62,6 +63,7 @@ class GameSetupBlue extends GameSetupBase{
 		let BAttic = ME.createRoom({
 				id:"BScenes",
 				descriptions: [<span>the sitting area overlooking the electricity theatre. A <PuzzleSpot PSCB={this.props.PSCB} ME={this.props.ME} puzzleId={'P2'} text={<u>puzzle</u>}/> is posted on the wall.</span>],
+				pathName:"electric theatre overlook",
 		});
 
 		let BElectricL = ME.createRoom({
@@ -95,6 +97,8 @@ class GameSetupBlue extends GameSetupBase{
 		ME.makeDoor(BElectricL, BElectricB, [],[DIRS.D],[]);
 		ME.makeDoor(BElectricL, BAttic, [],[DIRS.U],[]);
 
+		ME.makeHiddenDoor(BEng,BArtic,[DIRS.W])
+
 		//second floor
 		let BM2 = ME.addRoom(new RoomBlueM2({
 				id:"BM2",
@@ -116,6 +120,8 @@ class GameSetupBlue extends GameSetupBase{
 
 		ME.makeDoor(BM2, BPlay,    [],[DIRS.NE],[DIRS.S],"large door");
 		ME.makeDoor(BM2, BTheater, [],[DIRS.NW],[DIRS.S]);
+		ME.makeHiddenDoor(BPlay,BTheater,[DIRS.W])
+		ME.makeHiddenDoor(BPlay,BAttic,[DIRS.E])
 
 		//cross floor links
 		ME.makeDoor(BM0, BM1,    ['S3','S6'],[DIRS.U],[DIRS.D],null);
@@ -124,7 +130,9 @@ class GameSetupBlue extends GameSetupBase{
 
 		ME.connectRooms( BDino, BM1, ['climb','scramble','scale'], {doorDescription:null,lockPuzzleIds:[],customDirectionText:"You manage to scramble up the T. Rex's tail using the other statues to help.  You drop off the dinosaur's back into the "});
 
-		return {BM0,BM1,BM2}
+
+
+		return {BM0,BM1,BM2,BArtic}
 	}
 }
 
